@@ -1,5 +1,120 @@
+# Visual Studio
 .vs/
-EEEEReader/.vs/
+.vscode/
+*.suo
+*.user
+*.userosscache
+*.sln.docstates
+*.sln.ide/
 
-EEEEReader/EEEEReader/bin/
-EEEEReader/EEEEReader/obj/
+# Visual Studio Cache
+.vs/
+.vscode/settings.json
+.vscode/tasks.json
+.vscode/launch.json
+.vscode/extensions.json
+
+# Build Results
+[Dd]ebug/
+[Dd]ebugPublic/
+[Rr]elease/
+[Rr]eleases/
+x64/
+x86/
+[Ww][Ii][Nn]32/
+[Aa][Rr][Mm]/
+[Aa][Rr][Mm]64/
+bld/
+[Bb]in/
+[Oo]bj/
+[Ll]og/
+[Ll]ogs/
+
+# Visual Studio cache/options
+.vs/
+
+# Visual Studio Code
+.vscode/
+*.code-workspace
+
+# Resharper is a .NET coding assist-provider
+_ReSharper*/
+*.[Rr]e[Ss]harper
+*.DotSettings.user
+
+# Build folders
+bin/
+obj/
+.build/
+
+# NuGet
+*.nupkg
+*.snupkg
+*.nuget.props
+*.nuget.targets
+.nuget/
+
+# Rider
+.idea/
+*.sln.iml
+
+# User-specific files
+*.rsuser
+*.suo
+*.user
+*.userosscache
+*.sln.docstates
+
+# Test Results
+TestResult.xml
+TestResults/
+
+# OS Files
+.DS_Store
+Thumbs.db
+*.swp
+*.swo
+*~
+
+# IDE Files
+.idea/
+.vscode/
+*.sublime-workspace
+*.sublime-project
+
+# Local environment variables
+.env
+.env.local
+*.local
+
+# Temporary files
+*.tmp
+*.temp
+*.bak
+*.orig
+
+# Logs
+*.log
+logs/
+
+# Package manager
+packages/
+.nuget/
+
+# Publish directory
+publish/
+PublishProfiles/
+
+# Database files
+*.mdf
+*.ldf
+*.ndf
+
+# Configuration with sensitive data
+appsettings.local.json
+appsettings.Development.json
+
+# Custom directories
+node_modules/
+dist/
+coverage/
