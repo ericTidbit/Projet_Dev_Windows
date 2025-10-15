@@ -1,0 +1,1 @@
+C:\Users\info1\source\repos\Projet_Dev_Windows\EEEEReader\EEEEReader\EEEEReader.csproj;x64

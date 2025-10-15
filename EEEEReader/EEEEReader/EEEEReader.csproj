@@ -12,6 +12,9 @@
     <EnableMsixTooling>true</EnableMsixTooling>
     <Nullable>enable</Nullable>
   </PropertyGroup>
+  <ItemGroup>
+    <Page Remove="Views\MessagesPage.xaml" />
+  </ItemGroup>
 
   <ItemGroup>
     <Content Include="Assets\SplashScreen.scale-200.png" />
@@ -40,8 +43,9 @@
     <PackageReference Include="Microsoft.WindowsAppSDK" Version="1.8.251003001" />
   </ItemGroup>
   <ItemGroup>
-    <Folder Include="Models\" />
-    <Folder Include="ViewModels\Pages\" />
+    <None Update="Views\MessagesPage.xaml">
+      <Generator>MSBuild:Compile</Generator>
+    </None>
   </ItemGroup>
 
   <!--

@@ -1,8 +1,8 @@
 {
   "version": 2,
-  "dgSpecHash": "4GWvXSDCi8A=",
+  "dgSpecHash": "2HjHRAYMrT4=",
   "success": true,
-  "projectFilePath": "C:\\Users\\info1\\source\\repos\\EEEEReader\\EEEEReader\\EEEEReader.csproj",
+  "projectFilePath": "C:\\Users\\info1\\source\\repos\\Projet_Dev_Windows\\EEEEReader\\EEEEReader\\EEEEReader.csproj",
   "expectedPackageFiles": [
     "C:\\Users\\info1\\.nuget\\packages\\microsoft.web.webview2\\1.0.3179.45\\microsoft.web.webview2.1.0.3179.45.nupkg.sha512",
     "C:\\Users\\info1\\.nuget\\packages\\microsoft.windows.sdk.buildtools\\10.0.26100.6584\\microsoft.windows.sdk.buildtools.10.0.26100.6584.nupkg.sha512",

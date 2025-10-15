@@ -1,17 +1,17 @@
 {
   "format": 1,
   "restore": {
-    "C:\\Users\\info1\\source\\repos\\EEEEReader\\EEEEReader\\EEEEReader.csproj": {}
+    "C:\\Users\\info1\\source\\repos\\Projet_Dev_Windows\\EEEEReader\\EEEEReader\\EEEEReader.csproj": {}
   },
   "projects": {
-    "C:\\Users\\info1\\source\\repos\\EEEEReader\\EEEEReader\\EEEEReader.csproj": {
+    "C:\\Users\\info1\\source\\repos\\Projet_Dev_Windows\\EEEEReader\\EEEEReader\\EEEEReader.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "C:\\Users\\info1\\source\\repos\\EEEEReader\\EEEEReader\\EEEEReader.csproj",
+        "projectUniqueName": "C:\\Users\\info1\\source\\repos\\Projet_Dev_Windows\\EEEEReader\\EEEEReader\\EEEEReader.csproj",
         "projectName": "EEEEReader",
-        "projectPath": "C:\\Users\\info1\\source\\repos\\EEEEReader\\EEEEReader\\EEEEReader.csproj",
+        "projectPath": "C:\\Users\\info1\\source\\repos\\Projet_Dev_Windows\\EEEEReader\\EEEEReader\\EEEEReader.csproj",
         "packagesPath": "C:\\Users\\info1\\.nuget\\packages\\",
-        "outputPath": "C:\\Users\\info1\\source\\repos\\EEEEReader\\EEEEReader\\obj\\",
+        "outputPath": "C:\\Users\\info1\\source\\repos\\Projet_Dev_Windows\\EEEEReader\\EEEEReader\\obj\\",
         "projectStyle": "PackageReference",
         "fallbackFolders": [
           "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages"

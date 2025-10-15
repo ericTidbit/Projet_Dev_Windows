@@ -1,0 +1,19 @@
+{
+  "runtimeOptions": {
+    "tfm": "net8.0",
+    "framework": {
+      "name": "Microsoft.NETCore.App",
+      "version": "8.0.20"
+    },
+    "additionalProbingPaths": [
+      "C:\\Users\\info1\\.dotnet\\store\\|arch|\\|tfm|",
+      "C:\\Users\\info1\\.nuget\\packages",
+      "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages"
+    ],
+    "configProperties": {
+      "System.Runtime.Serialization.EnableUnsafeBinaryFormatterSerialization": false,
+      "CSWINRT_USE_WINDOWS_UI_XAML_PROJECTIONS": false,
+      "Microsoft.NETCore.DotNetHostPolicy.SetAppPaths": true
+    }
+  }
+}
