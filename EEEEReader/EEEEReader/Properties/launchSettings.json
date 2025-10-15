@@ -1,0 +1,10 @@
+{
+  "profiles": {
+    "EEEEReader (Package)": {
+      "commandName": "MsixPackage"
+    },
+    "EEEEReader (Unpackaged)": {
+      "commandName": "Project"
+    }
+  }
+}
