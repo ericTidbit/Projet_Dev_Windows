@@ -10,7 +10,7 @@ namespace EEEEReader.Models
     {
         public Administrateur(string nom, string pwd) : base(nom, pwd)
         {
-            isAdmin = true;
+            IsAdmin = true;
         }
     }
 }
