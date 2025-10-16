@@ -9,6 +9,6 @@
     mc:Ignorable="d">
 
     <Grid>
-
+        <Button Content="click" Click="SelectionFichier"/>
     </Grid>
 </Page>
