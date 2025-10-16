@@ -6,7 +6,11 @@ using System.Threading.Tasks;
 
 namespace EEEEReader.Models
 {
-    internal class Administrateur
+    public class Administrateur : Utilisateur
     {
+        public Administrateur(string nom, string pwd) : base(nom, pwd)
+        {
+            isAdmin = true;
+        }
     }
 }

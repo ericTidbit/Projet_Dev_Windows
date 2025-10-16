@@ -6,7 +6,11 @@ using System.Threading.Tasks;
 
 namespace EEEEReader.Models
 {
-    internal class Client
+    public class Client : Utilisateur
     {
+        public Client(string nom, string pwd) : base(nom, pwd)
+        {
+
+        }
     }
 }
