@@ -1,0 +1,4 @@
+ public interface ITacheDataProvider
+    {
+        List<data> GetData();
+    }
