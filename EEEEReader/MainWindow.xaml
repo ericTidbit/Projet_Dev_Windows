@@ -18,6 +18,7 @@
             x:Name="NavView"
             Loaded="NavView_Loaded"
             SelectionChanged="NavView_SelectionChanged"
+            BackRequested="NavView_BackRequested"
             
             PaneDisplayMode="Left"
             IsPaneOpen="False"
