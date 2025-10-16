@@ -75,7 +75,7 @@ namespace EEEEReader
         // Sauf le try...catch, qui vient de moi
         private void On_Navigated(object sender, NavigationEventArgs e)
         {
-            //NavView.IsBackEnabled = ContentFrame.CanGoBack;
+            NavView.IsBackEnabled = ContentFrame.CanGoBack;
 
             if (ContentFrame.SourcePageType != null)
             {
@@ -97,6 +97,28 @@ namespace EEEEReader
                     ((NavigationViewItem)NavView.SelectedItem)?.Content?.ToString();
 
             }
+        }
+
+        // De la doc officielle de microsoft https://learn.microsoft.com/en-us/windows/apps/design/controls/navigationview
+        private void NavView_BackRequested(NavigationView sender, NavigationViewBackRequestedEventArgs args)
+        {
+            TryGoBack();
+        }
+
+        // De la doc officielle de microsoft https://learn.microsoft.com/en-us/windows/apps/design/controls/navigationview
+        private bool TryGoBack()
+        {
+            if (!ContentFrame.CanGoBack)
+                return false;
+
+            // Don't go back if the nav pane is overlayed.
+            if (NavView.IsPaneOpen &&
+                (NavView.DisplayMode == NavigationViewDisplayMode.Compact ||
+                 NavView.DisplayMode == NavigationViewDisplayMode.Minimal))
+                return false;
+
+            ContentFrame.GoBack();
+            return true;
         }
     }
 }
