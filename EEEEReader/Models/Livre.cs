@@ -1,4 +1,5 @@
-﻿using System;
+﻿using EEEEReader.Models;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -6,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace EEEEReader.Models
 {
-    internal class Livre
+    public class Livre
     {
     }
 }

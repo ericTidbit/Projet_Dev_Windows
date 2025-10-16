@@ -6,7 +6,13 @@ using System.Threading.Tasks;
 
 namespace EEEEReader.Models
 {
-    internal class Librairie
+    public class Librairie
     {
+        public List<Livre> Livres { get; set; }
+
+        public Librairie()
+        {
+            Livres = new List<Livre>();
+        }
     }
 }
