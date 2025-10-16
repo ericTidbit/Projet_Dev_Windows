@@ -28,7 +28,7 @@ namespace EEEEReader.Models
             isAdmin = false;
 
         }
-        public UAjouterLivre(string text)
+        public  void AjouterLivre(string text)
 
         {
             Livre livre = new Livre();

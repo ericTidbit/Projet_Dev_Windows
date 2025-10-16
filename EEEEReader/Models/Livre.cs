@@ -18,9 +18,19 @@ namespace EEEEReader.Models
         public string Resume{ get; set; }
 
 
-        public Livre(string content)
+        public Livre(string content, string Titre, string Auteur, string Date, string ISBN, string Langue, string Resume)
         {
-            Content = content;
+            this.Content = content;
+            this.Titre = Titre;
+            this.Auteur = Auteur;
+            this.Date = Date;
+            this.ISBN = ISBN;
+            this.Langue = Langue;
+            this.Resume = Resume;
+        }
+
+        public Livre()
+        {
         }
     }
 }
