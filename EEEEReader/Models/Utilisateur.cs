@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using EEEEReader.Models;
 
 namespace EEEEReader.Models
 {
@@ -26,6 +27,12 @@ namespace EEEEReader.Models
             Date = DateTime.Now;
             isAdmin = false;
 
+        }
+        public UAjouterLivre(string text)
+
+        {
+            Livre livre = new Livre();
+            Libraire.AjouterLivre(livre);
         }
     }
 }
