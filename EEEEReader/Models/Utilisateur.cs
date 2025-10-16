@@ -16,12 +16,15 @@ namespace EEEEReader.Models
 
         public DateTime? Date { get; set; }
 
+        public bool isAdmin { get; set; }
+
         public Utilisateur(string nom, string pwd)
         {
             this.nom = nom;
             this.pwd = pwd;
             Libraire = null;
             Date = DateTime.Now;
+            isAdmin = false;
 
         }
     }
