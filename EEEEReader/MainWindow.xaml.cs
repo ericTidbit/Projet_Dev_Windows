@@ -8,6 +8,7 @@ using Microsoft.UI.Xaml.Media.Animation;
 using Microsoft.UI.Xaml.Navigation;
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using System.Linq.Expressions;
@@ -29,96 +30,19 @@ namespace EEEEReader
         public MainWindow()
         {
             InitializeComponent();
-            Title = "EEEEReader";
         }
 
-        private void ContentFrame_NavigationFailed(object sender, NavigationFailedEventArgs e)
+        private void OnClick_Login(object sender, RoutedEventArgs e)
         {
-            throw new Exception("Impossible de charger la page " +  e.SourcePageType.FullName);
+            // TODO vrai login
+            MainFrame.Navigate(typeof(Views.Home));
+            // le chat
+            (sender as Button).Visibility = Visibility.Collapsed;
         }
 
-        // De la doc officielle de microsoft https://learn.microsoft.com/en-us/windows/apps/design/controls/navigationview
-        private void NavView_Loaded(object sender, RoutedEventArgs e) 
+        private void MainFrame_NavigationFailed(object sender, NavigationFailedEventArgs e)
         {
-            // S'abonner à la navigation
-            ContentFrame.Navigated += On_Navigated;
-
-            // Page par défaut
-            NavView.SelectedItem = NavView.MenuItems[0];
-        }
-
-        // De la démo https://github.com/3P3-DevAppWindows-A25/DemoNavigation_Complet/blob/main/DemoNavigation/MainWindow.xaml.cs
-        private void NavView_SelectionChanged(NavigationView sender, NavigationViewSelectionChangedEventArgs args)
-        {
-            if (args.SelectedItemContainer != null)
-            {
-                Type navPageType = Type.GetType(args.SelectedItemContainer.Tag.ToString());
-                NavView_Navigate(navPageType, args.RecommendedNavigationTransitionInfo);
-            }
-        }
-
-        // De la doc officielle de microsoft https://learn.microsoft.com/en-us/windows/apps/design/controls/navigationview
-        private void NavView_Navigate(Type navPageType, NavigationTransitionInfo transitionInfo)
-        {
-            // Get the page type before navigation so you can prevent duplicate
-            // entries in the backstack.
-            Type preNavPageType = ContentFrame.CurrentSourcePageType;
-
-            // Only navigate if the selected page isn't currently loaded.
-            if (navPageType is not null && !Type.Equals(preNavPageType, navPageType))
-            {
-                ContentFrame.Navigate(navPageType, null, transitionInfo);
-            }
-        }
-
-        // De la doc officielle de microsoft https://learn.microsoft.com/en-us/windows/apps/design/controls/navigationview
-        // Sauf le try...catch, qui vient de moi
-        private void On_Navigated(object sender, NavigationEventArgs e)
-        {
-            NavView.IsBackEnabled = ContentFrame.CanGoBack;
-
-            if (ContentFrame.SourcePageType != null)
-            {
-                try
-                {
-                    // Select the nav view item that corresponds to the page being navigated to.
-                    NavView.SelectedItem = NavView.MenuItems
-                                .OfType<NavigationViewItem>()
-                                .First(i => i.Tag.Equals(ContentFrame.SourcePageType.FullName.ToString()));
-                }
-                catch (InvalidOperationException _)
-                {
-                    NavView.SelectedItem = NavView.FooterMenuItems
-                                .OfType<NavigationViewItem>()
-                                .First(i => i.Tag.Equals(ContentFrame.SourcePageType.FullName.ToString()));
-                }
-
-                NavView.Header =
-                    ((NavigationViewItem)NavView.SelectedItem)?.Content?.ToString();
-
-            }
-        }
-
-        // De la doc officielle de microsoft https://learn.microsoft.com/en-us/windows/apps/design/controls/navigationview
-        private void NavView_BackRequested(NavigationView sender, NavigationViewBackRequestedEventArgs args)
-        {
-            TryGoBack();
-        }
-
-        // De la doc officielle de microsoft https://learn.microsoft.com/en-us/windows/apps/design/controls/navigationview
-        private bool TryGoBack()
-        {
-            if (!ContentFrame.CanGoBack)
-                return false;
-
-            // Don't go back if the nav pane is overlayed.
-            if (NavView.IsPaneOpen &&
-                (NavView.DisplayMode == NavigationViewDisplayMode.Compact ||
-                 NavView.DisplayMode == NavigationViewDisplayMode.Minimal))
-                return false;
-
-            ContentFrame.GoBack();
-            return true;
+            throw new Exception("Impossible de charger la page " +  e.SourcePageType.FullName + " sur MainFrame");
         }
     }
 }

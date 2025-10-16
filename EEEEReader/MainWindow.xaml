@@ -14,44 +14,11 @@
     </Window.SystemBackdrop>
 
     <Grid>
-        <NavigationView
-            x:Name="NavView"
-            Loaded="NavView_Loaded"
-            SelectionChanged="NavView_SelectionChanged"
-            BackRequested="NavView_BackRequested"
-            
-            PaneDisplayMode="Left"
-            IsPaneOpen="False"
-            IsBackButtonVisible="Auto"
-            IsSettingsVisible="False"
-            >
-            <NavigationView.MenuItems>
+        <!-- TODO: Vrai login -->
+        <Button Content="Aller à Home" Click="OnClick_Login"/>
+        <!-- -->
 
-                <NavigationViewItem Content="Récents" Tag="EEEEReader.Views.Recent">
-                    <NavigationViewItem.Icon>
-                        <FontIcon Glyph="&#xE823;"/>
-                    </NavigationViewItem.Icon>
-                </NavigationViewItem>
-
-                <NavigationViewItem Content="Bibliothèque" Tag="EEEEReader.Views.Biblio">
-                    <NavigationViewItem.Icon>
-                        <FontIcon Glyph="&#xE736;" />
-                    </NavigationViewItem.Icon>
-                </NavigationViewItem>
-
-            </NavigationView.MenuItems>
-            <NavigationView.FooterMenuItems>
-                
-                <NavigationViewItem Content="Paramètres" Tag="EEEEReader.Views.Param">
-                    <NavigationViewItem.Icon>
-                        <FontIcon Glyph="&#xE713;" />
-                    </NavigationViewItem.Icon>
-                </NavigationViewItem>
-
-            </NavigationView.FooterMenuItems>
-
-            <!-- Frame de contenu -->
-            <Frame x:Name="ContentFrame" NavigationFailed="ContentFrame_NavigationFailed"/>
-        </NavigationView>
+        <Frame x:Name="MainFrame" NavigationFailed="MainFrame_NavigationFailed" />
     </Grid>
-</Window>
+
+    </Window>
