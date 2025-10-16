@@ -10,6 +10,7 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using System.Linq.Expressions;
 using System.Runtime.InteropServices.WindowsRuntime;
 using Windows.Foundation;
 using Windows.Foundation.Collections;
@@ -71,16 +72,26 @@ namespace EEEEReader
         }
 
         // De la doc officielle de microsoft https://learn.microsoft.com/en-us/windows/apps/design/controls/navigationview
+        // Sauf le try...catch, qui vient de moi
         private void On_Navigated(object sender, NavigationEventArgs e)
         {
             //NavView.IsBackEnabled = ContentFrame.CanGoBack;
 
             if (ContentFrame.SourcePageType != null)
             {
-                // Select the nav view item that corresponds to the page being navigated to.
-                NavView.SelectedItem = NavView.MenuItems
-                            .OfType<NavigationViewItem>()
-                            .First(i => i.Tag.Equals(ContentFrame.SourcePageType.FullName.ToString()));
+                try
+                {
+                    // Select the nav view item that corresponds to the page being navigated to.
+                    NavView.SelectedItem = NavView.MenuItems
+                                .OfType<NavigationViewItem>()
+                                .First(i => i.Tag.Equals(ContentFrame.SourcePageType.FullName.ToString()));
+                }
+                catch (InvalidOperationException _)
+                {
+                    NavView.SelectedItem = NavView.FooterMenuItems
+                                .OfType<NavigationViewItem>()
+                                .First(i => i.Tag.Equals(ContentFrame.SourcePageType.FullName.ToString()));
+                }
 
                 NavView.Header =
                     ((NavigationViewItem)NavView.SelectedItem)?.Content?.ToString();
