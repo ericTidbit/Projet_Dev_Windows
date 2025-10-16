@@ -21,9 +21,9 @@ namespace EEEEReader.Views;
 /// <summary>
 /// An empty page that can be used on its own or navigated to within a Frame.
 /// </summary>
-public sealed partial class Biblio : Page
+public sealed partial class Recent : Page
 {
-    public Biblio()
+    public Recent()
     {
         InitializeComponent();
     }

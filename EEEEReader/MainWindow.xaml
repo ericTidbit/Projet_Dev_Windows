@@ -14,6 +14,43 @@
     </Window.SystemBackdrop>
 
     <Grid>
+        <NavigationView
+            x:Name="NavView"
+            Loaded="NavView_Loaded"
+            SelectionChanged="NavView_SelectionChanged"
+            
+            PaneDisplayMode="Left"
+            IsPaneOpen="False"
+            IsBackButtonVisible="Auto"
+            IsSettingsVisible="False"
+            >
+            <NavigationView.MenuItems>
 
+                <NavigationViewItem Content="Récents" Tag="EEEEReader.Views.Recent">
+                    <NavigationViewItem.Icon>
+                        <FontIcon Glyph="&#xE823;"/>
+                    </NavigationViewItem.Icon>
+                </NavigationViewItem>
+
+                <NavigationViewItem Content="Bibliothèque" Tag="EEEEReader.Views.Biblio">
+                    <NavigationViewItem.Icon>
+                        <FontIcon Glyph="&#xE736;" />
+                    </NavigationViewItem.Icon>
+                </NavigationViewItem>
+
+            </NavigationView.MenuItems>
+            <NavigationView.FooterMenuItems>
+                
+                <NavigationViewItem Content="Paramètres" Tag="EEEEReader.Views.Param">
+                    <NavigationViewItem.Icon>
+                        <FontIcon Glyph="&#xE713;" />
+                    </NavigationViewItem.Icon>
+                </NavigationViewItem>
+
+            </NavigationView.FooterMenuItems>
+
+            <!-- Frame de contenu -->
+            <Frame x:Name="ContentFrame" NavigationFailed="ContentFrame_NavigationFailed"/>
+        </NavigationView>
     </Grid>
 </Window>
