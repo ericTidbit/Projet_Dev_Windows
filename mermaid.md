@@ -1,37 +1,42 @@
 classDiagram
 
-    class programme{
+    class Programme {
         utilisateurs list[utilisateur]
         ouvrirSession()
     }
-    class utilisateur{
+    class Utilisateur {
         nom string
         pwd string
-        librairie librairie
-        ajouterLivre(Livres)
+        ajouterlibrairie []librairie
+    }
+    class Administrateur {
 
     }
-    class administrateur{
-
-    }
-    class client{
+    class Client {
 
     }
 
-
-    class librairie{
+    class Librairie {
         livres list[livre]
+        ajouterLivre(Livres)
     }
-    class livre{
+    class Section {
+        nom : String
+        livres : List[Livre]
+        ajouterASection()
+    }
+    class Livre {
         dateAjout string
         nomlivre string 
-        dataLivre string
-        Pagelue int
+        pageLue int
+        LivreEntier string
         PagesTotal int
     }
-    relation 
-    utilisateur <|-- administrateur
-    utilisateur <|-- client
-    programme *-- utilisateur
-    utilisateur *-- librairie
-    librairie *-- livre
+
+    Utilisateur <|-- Administrateur
+    Utilisateur <|-- Client
+    Programme *-- Utilisateur
+    Utilisateur *-- Librairie
+    Librairie *-- Livre
+    Librairie *-- Section
+    Section --> Livre
