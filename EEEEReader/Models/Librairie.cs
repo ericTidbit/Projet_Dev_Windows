@@ -13,6 +13,11 @@ namespace EEEEReader.Models
         public Librairie()
         {
             Livres = new List<Livre>();
+        
+        }
+        public void AjouterLivre(Livre livre)
+        {
+            Livres.Add(livre);
         }
     }
 }
