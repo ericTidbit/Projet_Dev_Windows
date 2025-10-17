@@ -14,10 +14,6 @@
     </Window.SystemBackdrop>
 
     <Grid>
-        <!-- TODO: Vrai login -->
-        <Button Content="Aller à Home" Click="OnClick_Login"/>
-        <!-- -->
-
         <Frame x:Name="MainFrame" NavigationFailed="MainFrame_NavigationFailed" />
     </Grid>
 

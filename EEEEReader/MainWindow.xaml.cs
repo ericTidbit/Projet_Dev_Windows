@@ -30,14 +30,7 @@ namespace EEEEReader
         public MainWindow()
         {
             InitializeComponent();
-        }
-
-        private void OnClick_Login(object sender, RoutedEventArgs e)
-        {
-            // TODO vrai login
-            MainFrame.Navigate(typeof(Views.Home));
-            // le chat
-            (sender as Button).Visibility = Visibility.Collapsed;
+            MainFrame.Navigate(typeof(Views.LoginPage));
         }
 
         private void MainFrame_NavigationFailed(object sender, NavigationFailedEventArgs e)
