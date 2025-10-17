@@ -16,21 +16,38 @@ namespace EEEEReader.Views
         {
             string username = UserNameBox.Text;
             string password = PasswordBox.Password;
+            string confirm = PasswordConfirmationBox.Password;
 
             if (username != "" && password != "")
             {
-                Client NewClient = new Client(username, password);
-                App.AppReader.AddClient(NewClient.Nom, NewClient.Pwd);
+                if (password == confirm)
+                {
 
-                //retourne au login
-                this.Frame?.Navigate(typeof(LoginPage));
+                    Client NewClient = new Client(username, password);
+                    App.AppReader.AddClient(NewClient.Nom, NewClient.Pwd);
+
+                    //retourne au login
+                    this.Frame?.Navigate(typeof(LoginPage));
+                }
+                else
+                {
+                    //clear passwords
+                    PasswordBox.Password = "";
+                    PasswordConfirmationBox.Password = "";
+
+                    // message d'erreur
+                    ContentDialog dialog = new ContentDialog()
+                    {
+                        Title = "Erreur",
+                        Content = "Les mots de passes ne sont pas identiques.",
+                        CloseButtonText = "OK",
+                        XamlRoot = this.Content.XamlRoot
+                    };
+                    await dialog.ShowAsync();
+                }
             }
             else
             {
-                // clear
-                UserNameBox.Text = "";
-                PasswordBox.Password = "";
-
                 // message d'erreur
                 ContentDialog dialog = new ContentDialog()
                 {

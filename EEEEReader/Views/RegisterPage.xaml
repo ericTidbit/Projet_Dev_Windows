@@ -11,6 +11,8 @@
             <TextBox x:Name="UserNameBox"/>
             <TextBlock Text="Mot de passe"/>
             <PasswordBox x:Name="PasswordBox"/>
+            <TextBlock Text="Confirmer le mot de passe"/>
+            <PasswordBox x:Name="PasswordConfirmationBox"/>
             <Button Content="Valider" Click="OnRegisterClick" />
         </StackPanel>
     </Grid>
