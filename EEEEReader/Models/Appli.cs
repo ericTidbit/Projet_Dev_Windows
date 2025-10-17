@@ -10,10 +10,13 @@ namespace EEEEReader.Models
     {
         public List<Client> Clients { get; set; } = new List<Client>();
         public List<Administrateur> Admins { get; set; } = new List<Administrateur>();
+        public bool UserAdmin { get; set; }
 
         public Appli()
         {
-            
+            //create test user
+            var admin = new Administrateur("e", "e");
+            Admins.Add(admin);
         }
 
         public void AddClient(string nom, string pwd)
@@ -28,11 +31,22 @@ namespace EEEEReader.Models
             Admins.Add(admin);
         }
 
-        public bool CheckLogin(string nom, string pwd)
+        public bool CheckLoginClient(string nom, string pwd)
         {
             foreach (var client in Clients)
             {
                 if (client.Nom == nom && client.Pwd == pwd)
+                {
+                    return true;
+                }
+            }
+            return false;
+        }
+        public bool CheckLoginAdmin(string nom, string pwd)
+        {
+            foreach (var admin in Admins)
+            {
+                if (admin.Nom == nom && admin.Pwd == pwd)
                 {
                     return true;
                 }

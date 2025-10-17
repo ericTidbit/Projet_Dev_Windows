@@ -16,10 +16,16 @@ namespace EEEEReader.Views
             string username = UserNameBox.Text;
             string password = PasswordBox.Password;
 
-            
-            if (App.AppReader.CheckLogin(username, password))
+
+            if (App.AppReader.CheckLoginClient(username, password))
             {
                 this.Frame?.Navigate(typeof(Home));
+                App.AppReader.UserAdmin = false;
+            }
+            else if (App.AppReader.CheckLoginAdmin(username, password))
+            {
+                this.Frame?.Navigate(typeof(Home));
+                App.AppReader.UserAdmin = true;
             }
             else
             {
