@@ -11,7 +11,7 @@
             <TextBox x:Name="UserNameBox"/>
             <TextBlock Text="Mot de passe"/>
             <PasswordBox x:Name="PasswordBox"/>
-			<StackPanel Orientation="Horizontal" HorizontalAlignment="Center" Spacing="175">
+			<StackPanel Orientation="Horizontal" HorizontalAlignment="Center" Spacing="205">
 				<Button Content="Valider" Click="OnLoginClick" />
 				<Button Content="Inscription" Click="OnRegisterClick" />
 			</StackPanel>
