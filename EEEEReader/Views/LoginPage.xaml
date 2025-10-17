@@ -6,13 +6,16 @@
 
     <Grid>
         <StackPanel HorizontalAlignment="Center" VerticalAlignment="Center" Width="360" Spacing="12">
-            <TextBlock Text="Sign in" FontSize="24" FontWeight="SemiBold"/>
-            <TextBlock Text="Username"/>
+            <TextBlock Text="Connection" FontSize="44" FontWeight="SemiBold" TextAlignment="Center" Margin="0,12"/>
+            <TextBlock Text="Nom d'utilisateur"/>
             <TextBox x:Name="UserNameBox"/>
-            <TextBlock Text="Password"/>
+            <TextBlock Text="Mot de passe"/>
             <PasswordBox x:Name="PasswordBox"/>
-            <Button Content="Sign in" Click="OnLoginClick" />
-            <Button Content="Register" Click="OnRegisterClick" />
+			<StackPanel Orientation="Horizontal" HorizontalAlignment="Center" Spacing="175">
+				<Button Content="Connection" Click="OnLoginClick" />
+				<Button Content="Inscription" Click="OnRegisterClick" />
+			</StackPanel>
+            
         </StackPanel>
     </Grid>
 </Page>
