@@ -35,8 +35,15 @@
                     </NavigationViewItem.Icon>
                 </NavigationViewItem>
 
+                <NavigationViewItem Content="Admin config" Tag="EEEEReader.Views.Admin">
+                    <NavigationViewItem.Icon>
+                        <FontIcon Glyph="&#xE7EF;"/>
+                    </NavigationViewItem.Icon>
+                </NavigationViewItem>
+
             </NavigationView.MenuItems>
             <NavigationView.FooterMenuItems>
+                
                 
                 <NavigationViewItem Content="Paramètres" Tag="EEEEReader.Views.Param">
                     <NavigationViewItem.Icon>
