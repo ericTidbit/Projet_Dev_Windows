@@ -15,6 +15,7 @@ using Windows.ApplicationModel;
 using Windows.ApplicationModel.Activation;
 using Windows.Foundation;
 using Windows.Foundation.Collections;
+using EEEEReader.Models;
 
 // To learn more about WinUI, the WinUI project structure,
 // and more about our project templates, see: http://aka.ms/winui-project-info.
@@ -27,7 +28,7 @@ namespace EEEEReader
     public partial class App : Application
     {
         public static Window? MainWindow { get; private set; }
-
+        public static Appli AppReader { get; private set; }
 
         /// <summary>
         /// Initializes the singleton application object.  This is the first line of authored code
@@ -36,6 +37,7 @@ namespace EEEEReader
         public App()
         {
             InitializeComponent();
+            AppReader = new Appli();
         }
 
         /// <summary>
