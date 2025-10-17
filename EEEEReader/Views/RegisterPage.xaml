@@ -6,7 +6,7 @@
 
     <Grid>
         <StackPanel HorizontalAlignment="Center" VerticalAlignment="Center" Width="360" Spacing="12">
-            <TextBlock Text="Inscription" FontSize="24" FontWeight="SemiBold"/>
+            <TextBlock Text="Inscription" FontSize="44" FontWeight="SemiBold" TextAlignment="Center" Margin="0,12"/>
             <TextBlock Text="Nom d'utilisateur"/>
             <TextBox x:Name="UserNameBox"/>
             <TextBlock Text="Mot de passe"/>
