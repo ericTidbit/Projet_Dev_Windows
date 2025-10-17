@@ -1,25 +1,29 @@
+using EEEEReader.Models;
 using Microsoft.UI.Xaml;
 using Microsoft.UI.Xaml.Controls;
 using System;
 
 namespace EEEEReader.Views
 {
-    public sealed partial class LoginPage : Page
+    public sealed partial class RegisterPage : Page
     {
-        public LoginPage()
+        public RegisterPage()
         {
             this.InitializeComponent();
         }
 
-        private async void OnLoginClick(object sender, RoutedEventArgs e)
+        private async void OnRegisterClick(object sender, RoutedEventArgs e)
         {
             string username = UserNameBox.Text;
             string password = PasswordBox.Password;
 
-            
-            if (App.AppReader.CheckLogin(username, password))
+            if (username != "" && password != "")
             {
-                this.Frame?.Navigate(typeof(Home));
+                Client NewClient = new Client(username, password);
+                App.AppReader.AddClient(NewClient.Nom, NewClient.Pwd);
+
+                //retourne au login
+                this.Frame?.Navigate(typeof(LoginPage));
             }
             else
             {
@@ -31,17 +35,12 @@ namespace EEEEReader.Views
                 ContentDialog dialog = new ContentDialog()
                 {
                     Title = "Erreur",
-                    Content = "Nom d'utilisateur ou mot de passe invalide.",
+                    Content = "Les informations ne peuves pas être vides.",
                     CloseButtonText = "OK",
                     XamlRoot = this.Content.XamlRoot
                 };
                 await dialog.ShowAsync();
             }
-        }
-
-        private void OnRegisterClick(object sender, RoutedEventArgs e)
-        {
-            this.Frame?.Navigate(typeof(RegisterPage));
         }
     }
 }

@@ -1,18 +1,17 @@
 <Page
-    x:Class="EEEEReader.Views.LoginPage"
+    x:Class="EEEEReader.Views.RegisterPage"
     xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
     xmlns:local="using:EEEEReader.Views">
 
     <Grid>
         <StackPanel HorizontalAlignment="Center" VerticalAlignment="Center" Width="360" Spacing="12">
-            <TextBlock Text="Sign in" FontSize="24" FontWeight="SemiBold"/>
-            <TextBlock Text="Username"/>
+            <TextBlock Text="Inscription" FontSize="24" FontWeight="SemiBold"/>
+            <TextBlock Text="Nom d'utilisateur"/>
             <TextBox x:Name="UserNameBox"/>
-            <TextBlock Text="Password"/>
+            <TextBlock Text="Mot de passe"/>
             <PasswordBox x:Name="PasswordBox"/>
-            <Button Content="Sign in" Click="OnLoginClick" />
-            <Button Content="Register" Click="OnRegisterClick" />
+            <Button Content="Valider" Click="OnRegisterClick" />
         </StackPanel>
     </Grid>
 </Page>
