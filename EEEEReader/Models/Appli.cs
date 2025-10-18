@@ -36,7 +36,7 @@ namespace EEEEReader.Models
         {
             foreach (var client in Clients)
             {
-                if (client.Nom == nom && client.Pwd == pwd)
+                if (client.Nom == nom && client.VerifierPassword(pwd))
                 {
                     CurrentUser = client;
                     return true;
@@ -48,7 +48,7 @@ namespace EEEEReader.Models
         {
             foreach (var admin in Admins)
             {
-                if (admin.Nom == nom && admin.Pwd == pwd)
+                if (admin.Nom == nom && admin.VerifierPassword(pwd))
                 {
                     CurrentUser = admin;
                     return true;

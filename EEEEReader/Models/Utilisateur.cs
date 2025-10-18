@@ -1,11 +1,20 @@
 ﻿using System;
+using System.Security.Cryptography;
+using System.Text;
 
 namespace EEEEReader.Models
 {
     public abstract class Utilisateur
     {
         public string Nom { get; set; }
-        public string Pwd { get; set; }
+
+        private string _pwd;
+        public string Pwd 
+        { 
+            get => _pwd;
+            set => _pwd = HashPassword(value);
+        }
+        
         public Librairie Librairie { get; set; }
         public DateTime? Date { get; set; }
         public bool IsAdmin { get; set; }
@@ -19,8 +28,23 @@ namespace EEEEReader.Models
             IsAdmin = false;
         }
 
-        
+        private static string HashPassword(string password)
+        {
+            using (SHA256 sha256 = SHA256.Create())
+            {
+                byte[] bytes = sha256.ComputeHash(Encoding.UTF8.GetBytes(password));
+                StringBuilder builder = new StringBuilder();
+                foreach (byte b in bytes)
+                {
+                    builder.Append(b.ToString("x2"));
+                }
+                return builder.ToString();
+            }
+        }
 
-        
+        public bool VerifierPassword(string password)
+        {
+            return HashPassword(password) == _pwd;
+        }
     }
 }

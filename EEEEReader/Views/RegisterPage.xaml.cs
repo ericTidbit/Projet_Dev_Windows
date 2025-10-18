@@ -22,9 +22,7 @@ namespace EEEEReader.Views
             {
                 if (password == confirm)
                 {
-
-                    Client NewClient = new Client(username, password);
-                    App.AppReader.AddClient(NewClient.Nom, NewClient.Pwd);
+                    App.AppReader.AddClient(username, password);
 
                     //retourne au login
                     this.Frame?.Navigate(typeof(LoginPage));
