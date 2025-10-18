@@ -19,16 +19,8 @@ namespace EEEEReader.Models
             IsAdmin = false;
         }
 
-        public void AjouterLivre(Livre livre)
-        {
-            if (livre == null) throw new ArgumentNullException(nameof(livre));
-            Librairie.AjouterLivre(livre);
-        }
+        
 
-        public void AjouterLivre(string content, string titre, string auteur, string date, string isbn, string langue = "", string resume = "")
-        {
-            var livre = new Livre(content, titre, auteur, date, isbn, langue, resume);
-            Librairie.AjouterLivre(livre);
-        }
+        
     }
 }

@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using VersOne.Epub.Options;
 
 namespace EEEEReader.Models
 {
@@ -16,9 +17,10 @@ namespace EEEEReader.Models
         public string ISBN { get; set; }
         public string Langue { get; set; }
         public string Resume{ get; set; }
+        public byte[] cover { get; set; }
 
 
-        public Livre(string content, string Titre, string Auteur, string Date, string ISBN, string Langue, string Resume)
+        public Livre(string content, string Titre, string Auteur, string Date, string ISBN, string Langue, string Resume,byte[] cover)
         {
             this.Content = content;
             this.Titre = Titre;
@@ -27,6 +29,7 @@ namespace EEEEReader.Models
             this.ISBN = ISBN;
             this.Langue = Langue;
             this.Resume = Resume;
+            this.cover = cover;
         }
 
         public Livre()

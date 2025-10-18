@@ -17,9 +17,8 @@ namespace EEEEReader.ViewModels.Pages
             var langue = livremetadata.Schema.Package.Metadata.Languages;
             /* string content, string Titre, string Auteur, string Date, string ISBN, string Langue, string Resume*/
 
-            Livre livre = new Livre("caca", livremetadata.Title, livremetadata.Author, dateee[0].Date, "667", langue[0].Language, livremetadata.Description );
-            App.AppReader.Clients[0].Librairie.AjouterLivre(livre);
-
+            Livre livre = new Livre();
+            App.AppReader.CurrentUser.Librairie.AjouterLivre("caca", livremetadata.Title, livremetadata.Author, dateee[0].Date, "667", langue[0].Language, livremetadata.Description, livremetadata.CoverImage);
         }
 
     }
