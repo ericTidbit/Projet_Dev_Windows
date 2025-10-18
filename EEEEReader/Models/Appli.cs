@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Windows.Media.Protection.PlayReady;
 
 namespace EEEEReader.Models
 {
@@ -10,7 +11,7 @@ namespace EEEEReader.Models
     {
         public List<Client> Clients { get; set; } = new List<Client>();
         public List<Administrateur> Admins { get; set; } = new List<Administrateur>();
-        public bool UserAdmin { get; set; }
+        public Utilisateur? CurrentUser { get; set; }
 
         public Appli()
         {
@@ -37,6 +38,7 @@ namespace EEEEReader.Models
             {
                 if (client.Nom == nom && client.Pwd == pwd)
                 {
+                    CurrentUser = client;
                     return true;
                 }
             }
@@ -48,6 +50,7 @@ namespace EEEEReader.Models
             {
                 if (admin.Nom == nom && admin.Pwd == pwd)
                 {
+                    CurrentUser = admin;
                     return true;
                 }
             }
@@ -55,3 +58,4 @@ namespace EEEEReader.Models
         }
     }
 }
+

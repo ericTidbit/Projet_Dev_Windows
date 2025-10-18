@@ -20,12 +20,12 @@ namespace EEEEReader.Views
             if (App.AppReader.CheckLoginClient(username, password))
             {
                 this.Frame?.Navigate(typeof(Home));
-                App.AppReader.UserAdmin = false;
+                
             }
             else if (App.AppReader.CheckLoginAdmin(username, password))
             {
                 this.Frame?.Navigate(typeof(Home));
-                App.AppReader.UserAdmin = true;
+                
             }
             else
             {

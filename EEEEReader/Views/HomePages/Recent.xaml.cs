@@ -26,5 +26,8 @@ public sealed partial class Recent : Page
     public Recent()
     {
         InitializeComponent();
+        this.DataContext = this;
+        currentUser.Text = App.AppReader.CurrentUser.Nom;
+        
     }
 }

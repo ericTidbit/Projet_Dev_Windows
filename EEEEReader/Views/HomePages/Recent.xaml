@@ -9,6 +9,6 @@
     mc:Ignorable="d">
 
     <Grid>
-        <TextBlock Text="Recent placeholder" FontSize="23" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+        <TextBlock Name="currentUser" FontSize="23" HorizontalAlignment="Center" VerticalAlignment="Center" />
     </Grid>
 </Page>
