@@ -51,7 +51,7 @@ public sealed partial class Biblio : Page
         var appWin = AppWindow.GetFromWindowId(winId);
 
         var picker = new FileOpenPicker(appWin.Id);
-        picker.FileTypeFilter.Add("*");
+        picker.FileTypeFilter.Add(".epub");
 
         var file = await picker.PickSingleFileAsync();
         return file?.Path;
