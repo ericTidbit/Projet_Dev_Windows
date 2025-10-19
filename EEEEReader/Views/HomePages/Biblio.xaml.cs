@@ -17,6 +17,7 @@ using Windows.Foundation;
 using Windows.Foundation.Collections;
 using WinRT.Interop;
 using EEEEReader.ViewModels.Pages;
+using System.Collections.ObjectModel;
 // To learn more about WinUI, the WinUI project structure,
 // and more about our project templates, see: http://aka.ms/winui-project-info.
 
@@ -30,7 +31,9 @@ public sealed partial class Biblio : Page
     public Biblio()
     {
         InitializeComponent();
-   
+        MyListView.ItemsSource = App.AppReader.CurrentUser.Librairie.Livres;
+
+
     }
     public async void SelectionFichier(object sender, RoutedEventArgs e)
     {
