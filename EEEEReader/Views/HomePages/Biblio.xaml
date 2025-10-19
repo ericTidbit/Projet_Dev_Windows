@@ -27,7 +27,7 @@
                         <Image
                             Width="100"
                             Height="150"
-                            Source="/Assets/Square150x150Logo.png" />
+                            Source="{x:Bind CoverImage, Mode=OneWay}" />
                         <!--  Source="{x:Bind CoverImage}" />  -->
                         <TextBlock FontWeight="Bold" Text="{x:Bind Titre}" />
                         <TextBlock Foreground="Gray" Text="{x:Bind Auteur}" />
