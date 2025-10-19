@@ -17,7 +17,11 @@
         <StackPanel Grid.Row="0">
             <Button Click="SelectionFichier" Content="Choisir un fichier" />
         </StackPanel>
-        <GridView x:Name="MyListView" Grid.Row="1">
+        <GridView
+            x:Name="BiblioGridView"
+            Grid.Row="1"
+            IsItemClickEnabled="True"
+            ItemClick="OnItemClick">
             <GridView.ItemTemplate>
                 <DataTemplate x:DataType="model:Livre">
                     <StackPanel
@@ -27,8 +31,7 @@
                         <Image
                             Width="100"
                             Height="150"
-                            Source="/Assets/Square150x150Logo.png" />
-                        <!--  Source="{x:Bind CoverImage}" />  -->
+                            Source="{x:Bind CoverImage}" />
                         <TextBlock FontWeight="Bold" Text="{x:Bind Titre}" />
                         <TextBlock Foreground="Gray" Text="{x:Bind Auteur}" />
                     </StackPanel>
