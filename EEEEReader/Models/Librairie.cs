@@ -5,6 +5,7 @@ using System.Collections.ObjectModel;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using VersOne.Epub;
 using Windows.ApplicationModel.Store.Preview.InstallControl;
 
 namespace EEEEReader.Models
@@ -18,7 +19,7 @@ namespace EEEEReader.Models
             Livres = new ObservableCollection<Livre>();
         
         }
-        public void AjouterLivre(string content, string titre, string auteur, string date, string isbn, string langue = "", string resume = "", byte[] cover = null)
+        public void AjouterLivre(List<EpubLocalTextContentFile> content, string titre, string auteur, string date, string isbn, string langue = "", string resume = "", byte[] cover = null)
         {
             Livre livre = new Livre(content, titre, auteur, date, isbn, langue, resume, cover);
             // temporaire en attendant l'intégration sql

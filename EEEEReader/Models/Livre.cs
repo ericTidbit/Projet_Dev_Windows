@@ -21,7 +21,7 @@ namespace EEEEReader.Models
         // pas d'id si le livre n'est pas dans une librairie
         public int? Id { get; set; }
         // --
-        public List<EpubLocalTextContentFile> Content { get; set; }
+        public EpubContent Content { get; set; }
         public string Titre { get; set; }
         public string Auteur { get; set; }
         public string Date { get; set; }
@@ -31,7 +31,7 @@ namespace EEEEReader.Models
         public byte[] CoverRaw { get; set; }
         public BitmapImage? CoverImage { get; set; }
 
-        public Livre(List<EpubLocalTextContentFile> content, string Titre, string Auteur, string Date, string ISBN, string Langue, string Resume, byte[] cover)
+        public Livre(EpubContent content, string Titre, string Auteur, string Date, string ISBN, string Langue, string Resume, byte[] cover)
         {
             this.Content = content;
             this.Titre = Titre;
