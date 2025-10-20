@@ -8,11 +8,14 @@
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     mc:Ignorable="d">
 
-    <Grid>
-        <TextBlock
-            HorizontalAlignment="Center"
-            VerticalAlignment="Center"
-            FontSize="24"
-            Text="{x:Bind titleString}" />
-    </Grid>
+    <ScrollViewer
+        HorizontalAlignment="Left"
+        VerticalAlignment="Top"
+        HorizontalScrollBarVisibility="Disabled"
+        HorizontalScrollMode="Disabled"
+        VerticalScrollBarVisibility="Auto"
+        VerticalScrollMode="Enabled"
+        ZoomMode="Disabled">
+        <StackPanel x:Name="ContentPanel" />
+    </ScrollViewer>
 </Page>

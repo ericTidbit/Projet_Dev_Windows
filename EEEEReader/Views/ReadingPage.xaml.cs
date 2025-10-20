@@ -12,6 +12,8 @@ using Microsoft.UI.Xaml.Data;
 using Microsoft.UI.Xaml.Input;
 using Microsoft.UI.Xaml.Media;
 using Microsoft.UI.Xaml.Navigation;
+using EEEEReader.Models;
+using VersOne.Epub;
 
 // To learn more about WinUI, the WinUI project structure,
 // and more about our project templates, see: http://aka.ms/winui-project-info.
@@ -23,9 +25,25 @@ namespace EEEEReader.Views;
 /// </summary>
 public sealed partial class ReadingPage : Page
 {
-    public string titleString { get; set; } = "Placeholder";
+    public Livre _currentLivre { get; set; }
     public ReadingPage()
     {
         InitializeComponent();
+        _currentLivre = App.AppReader.CurrentLivre;
+        LoadContent();
+    }
+
+    public void LoadContent()
+    {
+        foreach (EpubLocalTextContentFile contentPage in _currentLivre.Content.Html.Local)
+        {
+            TextBlock textBlock = new TextBlock
+            {
+                Text = contentPage.Content,
+                TextWrapping = TextWrapping.Wrap,
+                Margin = new Thickness(0, 0, 0, 20)
+            };
+            ContentPanel.Children.Add(textBlock);
+        }
     }
 }
