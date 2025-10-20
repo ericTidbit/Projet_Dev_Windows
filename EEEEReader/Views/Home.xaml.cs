@@ -43,7 +43,7 @@ namespace EEEEReader.Views
             HomeFrame.Navigated += On_Navigated;
 
             // Page par défaut
-            NavView.SelectedItem = NavView.MenuItems[0];
+            NavView.SelectedItem = NavView.MenuItems[1];
         }
 
         // De la démo https://github.com/3P3-DevAppWindows-A25/DemoNavigation_Complet/blob/main/DemoNavigation/MainWindow.xaml.cs

@@ -9,10 +9,20 @@
     mc:Ignorable="d">
 
     <Grid>
+        <StackPanel Spacing="8">
+            <TextBlock 
+        Text="Apparence" 
+        Style="{ThemeResource SubtitleTextBlockStyle}"/>
+
+            <ToggleSwitch 
+        x:Name="ThemeToggle"
+        Header="Thème sombre"
+        OnContent="Activé"
+        OffContent="Désactivé"
+        Toggled="ThemeToggle_Toggled"/>
+        </StackPanel>
         <Button
-            Content="Se Déconnecter"
+            Content="Se déconnection"
             Click="Deconnection"/>
-
-
     </Grid>
 </Page>
