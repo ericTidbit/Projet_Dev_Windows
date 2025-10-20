@@ -14,6 +14,7 @@ using Microsoft.UI.Xaml.Media;
 using Microsoft.UI.Xaml.Navigation;
 using EEEEReader.Models;
 using VersOne.Epub;
+using HtmlAgilityPack;
 
 // To learn more about WinUI, the WinUI project structure,
 // and more about our project templates, see: http://aka.ms/winui-project-info.
@@ -35,11 +36,14 @@ public sealed partial class ReadingPage : Page
 
     public void LoadContent()
     {
-        foreach (EpubLocalTextContentFile contentPage in _currentLivre.Content.Html.Local)
+        foreach (EpubLocalTextContentFile contentPage in _currentLivre.RawContent.Html.Local)
         {
+            HtmlDocument doc = new HtmlDocument();
+            doc.LoadHtml(contentPage.Content);
+
             TextBlock textBlock = new TextBlock
             {
-                Text = contentPage.Content,
+                Text = doc.Text,
                 TextWrapping = TextWrapping.Wrap,
                 Margin = new Thickness(0, 0, 0, 20)
             };
