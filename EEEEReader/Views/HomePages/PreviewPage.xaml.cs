@@ -34,8 +34,7 @@ namespace EEEEReader.Views
 
         public void LireLivre_Click(object sender, RoutedEventArgs e)
         {
-            // Not implemented
-            return;
+            this.Frame.Navigate(typeof(ReadingPage));
         }
     }
 }
