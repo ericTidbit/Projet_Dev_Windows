@@ -20,19 +20,19 @@
             IsSettingsVisible="False" >
             <NavigationView.MenuItems>
 
-                <NavigationViewItem Content="Récents" Tag="EEEEReader.Views.Recent">
+                <NavigationViewItem Content="Récents" Tag="EEEEReader.Views.HomePages.Recent">
                     <NavigationViewItem.Icon>
                         <FontIcon Glyph="&#xE823;" />
                     </NavigationViewItem.Icon>
                 </NavigationViewItem>
 
-                <NavigationViewItem Content="Bibliothèque" Tag="EEEEReader.Views.Biblio">
+                <NavigationViewItem Content="Bibliothèque" Tag="EEEEReader.Views.HomePages.Biblio">
                     <NavigationViewItem.Icon>
                         <FontIcon Glyph="&#xE736;" />
                     </NavigationViewItem.Icon>
                 </NavigationViewItem>
 
-                <NavigationViewItem Content="Admin config" Tag="EEEEReader.Views.Admin">
+                <NavigationViewItem Content="Admin config" Tag="EEEEReader.Views.HomePages.Admin">
                     <NavigationViewItem.Icon>
                         <FontIcon Glyph="&#xE7EF;" />
                     </NavigationViewItem.Icon>
@@ -42,7 +42,7 @@
             <NavigationView.FooterMenuItems>
 
 
-                <NavigationViewItem Content="Paramètres" Tag="EEEEReader.Views.Param">
+                <NavigationViewItem Content="Paramètres" Tag="EEEEReader.Views.HomePages.Param">
                     <NavigationViewItem.Icon>
                         <FontIcon Glyph="&#xE713;" />
                     </NavigationViewItem.Icon>
