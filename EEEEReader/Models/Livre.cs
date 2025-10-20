@@ -25,7 +25,7 @@ namespace EEEEReader.Models
         public int? Id { get; set; }
         // --
         public EpubContent RawContent { get; set; }
-        public List<StackPanel> ParsedContent { get; set; }
+        public List<HtmlDocument> HtmlContentList { get; set; }
         public string Titre { get; set; }
         public string Auteur { get; set; }
         public string Date { get; set; }
@@ -38,7 +38,7 @@ namespace EEEEReader.Models
         public Livre(EpubContent content, string Titre, string Auteur, string Date, string ISBN, string Langue, string Resume, byte[] cover)
         {
             this.RawContent = content;
-            this.ParsedContent = LoadXamlContent(content);
+            this.HtmlContentList = LoadXamlContent(content);
             this.Titre = Titre;
             this.Auteur = Auteur;
             this.Date = Date;
@@ -70,9 +70,9 @@ namespace EEEEReader.Models
             return bmp;
         }
 
-        public List<StackPanel> LoadXamlContent(EpubContent rawContent)
+        public List<HtmlDocument> LoadXamlContent(EpubContent rawContent)
         {
-            List<StackPanel> chapterList = new List<StackPanel>();
+            List<HtmlDocument> chapterList = new List<HtmlDocument>();
 
             foreach (EpubLocalTextContentFile chapter in rawContent.Html.Local)
             {
@@ -80,23 +80,7 @@ namespace EEEEReader.Models
                 HtmlDocument chapterHtml = new HtmlDocument();
                 chapterHtml.LoadHtml(chapterString);
 
-                HtmlNode link = chapterHtml.CreateElement("link");
-
-                foreach (HtmlNode node in chapterHtml.DocumentNode.ChildNodes)
-                {
-                    RichTextBlock rtb = new RichTextBlock();
-                    if (node.NodeType == HtmlNodeType.Element) {
-                        // TODO
-                    }
-                    // Removed to lower lag
-                    //Debug.WriteLine("Name: " + node.Name.ToString() + " | Type: " + node.NodeType.ToString());
-                    //Debug.WriteLine("Name: " + node.Name.ToString() + " | Type: " + node.NodeType.ToString() + " | InnerText: " + node.InnerText.ToString() + " | InnerHtml: " + node.InnerHtml.ToString());
-
-                    // TODO
-                    //switch (node.Name)
-                    //{
-                    //}
-                }
+                chapterList.Add(chapterHtml);
             }
 
             return chapterList;
