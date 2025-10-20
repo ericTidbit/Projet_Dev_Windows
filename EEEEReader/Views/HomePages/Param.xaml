@@ -22,7 +22,7 @@
         Toggled="ThemeToggle_Toggled"/>
         </StackPanel>
         <Button
-            Content="Se déconnection"
+            Content="Se déconnecter"
             Click="Deconnection"/>
     </Grid>
 </Page>
