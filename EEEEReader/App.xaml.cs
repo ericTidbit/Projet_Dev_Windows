@@ -16,6 +16,7 @@ using Windows.ApplicationModel.Activation;
 using Windows.Foundation;
 using Windows.Foundation.Collections;
 using EEEEReader.Models;
+using EEEEReader.Views;
 
 // To learn more about WinUI, the WinUI project structure,
 // and more about our project templates, see: http://aka.ms/winui-project-info.
@@ -46,8 +47,19 @@ namespace EEEEReader
         /// <param name="args">Details about the launch request and process.</param>
         protected override void OnLaunched(Microsoft.UI.Xaml.LaunchActivatedEventArgs args)
         {
-            MainWindow = new MainWindow();
-            MainWindow.Activate();
+            //creation d'une frame qui est mise dans l'app 
+            var m_window = new MainWindow();
+            Frame rootFrame = new Frame();
+            rootFrame.NavigationFailed += OnNavigationFailed;
+            rootFrame.Navigate(typeof(LoginPage), args.Arguments);
+            m_window.Content = rootFrame;
+            MainWindow = m_window;
+            m_window.Activate();
+        }
+
+        void OnNavigationFailed(object sender, NavigationFailedEventArgs e)
+        {
+            throw new Exception("Failed to load Page " + e.SourcePageType.FullName);
         }
     }
 }

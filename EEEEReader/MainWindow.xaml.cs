@@ -30,12 +30,11 @@ namespace EEEEReader
         public MainWindow()
         {
             InitializeComponent();
-            MainFrame.Navigate(typeof(Views.LoginPage));
         }
 
         private void MainFrame_NavigationFailed(object sender, NavigationFailedEventArgs e)
         {
-            throw new Exception("Impossible de charger la page " +  e.SourcePageType.FullName + " sur MainFrame");
+            throw new Exception("Impossible de charger la page " + e.SourcePageType.FullName + " sur MainFrame");
         }
     }
 }
