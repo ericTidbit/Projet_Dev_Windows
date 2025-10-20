@@ -14,9 +14,23 @@
             <RowDefinition Height="AUTO" />
             <RowDefinition Height="*" />
         </Grid.RowDefinitions>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="*" />
+            <ColumnDefinition Width="AUTO" />
+            <ColumnDefinition Width="AUTO" />
+        </Grid.ColumnDefinitions>
         <StackPanel Grid.Row="0">
             <Button Click="SelectionFichier" Content="Choisir un fichier" />
         </StackPanel>
+        <Button Grid.Column="1" x:Name="layoutBtn" Click="changeLayout" Margin="10,27">
+            <FontIcon Glyph="&#xE8FD;"/>
+        </Button>
+
+        <ComboBox Grid.Column="2" Header="Filtres" SelectedIndex="0" Width="140" HorizontalAlignment="Left">
+            <x:String>recent</x:String>
+            <x:String>Par auteur</x:String>
+            <x:String>Par titre</x:String>
+        </ComboBox>
         <GridView
             x:Name="BiblioGridView"
             Grid.Row="1"

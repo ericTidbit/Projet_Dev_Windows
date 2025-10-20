@@ -35,6 +35,8 @@ public sealed partial class Biblio : Page
     {
         InitializeComponent();
         BiblioGridView.ItemsSource = App.AppReader.CurrentUser.Librairie.Livres;
+        this.DataContext = this;
+        
     }
     public async void SelectionFichier(object sender, RoutedEventArgs e)
     {
@@ -66,5 +68,25 @@ public sealed partial class Biblio : Page
     {
         App.AppReader.CurrentLivre = (EEEEReader.Models.Livre)e.ClickedItem;
         this.Frame?.Navigate(typeof(EEEEReader.Views.PreviewPage));
+    }
+
+    private void changeLayout(object sender, RoutedEventArgs e)
+    {
+        
+        if (layoutBtn.Content is FontIcon icon)
+        {
+            
+            if (icon.Glyph == "\uE8BA")
+            {
+                
+                icon.Glyph = "\uE8FD";
+                // TODO: Changer le layout du GridView en ListView ou ajuster ItemsPanel
+            }
+            else
+            {
+                icon.Glyph = "\uE8BA";
+                // TODO: Restaurer le layout en grille
+            }
+        }   
     }
 }
