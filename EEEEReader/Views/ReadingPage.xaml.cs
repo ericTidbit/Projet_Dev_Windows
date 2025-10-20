@@ -24,10 +24,8 @@ namespace EEEEReader.Views;
 public sealed partial class ReadingPage : Page
 {
     public string titleString { get; set; } = "Placeholder";
-    private GridViewItem _selectedBook;
-    public ReadingPage(GridViewItem selectedBook)
+    public ReadingPage()
     {
         InitializeComponent();
-        _selectedBook = selectedBook;
     }
 }
