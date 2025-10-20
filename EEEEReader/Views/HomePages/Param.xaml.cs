@@ -27,4 +27,14 @@ public sealed partial class Param : Page
     {
         InitializeComponent();
     }
+
+    private void Deconnection(object sender, RoutedEventArgs e)
+    {
+        if (App.MainWindow?.Content is Frame mainFrame)
+        {
+            App.AppReader.CurrentUser = null;
+            mainFrame.Navigate(typeof(LoginPage));
+
+        }
+    }
 }
