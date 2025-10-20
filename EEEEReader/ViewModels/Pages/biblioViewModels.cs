@@ -18,7 +18,7 @@ namespace EEEEReader.ViewModels.Pages
             /* string content, string Titre, string Auteur, string Date, string ISBN, string Langue, string Resume*/
 
             Livre livre = new Livre();
-            App.AppReader.CurrentUser.Librairie.AjouterLivre(livremetadata.ReadingOrder, livremetadata.Title, livremetadata.Author, dateee[0].Date, "667", langue[0].Language, livremetadata.Description, livremetadata.CoverImage);
+            App.AppReader.CurrentUser.Librairie.AjouterLivre(livremetadata.Content, livremetadata.Title, livremetadata.Author, dateee[0].Date, "667", langue[0].Language, livremetadata.Description, livremetadata.CoverImage);
         }
 
     }
