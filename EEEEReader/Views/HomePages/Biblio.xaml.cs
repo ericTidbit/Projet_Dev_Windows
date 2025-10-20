@@ -31,7 +31,6 @@ namespace EEEEReader.Views;
 /// </summary>
 public sealed partial class Biblio : Page
 {
-    //private GridViewItem? _clickedItem;
     public Biblio()
     {
         InitializeComponent();
@@ -65,7 +64,7 @@ public sealed partial class Biblio : Page
 
     private void OnItemClick(object sender, ItemClickEventArgs e)
     {
-        //_clickedItem = (GridViewItem)BiblioGridView.ContainerFromItem(e.ClickedItem);
-        this.Frame?.Navigate(typeof(EEEEReader.Views.ReadingPage));
+        App.AppReader.CurrentLivre = (EEEEReader.Models.Livre)e.ClickedItem;
+        this.Frame?.Navigate(typeof(EEEEReader.Views.PreviewPage));
     }
 }

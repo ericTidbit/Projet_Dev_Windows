@@ -1,9 +1,11 @@
-﻿using System;
+﻿using Microsoft.UI.Xaml.Documents;
+using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Windows.ApplicationModel.Store.Preview.InstallControl;
 
 namespace EEEEReader.Models
 {
@@ -18,7 +20,10 @@ namespace EEEEReader.Models
         }
         public void AjouterLivre(string content, string titre, string auteur, string date, string isbn, string langue = "", string resume = "", byte[] cover = null)
         {
-            var livre = new Livre(content, titre, auteur, date, isbn, langue, resume, cover);
+            Livre livre = new Livre(content, titre, auteur, date, isbn, langue, resume, cover);
+            // temporaire en attendant l'intégration sql
+            livre.Id = Livres.IndexOf(livre);
+            // --
             Livres.Add(livre);
         }
     }

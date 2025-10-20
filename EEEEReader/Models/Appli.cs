@@ -12,6 +12,7 @@ namespace EEEEReader.Models
         public List<Client> Clients { get; set; } = new List<Client>();
         public List<Administrateur> Admins { get; set; } = new List<Administrateur>();
         public Utilisateur? CurrentUser { get; set; }
+        public Livre? CurrentLivre { get; set; }
 
         public Appli()
         {

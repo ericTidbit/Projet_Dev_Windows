@@ -77,7 +77,7 @@ namespace EEEEReader.Views
             NavView.IsBackEnabled = HomeFrame.CanGoBack;
 
             // aussi de moi, check si la target est ReadingPage, si oui, la sélection est inutile
-            if (e.SourcePageType == typeof(EEEEReader.Views.ReadingPage))
+            if (e.SourcePageType == typeof(EEEEReader.Views.PreviewPage))
             {
                 return;
             }
@@ -123,6 +123,11 @@ namespace EEEEReader.Views
 
             HomeFrame.GoBack();
             return true;
+        }
+
+        private void ToReadingPage(object sender, RoutedEventArgs e)
+        {
+            this.Frame?.Navigate(typeof(EEEEReader.Views.ReadingPage));
         }
     }
 }

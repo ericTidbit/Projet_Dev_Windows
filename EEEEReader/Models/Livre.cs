@@ -15,6 +15,11 @@ namespace EEEEReader.Models
 {
     public class Livre
     {
+        // temporaire en attendant l'intégration sql
+        // id est également l'index dans la librairie
+        // pas d'id si le livre n'est pas dans une librairie
+        public int? Id { get; set; }
+        // --
         public string Content { get; set; }
         public string Titre { get; set; }
         public string Auteur { get; set; }
