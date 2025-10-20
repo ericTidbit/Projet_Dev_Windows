@@ -26,7 +26,6 @@ namespace EEEEReader.Views
     /// </summary>
     public sealed partial class Home : Page
     {
-        public bool IsNavigationViewPaneVisible { get; set; } = true;
         public Home()
         {
             InitializeComponent();
@@ -75,7 +74,6 @@ namespace EEEEReader.Views
         // Sauf le try...catch, qui vient de moi
         private void On_Navigated(object sender, NavigationEventArgs e)
         {
-            IsNavigationViewPaneVisible = true;
             NavView.IsBackEnabled = HomeFrame.CanGoBack;
 
             // aussi de moi, check si la target est ReadingPage, si oui, la sélection est inutile
@@ -86,7 +84,6 @@ namespace EEEEReader.Views
             }
             else if (e.SourcePageType == typeof(EEEEReader.Views.ReadingPage))
             {
-                IsNavigationViewPaneVisible = false;
                 return;
             }
             else if (HomeFrame.SourcePageType != null)

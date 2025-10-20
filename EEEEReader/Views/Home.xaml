@@ -17,8 +17,7 @@
             PaneDisplayMode="LeftCompact"
             IsPaneOpen="False"
             IsBackButtonVisible="Auto"
-            IsSettingsVisible="False" 
-            IsPaneVisible="{x:Bind IsNavigationViewPaneVisible}" >
+            IsSettingsVisible="False" >
             <NavigationView.MenuItems>
 
                 <NavigationViewItem Content="Récents" Tag="EEEEReader.Views.Recent">
