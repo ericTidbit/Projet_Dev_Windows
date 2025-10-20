@@ -34,7 +34,10 @@ namespace EEEEReader.Views
 
         public void LireLivre_Click(object sender, RoutedEventArgs e)
         {
-            this.Frame.Navigate(typeof(ReadingPage));
+            if (App.MainWindow?.Content is Frame mainFrame)
+            {
+                mainFrame.Navigate(typeof(ReadingPage));
+            }
         }
     }
 }
