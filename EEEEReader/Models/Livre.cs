@@ -27,15 +27,15 @@ namespace EEEEReader.Models
         public EpubContent RawContent { get; set; }
         public List<StackPanel> ParsedContent { get; set; }
         public string Titre { get; set; }
-        public string Auteur { get; set; }
-        public string Date { get; set; }
-        public string ISBN { get; set; }
-        public string Langue { get; set; }
-        public string Resume{ get; set; }
-        public byte[] CoverRaw { get; set; }
+        public string? Auteur { get; set; }
+        public string? Date { get; set; }
+        public string? ISBN { get; set; }
+        public string? Langue { get; set; }
+        public string? Resume{ get; set; }
+        public byte[]? CoverRaw { get; set; }
         public BitmapImage? CoverImage { get; set; }
 
-        public Livre(EpubContent content, string Titre, string Auteur, string Date, string ISBN, string Langue, string Resume, byte[] cover)
+        public Livre(EpubContent content, string Titre, string Auteur = null, string Date = null, string ISBN = null, string Langue = null, string Resume = null, byte[] cover = null)
         {
             this.RawContent = content;
             this.ParsedContent = LoadXamlContent(content);
@@ -46,7 +46,12 @@ namespace EEEEReader.Models
             this.Langue = Langue;
             this.Resume = Resume;
             this.CoverRaw = cover;
-            this.CoverImage = LoadCoverImage(cover);
+            this.CoverImage = cover != null ? LoadCoverImage(cover) : null;
+
+            if (cover != null)
+            {
+                this.CoverImage = LoadCoverImage(cover);
+            }
         }
 
 
@@ -59,15 +64,27 @@ namespace EEEEReader.Models
         // soit cette méthode ne marche pas, ou EpubReader est cooked
         public BitmapImage LoadCoverImage(byte[] data)
         {
-            
+            if (data == null || data.Length == 0)
+            {
+                return null;
+            }
 
-            var bmp = new BitmapImage();
+            try
+            {
+                var bmp = new BitmapImage();
 
-            using var stream = new InMemoryRandomAccessStream();
-            stream.WriteAsync(data.AsBuffer()).AsTask().Wait(); 
-            stream.Seek(0);
-            bmp.SetSource(stream); 
-            return bmp;
+                using var stream = new InMemoryRandomAccessStream();
+                stream.WriteAsync(data.AsBuffer()).AsTask().GetAwaiter().GetResult();
+                stream.Seek(0);
+                bmp.SetSource(stream);
+                Debug.WriteLine("Cover image loaded successfully.");
+                return bmp;
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine($"LoadCoverImage failed: {ex}");
+                return null;
+            }
         }
 
         public List<StackPanel> LoadXamlContent(EpubContent rawContent)
