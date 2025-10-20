@@ -9,6 +9,10 @@
     mc:Ignorable="d">
 
     <Grid>
+        <Button
+            Content="Se Déconnecter"
+            Click="Deconnection"/>
+
 
     </Grid>
 </Page>
