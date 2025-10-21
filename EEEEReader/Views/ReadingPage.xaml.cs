@@ -54,7 +54,7 @@ public sealed partial class ReadingPage : Page
     {
         // TODO: Ajouter le chapitre
         // N'UPDATE PAS EN TEMPS RÉEL, À IMPLÉMENTER DANS VIEWMODEL
-        FooterText = _currentLivre.Titre + " par " + _currentLivre.Auteur + " (page " + (_currentLivre.CurrentPage + 1).ToString() + ")";
+        FooterText = _currentLivre.Titre + " par " + _currentLivre.Auteur + " (page " + (_currentLivre.CurrentPage + 1).ToString() + ") Note: broken, n'update pas en temps réel";
     }
 
     public void ButtonPrev_OnClick(object sender, RoutedEventArgs e)
