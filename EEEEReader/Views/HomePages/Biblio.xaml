@@ -9,6 +9,48 @@
     xmlns:model="using:EEEEReader.Models"
     mc:Ignorable="d">
 
+    <Page.Resources>
+        <ItemsPanelTemplate x:Key="GridLayoutPanel">
+            <ItemsWrapGrid Orientation="Horizontal" />
+        </ItemsPanelTemplate>
+        
+        <ItemsPanelTemplate x:Key="ListLayoutPanel">
+            <ItemsStackPanel Orientation="Vertical" />
+        </ItemsPanelTemplate>
+
+        <DataTemplate x:Key="GridItemTemplate" x:DataType="model:Livre">
+            <StackPanel
+                Padding="10"
+                Orientation="Vertical"
+                Spacing="10">
+                <Image
+                    Width="100"
+                    Height="150"
+                    Source="{x:Bind CoverImage}" />
+                <TextBlock FontWeight="Bold" Text="{x:Bind Titre}" />
+                <TextBlock Foreground="Gray" Text="{x:Bind Auteur}" />
+            </StackPanel>
+        </DataTemplate>
+
+        <DataTemplate x:Key="ListItemTemplate" x:DataType="model:Livre">
+            <Grid Padding="10" ColumnSpacing="15">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="Auto" />
+                    <ColumnDefinition Width="*" />
+                </Grid.ColumnDefinitions>
+                <Image
+                    Grid.Column="0"
+                    Width="60"
+                    Height="90"
+                    Source="{x:Bind CoverImage}" />
+                <StackPanel Grid.Column="1" VerticalAlignment="Center" Spacing="5">
+                    <TextBlock FontWeight="Bold" FontSize="16" Text="{x:Bind Titre}" />
+                    <TextBlock Foreground="Gray" Text="{x:Bind Auteur}" />
+                </StackPanel>
+            </Grid>
+        </DataTemplate>
+    </Page.Resources>
+
     <Grid Padding="10" RowSpacing="10">
         <Grid.RowDefinitions>
             <RowDefinition Height="AUTO" />
@@ -35,22 +77,9 @@
             x:Name="BiblioGridView"
             Grid.Row="1"
             IsItemClickEnabled="True"
-            ItemClick="OnItemClick">
-            <GridView.ItemTemplate>
-                <DataTemplate x:DataType="model:Livre">
-                    <StackPanel
-                        Padding="10"
-                        Orientation="Vertical"
-                        Spacing="10">
-                        <Image
-                            Width="100"
-                            Height="150"
-                            Source="{x:Bind CoverImage}" />
-                        <TextBlock FontWeight="Bold" Text="{x:Bind Titre}" />
-                        <TextBlock Foreground="Gray" Text="{x:Bind Auteur}" />
-                    </StackPanel>
-                </DataTemplate>
-            </GridView.ItemTemplate>
+            ItemClick="OnItemClick"
+            ItemTemplate="{StaticResource GridItemTemplate}"
+            ItemsPanel="{StaticResource GridLayoutPanel}">
         </GridView>
     </Grid>
 </Page>

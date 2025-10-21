@@ -31,6 +31,8 @@ namespace EEEEReader.Views.HomePages;
 /// </summary>
 public sealed partial class Biblio : Page
 {
+    private bool isGridLayout = true;
+
     public Biblio()
     {
         InitializeComponent();
@@ -78,14 +80,19 @@ public sealed partial class Biblio : Page
             
             if (icon.Glyph == "\uE8BA")
             {
-                
+                // Switch to list layout
                 icon.Glyph = "\uE8FD";
-                // TODO: Changer le layout du GridView en ListView ou ajuster ItemsPanel
+                BiblioGridView.ItemTemplate = (DataTemplate)this.Resources["ListItemTemplate"];
+                BiblioGridView.ItemsPanel = (ItemsPanelTemplate)this.Resources["ListLayoutPanel"];
+                isGridLayout = false;
             }
             else
             {
+                // Switch to grid layout
                 icon.Glyph = "\uE8BA";
-                // TODO: Restaurer le layout en grille
+                BiblioGridView.ItemTemplate = (DataTemplate)this.Resources["GridItemTemplate"];
+                BiblioGridView.ItemsPanel = (ItemsPanelTemplate)this.Resources["GridLayoutPanel"];
+                isGridLayout = true;
             }
         }   
     }
