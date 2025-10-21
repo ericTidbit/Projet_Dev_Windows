@@ -34,6 +34,7 @@ namespace EEEEReader.Models
         public string? Resume{ get; set; }
         public byte[]? CoverRaw { get; set; }
         public BitmapImage? CoverImage { get; set; }
+        public int CurrentPage { get; set; }
 
         public Livre(EpubContent content, string Titre, string Auteur = null, string Date = null, string ISBN = null, string Langue = null, string Resume = null, byte[] cover = null)
         {
@@ -52,6 +53,8 @@ namespace EEEEReader.Models
             {
                 this.CoverImage = LoadCoverImage(cover);
             }
+
+            this.CurrentPage = 0;
         }
 
 
@@ -102,5 +105,25 @@ namespace EEEEReader.Models
 
             return chapterList;
         }
+
+        public int NextPage()
+        {
+            if (this.CurrentPage < this.HtmlContentList.Count)
+            {
+                this.CurrentPage++;
+            }
+
+            return this.CurrentPage;
+        }
+        public int PrevPage()
+        {
+            if (this.CurrentPage > 0)
+            {
+                this.CurrentPage--;
+            }
+
+            return this.CurrentPage;
+        }
+
     }
 }

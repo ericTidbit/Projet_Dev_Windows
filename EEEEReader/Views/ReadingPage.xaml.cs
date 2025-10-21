@@ -27,27 +27,51 @@ namespace EEEEReader.Views;
 public sealed partial class ReadingPage : Page
 {
     public Livre _currentLivre { get; set; }
+    public string FooterText { get; set; }
     public ReadingPage()
     {
         InitializeComponent();
         _currentLivre = App.AppReader.CurrentLivre;
-        LoadContent();
+        LoadContent(_currentLivre.HtmlContentList[_currentLivre.CurrentPage]);
+        UpdateFooter();
     }
 
-    public void LoadContent()
+    public void LoadContent(HtmlDocument docToLoad)
     {
-        foreach (EpubLocalTextContentFile contentPage in _currentLivre.RawContent.Html.Local)
-        {
-            HtmlDocument doc = new HtmlDocument();
-            doc.LoadHtml(contentPage.Content);
+        ContentPanel.Children.Clear();
 
-            TextBlock textBlock = new TextBlock
-            {
-                Text = doc.Text,
-                TextWrapping = TextWrapping.Wrap,
-                Margin = new Thickness(0, 0, 0, 20)
-            };
-            ContentPanel.Children.Add(textBlock);
-        }
+        TextBlock textBlock = new TextBlock
+        {
+            Text = docToLoad.Text,
+            TextWrapping = TextWrapping.Wrap,
+            Margin = new Thickness(0, 0, 0, 20)
+        };
+
+        ContentPanel.Children.Add(textBlock);
+    }
+
+    public void UpdateFooter()
+    {
+        // TODO: Ajouter le chapitre
+        // N'UPDATE PAS EN TEMPS RÉEL, À IMPLÉMENTER DANS VIEWMODEL
+        FooterText = _currentLivre.Titre + " par " + _currentLivre.Auteur + " (page " + (_currentLivre.CurrentPage + 1).ToString() + ")";
+    }
+
+    public void ButtonPrev_OnClick(object sender, RoutedEventArgs e)
+    {
+        LoadContent(_currentLivre.HtmlContentList[_currentLivre.PrevPage()]);
+        UpdateFooter();
+    }
+
+    public void ButtonNext_OnClick(object sender, RoutedEventArgs e)
+    {
+        LoadContent(_currentLivre.HtmlContentList[_currentLivre.NextPage()]);
+        UpdateFooter();
+    }
+
+    public void ButtonBack_OnClick(object sender, RoutedEventArgs e)
+    {
+        // TODO: Aller a la page preview du livre au lieu de biblio
+        this.Frame.Navigate(typeof(Home));
     }
 }
