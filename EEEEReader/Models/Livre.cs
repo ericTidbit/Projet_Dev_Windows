@@ -14,7 +14,6 @@ using System.Threading.Tasks;
 using VersOne.Epub;
 using VersOne.Epub.Options;
 using Windows.Storage.Streams;
-
 namespace EEEEReader.Models
 {
     public class Livre
@@ -49,10 +48,9 @@ namespace EEEEReader.Models
             this.CoverRaw = cover;
             this.CoverImage = cover != null ? LoadCoverImage(cover) : null;
 
-            if (cover != null)
-            {
-                this.CoverImage = LoadCoverImage(cover);
-            }
+            
+            this.CoverImage = LoadCoverImage(cover);
+            
 
             this.CurrentPage = 0;
         }
@@ -67,9 +65,10 @@ namespace EEEEReader.Models
         // soit cette méthode ne marche pas, ou EpubReader est cooked
         public BitmapImage LoadCoverImage(byte[] data)
         {
-            if (data == null || data.Length == 0)
+            if (data == null)
             {
-                return null;
+                var bmp = new BitmapImage(new Uri("ms-appx:///Assets/Wide310x150Logo.scale-200.png"));
+                return bmp;
             }
 
             try
@@ -105,7 +104,7 @@ namespace EEEEReader.Models
 
             return chapterList;
         }
-
+        // ici pour bug de depassé nombre de page
         public int NextPage()
         {
             if (this.CurrentPage < this.HtmlContentList.Count)
