@@ -63,11 +63,30 @@ public sealed partial class ReadingPage : Page
         UpdateFooter();
     }
 
-    public void ButtonNext_OnClick(object sender, RoutedEventArgs e)
+    public async void ButtonNext_OnClick(object sender, RoutedEventArgs e)
     {
-        LoadContent(_currentLivre.HtmlContentList[_currentLivre.NextPage()]);
-        UpdateFooter();
-    }
+        (bool, int) DataChangerDePage = _currentLivre.NextPage();
+
+        if (DataChangerDePage.Item1 == false)
+        {
+            LoadContent(_currentLivre.HtmlContentList[DataChangerDePage.Item2]);
+            UpdateFooter();
+        }
+        else
+        {
+            /*quand tu arrive a la fin du livre :) */ 
+            ContentDialog dialog = new ContentDialog()
+            {
+                Title = "fin du livre",
+                Content = "tu es arrivé a la fin du livre.",
+                CloseButtonText = "OK",
+                XamlRoot = this.Content.XamlRoot
+            };
+            await dialog.ShowAsync();
+
+        }
+        }
+
 
     public void ButtonBack_OnClick(object sender, RoutedEventArgs e)
     {
