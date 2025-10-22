@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using Windows.Media.Protection.PlayReady;
+using Microsoft.UI.Xaml;
 
 namespace EEEEReader.Models
 {
@@ -13,6 +14,7 @@ namespace EEEEReader.Models
         public List<Administrateur> Admins { get; set; } = new List<Administrateur>();
         public Utilisateur? CurrentUser { get; set; }
         public Livre? CurrentLivre { get; set; }
+        public ElementTheme CurrentTheme { get; set; } = ElementTheme.Light; // Default a light
 
         public Appli()
         {

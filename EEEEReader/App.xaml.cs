@@ -18,9 +18,6 @@ using Windows.Foundation.Collections;
 using EEEEReader.Models;
 using EEEEReader.Views;
 
-// To learn more about WinUI, the WinUI project structure,
-// and more about our project templates, see: http://aka.ms/winui-project-info.
-
 namespace EEEEReader
 {
     /// <summary>
@@ -39,18 +36,29 @@ namespace EEEEReader
         {
             InitializeComponent();
             AppReader = new Appli();
+            LoadSavedTheme();
         }
 
-        /// <summary>
-        /// Invoked when the application is launched.
-        /// </summary>
-        /// <param name="args">Details about the launch request and process.</param>
+        private void LoadSavedTheme()
+        {
+            var localSettings = Windows.Storage.ApplicationData.Current.LocalSettings;
+            if (localSettings.Values.TryGetValue("AppTheme", out object themeValue))
+            {
+                AppReader.CurrentTheme = (string)themeValue == "Dark" 
+                    ? ElementTheme.Dark 
+                    : ElementTheme.Light;
+            }
+        }
+
         protected override void OnLaunched(Microsoft.UI.Xaml.LaunchActivatedEventArgs args)
         {
             //creation d'une frame qui est mise dans l'app 
             var m_window = new MainWindow();
             Frame rootFrame = new Frame();
             rootFrame.NavigationFailed += OnNavigationFailed;
+                   
+            rootFrame.RequestedTheme = AppReader.CurrentTheme;
+            
             rootFrame.Navigate(typeof(LoginPage), args.Arguments);
             m_window.Content = rootFrame;
             MainWindow = m_window;
@@ -60,6 +68,17 @@ namespace EEEEReader
         void OnNavigationFailed(object sender, NavigationFailedEventArgs e)
         {
             throw new Exception("Failed to load Page " + e.SourcePageType.FullName);
+        }
+
+        public static void ChangeTheme(ElementTheme theme)
+        {
+            AppReader.CurrentTheme = theme;
+            
+            // Apply theme to the window's content Frame
+            if (MainWindow?.Content is Frame frame)
+            {
+                frame.RequestedTheme = theme;
+            }
         }
     }
 }
