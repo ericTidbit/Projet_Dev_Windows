@@ -78,10 +78,10 @@ public sealed partial class Biblio : Page
         if (layoutBtn.Content is FontIcon icon)
         {
             
-            if (icon.Glyph == "\uE8BA")
+            if (icon.Glyph == "\uE8FD")
             {
                 // Switch to list layout
-                icon.Glyph = "\uE8FD";
+                icon.Glyph = "\uE8BA";
                 BiblioGridView.ItemTemplate = (DataTemplate)this.Resources["ListItemTemplate"];
                 BiblioGridView.ItemsPanel = (ItemsPanelTemplate)this.Resources["ListLayoutPanel"];
                 isGridLayout = false;
@@ -89,7 +89,7 @@ public sealed partial class Biblio : Page
             else
             {
                 // Switch to grid layout
-                icon.Glyph = "\uE8BA";
+                icon.Glyph = "\uE8FD";
                 BiblioGridView.ItemTemplate = (DataTemplate)this.Resources["GridItemTemplate"];
                 BiblioGridView.ItemsPanel = (ItemsPanelTemplate)this.Resources["GridLayoutPanel"];
                 isGridLayout = true;
