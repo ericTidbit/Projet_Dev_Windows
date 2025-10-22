@@ -107,12 +107,18 @@ namespace EEEEReader.Models
         // ici pour bug de depassé nombre de page
         public int NextPage()
         {
-            if (this.CurrentPage < this.HtmlContentList.Count)
+            Debug.WriteLine("avant" + this.CurrentPage);
+            if (this.CurrentPage < this.HtmlContentList.Count - 1)
             {
                 this.CurrentPage++;
+                Debug.WriteLine("page apres" + this.CurrentPage);
+            }
+            else
+            {
+                Debug.WriteLine("tes rendu a la fin la ");
             }
 
-            return this.CurrentPage;
+                return this.CurrentPage;
         }
         public int PrevPage()
         {
