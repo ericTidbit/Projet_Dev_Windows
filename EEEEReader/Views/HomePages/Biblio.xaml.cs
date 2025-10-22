@@ -46,8 +46,18 @@ public sealed partial class Biblio : Page
         if (path != null)
         {
             biblioViewModels extraire = new ViewModels.Pages.biblioViewModels();
-            extraire.extraireMetaData(path);
-
+            bool result = extraire.extraireMetaData(path);
+            if (result == false)
+            {
+                ContentDialog dialog = new ContentDialog()
+                {
+                    Title = "Erreur",
+                    Content = "format du livre pas bon erreur d'extraction.",
+                    CloseButtonText = "OK",
+                    XamlRoot = this.Content.XamlRoot
+                };
+                await dialog.ShowAsync();
+            }
 
         }
 

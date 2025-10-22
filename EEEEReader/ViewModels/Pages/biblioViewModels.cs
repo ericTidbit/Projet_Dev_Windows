@@ -1,4 +1,5 @@
 ﻿using EEEEReader.Models;
+using Microsoft.UI.Xaml.Controls;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
@@ -11,21 +12,34 @@ namespace EEEEReader.ViewModels.Pages
 {
     public class biblioViewModels
     {
-        public void extraireMetaData(string Path )
+        public bool extraireMetaData(string Path )
         {
-            var livremetadata = EpubReader.ReadBook(Path);
-            var dateee = livremetadata.Schema.Package.Metadata.Dates;
-            var langue = livremetadata.Schema.Package.Metadata.Languages;
-
-            /* string content, string Titre, string Auteur, string Date, string ISBN, string Langue, string Resume*/
-            /*debug d*/
-            if (dateee.Count != 0) { 
-            App.AppReader.CurrentUser.Librairie.AjouterLivre(livremetadata.Content, livremetadata.Title, livremetadata.Author, dateee[0].Date, "667", langue[0].Language, livremetadata.Description, livremetadata.CoverImage);
-            }
-            else
+            try
             {
-                App.AppReader.CurrentUser.Librairie.AjouterLivre(livremetadata.Content, livremetadata.Title, livremetadata.Author, null, "667", langue[0].Language, livremetadata.Description, livremetadata.CoverImage);
+                var livremetadata = EpubReader.ReadBook(Path);
+                var dateee = livremetadata.Schema.Package.Metadata.Dates;
+                var langue = livremetadata.Schema.Package.Metadata.Languages;
+
+                /* string content, string Titre, string Auteur, string Date, string ISBN, string Langue, string Resume*/
+                /*debug d*/
+                if (dateee.Count != 0)
+                {
+                    App.AppReader.CurrentUser.Librairie.AjouterLivre(livremetadata.Content, livremetadata.Title, livremetadata.Author, dateee[0].Date, "667", langue[0].Language, livremetadata.Description, livremetadata.CoverImage);
+                }
+                else
+                {
+                    App.AppReader.CurrentUser.Librairie.AjouterLivre(livremetadata.Content, livremetadata.Title, livremetadata.Author, null, "667", langue[0].Language, livremetadata.Description, livremetadata.CoverImage);
+                }
+                return true;
             }
+            catch {
+                
+                Debug.WriteLine("c'est pas bon ton affaire la ");
+                return false;
+            
+
+        }
+            
         }
 
     }
