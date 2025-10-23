@@ -7,6 +7,7 @@ using Microsoft.UI.Xaml.Media.Imaging;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.ComponentModel.Design;
 using System.Diagnostics;
 using System.Linq;
 using System.Runtime.CompilerServices;
@@ -146,7 +147,7 @@ namespace EEEEReader.Models
         {
             StackPanel returnStackPanel = new StackPanel();
 
-            List<HtmlNode> childNodes = Livre.FlattenNestedHtmlNode(rawXml);
+            List<HtmlNode> childNodes = Livre.FlattenHtmlDocument(rawXml);
 
             foreach (HtmlNode node in childNodes)
             {
@@ -170,6 +171,7 @@ namespace EEEEReader.Models
 
         }
 
+        // TODO: extrêmement inefficace, à améliorer
         public RichTextBlock? ParserXmlSwitch(HtmlNode node)
         {
             switch (node.Name)
@@ -214,9 +216,11 @@ namespace EEEEReader.Models
                         RichTextBlock richTextBlock = new RichTextBlock();
                         Paragraph para = new Paragraph();
 
-                        foreach (HtmlNode child in node.ChildNodes)
+                        List<Run> styledRuns = Livre.ApplyStyle(node);
+
+                        foreach (Run styledRun in styledRuns)
                         {
-                            para.Inlines.Add(Livre.ApplyStyle(child));
+                            para.Inlines.Add(styledRun);
                         }
 
                         richTextBlock.Blocks.Add(para);
@@ -237,7 +241,7 @@ namespace EEEEReader.Models
         }
 
         // partiellement généré par copilot
-        public static List<HtmlNode> FlattenNestedHtmlNode(HtmlDocument MainDocument)
+        public static List<HtmlNode> FlattenHtmlDocument(HtmlDocument MainDocument)
         {
             List<HtmlNode> flatList = new List<HtmlNode>();
             void Traverse(HtmlNode node)
@@ -256,6 +260,25 @@ namespace EEEEReader.Models
             {
                 Traverse(parentNode);
             }
+
+            return flatList;
+        }
+        public static List<HtmlNode> FlattenHtmlNode(HtmlNode rootNode)
+        {
+            List<HtmlNode> flatList = new List<HtmlNode>();
+            void Traverse(HtmlNode node)
+            {
+                flatList.Add(node);
+                if (node.HasChildNodes)
+                {
+                    foreach (HtmlNode child in node.ChildNodes)
+                    {
+                        Traverse(child);
+                    }
+                }
+            }
+
+            Traverse(rootNode);
 
             return flatList;
         }
@@ -279,32 +302,68 @@ namespace EEEEReader.Models
 
         }
 
-        public static Run ApplyStyle(HtmlNode node)
+        public static List<Run> ApplyStyle(HtmlNode rootNode)
+        {
+            List<Run> outputRuns = new List<Run>();
+
+            List<HtmlNode> flatRootNode = Livre.FlattenHtmlNode(rootNode);
+            List<string> nextStyleFlags = new List<string>();
+
+            foreach (HtmlNode node in flatRootNode)
+            {
+                (Run run, List<string> updatedStyleFlags) = ApplyStyleSwitch(node, nextStyleFlags);
+                nextStyleFlags = updatedStyleFlags;
+                if (run != null)
+                {
+                    outputRuns.Add(run);
+                }
+            }
+
+            return outputRuns;
+        }
+        public static (Run, List<string>) ApplyStyleSwitch(HtmlNode node, List<string> styleFlags)
         {
             // TODO: traiter paragraphes avec des styles imbriqués (ex. <strong> du <em> italique </em> en gras </strong>)
             switch (node.Name)
             {
-                case "#text":
+                // n'enlève pas les styles, car span est utilisé inline
                 case "span":
+                    { return (null, styleFlags); }
+                // enlève les styles, pour éviter d'affecter les prochaines nodes
+                case "p":
                 case "div":
+                    { return (null, new List<string>()); }
+                case "#text":
                     {
-                        return new Run { Text = node.InnerText };
+                        
+                        Run run = new Run { Text = node.InnerText };
+                        if (styleFlags.Contains("em"))
+                        {
+                            run.FontStyle = FontStyle.Italic;
+                        }
+                        else if (styleFlags.Contains("strong"))
+                        {
+                            run.FontWeight = FontWeights.Bold;
+                        }
+
+                        styleFlags.Clear();
+                        return (run, styleFlags);
                     }
                 case "em":
                     {
-                        Run run = new Run { Text = node.InnerText };
-                        run.FontStyle = FontStyle.Italic;
-                        return run;
+                        styleFlags.Add("em");
+                        return (null, styleFlags);
                     }
                 case "strong":
                     {
-                        Run run = new Run { Text = node.InnerText };
-                        run.FontWeight = FontWeights.Bold;
-                        return run;
+                        styleFlags.Add("strong");
+                        return (null, styleFlags);
                     }
                 default:
                     {
-                        return new Run { Text = "Unsupported node in ApplyStyle -- Node Type : " + node.Name};
+                        // enlève les styles, pour éviter d'affecter les prochaines nodes
+                        styleFlags.Clear();
+                        return (new Run { Text = "Unsupported node in ApplyStyle -- Node Type : " + node.Name }, styleFlags);
                     }
 
             }
