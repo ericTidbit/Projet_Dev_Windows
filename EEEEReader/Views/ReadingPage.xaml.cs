@@ -75,13 +75,8 @@ public sealed partial class ReadingPage : Page
     {
         if (_currentLivre.IsBookFinished() == false)
         {
-<<<<<<< HEAD
             //LoadContent(_currentLivre.HtmlContentList[_currentLivre.NextPage()]);
             LoadEpubContent(_currentLivre.HtmlContentList[_currentLivre.NextPage()]);
-=======
-            LoadContent(_currentLivre.HtmlContentList[_currentLivre.NextPage()]);
-            _currentLivre.pourcentageLivre();
->>>>>>> 034dd99e52f6157a9acdb28220dc64879274ec18
             UpdateFooter();
         }
         else
