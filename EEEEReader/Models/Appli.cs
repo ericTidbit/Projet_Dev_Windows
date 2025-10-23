@@ -15,6 +15,7 @@ namespace EEEEReader.Models
         public Utilisateur? CurrentUser { get; set; }
         public Livre? CurrentLivre { get; set; }
         public ElementTheme CurrentTheme { get; set; } = ElementTheme.Light; // Default a light
+        public bool IsGridLayout { get; set; } = true;
 
         public Appli()
         {
