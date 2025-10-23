@@ -68,11 +68,13 @@ public sealed partial class ReadingPage : Page
         if (_currentLivre.IsBookFinished() == false)
         {
             LoadContent(_currentLivre.HtmlContentList[_currentLivre.NextPage()]);
+            _currentLivre.pourcentageLivre();
             UpdateFooter();
         }
         else
         {
-            /*quand tu arrive a la fin du livre :) */ 
+            _currentLivre.pourcentageLivre();
+            /*quand tu arrive a la fin du livre :) */
             ContentDialog dialog = new ContentDialog()
             {
                 Title = "fin du livre",
