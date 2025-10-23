@@ -107,15 +107,9 @@ namespace EEEEReader.Models
         // ici pour bug de depassé nombre de page
         public int NextPage()
         {
-            Debug.WriteLine("avant" + this.CurrentPage);
             if (this.CurrentPage < this.HtmlContentList.Count - 1)
             {
                 this.CurrentPage++;
-                Debug.WriteLine("page apres" + this.CurrentPage);
-            }
-            else
-            {
-                Debug.WriteLine("tes rendu a la fin la ");
             }
 
                 return this.CurrentPage;
@@ -128,6 +122,11 @@ namespace EEEEReader.Models
             }
 
             return this.CurrentPage;
+        }
+
+        public bool IsBookFinished()
+        {
+            return this.CurrentPage >= this.HtmlContentList.Count - 1;
         }
 
     }
