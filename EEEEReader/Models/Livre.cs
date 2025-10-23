@@ -1,6 +1,7 @@
 ﻿using EEEEReader.Models;
 using HtmlAgilityPack;
 using Microsoft.UI.Xaml.Controls;
+using Microsoft.UI.Xaml.Documents;
 using Microsoft.UI.Xaml.Media.Imaging;
 using System;
 using System.Collections.Generic;
@@ -138,7 +139,7 @@ namespace EEEEReader.Models
             return this.CurrentPage >= this.HtmlContentList.Count - 1;
         }
 
-        public static StackPanel HtmlDocParser(HtmlDocument rawXml)
+        public StackPanel HtmlDocParser(HtmlDocument rawXml)
         {
             StackPanel returnStackPanel = new StackPanel();
 
@@ -146,42 +147,87 @@ namespace EEEEReader.Models
 
             foreach (HtmlNode node in childNodes)
             {
-                returnStackPanel.Children.Add(ParserXmlSwitch(node));
+                RichTextBlock parsedNode = ParserXmlSwitch(node);
+                if (parsedNode != null)
+                {
+                    returnStackPanel.Children.Add(parsedNode);
+                }
             }
+
+            // debug
+            TextBlock debugTextBlock = new TextBlock();
+            debugTextBlock.Text = rawXml.Text;
+            returnStackPanel.Children.Add(debugTextBlock);
 
             return returnStackPanel;
 
         }
 
-        public static StackPanel? ParserXmlSwitch(HtmlNode node)
+        public RichTextBlock? ParserXmlSwitch(HtmlNode node)
         {
             switch(node.Name)
             {
+                case "#text": { return null; }
+                case "#comment": { return null; }
+                case "img":
+                    {
+                        // TODO: aller chercher l'attribute src et afficher l'image de this.RawContent.Images.Local[src] (attention, formater src est probablement nécessaire)
+                        RichTextBlock richTextBlock = new RichTextBlock();
+                        Paragraph para = new Paragraph();
+
+                        List<string> attrList = new List<string>();
+                        foreach (HtmlAttribute attr in node.Attributes)
+                        {
+                            attrList.Add(attr.Name);
+                        }
+                        para.Inlines.Add(new Run { Text = "Found node -- img -- : " + string.Join(", ", attrList) });
+
+                        richTextBlock.Blocks.Add(para);
+                        return richTextBlock;
+                    }
+                case "em":
+                    { 
+                        // TODO: ignorer em, le traiter dans p
+                        RichTextBlock richTextBlock = new RichTextBlock();
+                        Paragraph para = new Paragraph();
+
+                        para.Inlines.Add(new Run { Text = "Found node -- em -- : " + node.InnerText });
+
+                        richTextBlock.Blocks.Add(para);
+                        return richTextBlock;
+                    }
                 case "p":
                     {
-                        StackPanel returnStackPanel = new StackPanel();
-                        returnStackPanel.Children.Add(new TextBlock { Text = node.InnerText});
-                        return returnStackPanel;
+                        // TODO: traiter em, strong, etc dans des tags correspondants dans RichTextBlock
+                        RichTextBlock richTextBlock = new RichTextBlock();
+                        Paragraph para = new Paragraph();
 
+                        para.Inlines.Add(new Run { Text = "Found node -- p -- : " + node.InnerText });
+
+                        richTextBlock.Blocks.Add(para);
+                        return richTextBlock;
                     }
                 default:
                     {
-                        StackPanel returnStackPanel = new StackPanel();
+                        // Pour debug
+                        RichTextBlock richTextBlock = new RichTextBlock();
+                        Paragraph para = new Paragraph();
                         if (node.HasChildNodes)
                         {
-                            returnStackPanel.Children.Add(new TextBlock { Text = "Unsupported node: " + node.Name + " | InnerText: Child nodes present" });
+                            para.Inlines.Add(new Run { Text = "Unsupported node: " + node.Name + " | InnerText: Child nodes present" });
 
                         }
                         else
                         {
-                            returnStackPanel.Children.Add(new TextBlock { Text = "Unsupported node: " + node.Name + " | InnerText: " + node.InnerText });
+                            para.Inlines.Add(new Run { Text = "Unsupported node: " + node.Name + " | InnerText: " + node.InnerText });
                         }
-                        return returnStackPanel;
+                        richTextBlock.Blocks.Add(para);
+                        return richTextBlock;
                     }
             }
         }
 
-        // généré par copilot wth
+        // partiellement généré par copilot
         public static List<HtmlNode> FlattenNestedHtmlNode(HtmlDocument MainDocument)
         {
             List<HtmlNode> flatList = new List<HtmlNode>();

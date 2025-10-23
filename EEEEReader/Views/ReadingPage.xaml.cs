@@ -54,7 +54,7 @@ public sealed partial class ReadingPage : Page
     public void LoadEpubContent(HtmlDocument docToLoad)
     {
         ContentPanel.Children.Clear();
-        ContentPanel.Children.Add(Livre.HtmlDocParser(docToLoad));
+        ContentPanel.Children.Add(_currentLivre.HtmlDocParser(docToLoad));
     }
 
     public void UpdateFooter()
