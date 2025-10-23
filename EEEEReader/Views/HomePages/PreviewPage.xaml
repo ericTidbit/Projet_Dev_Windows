@@ -46,6 +46,10 @@
                     Click="LireLivre_Click"
                     Content="Lire le livre" />
                 <TextBlock
+                    FontSize="24"
+                    FontWeight="Bold"
+                    Text="{x:Bind PreviewedLivre.Pourcentage}" />
+                <TextBlock
                     Width="Auto"
                     FontSize="14"
                     Text="{x:Bind PreviewedLivre.Resume}"
