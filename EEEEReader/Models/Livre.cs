@@ -129,5 +129,72 @@ namespace EEEEReader.Models
             return this.CurrentPage >= this.HtmlContentList.Count - 1;
         }
 
+        public static StackPanel HtmlDocParser(HtmlDocument rawXml)
+        {
+            StackPanel returnStackPanel = new StackPanel();
+
+            List<HtmlNode> childNodes = Livre.FlattenNestedHtmlNode(rawXml);
+
+            foreach (HtmlNode node in childNodes)
+            {
+                returnStackPanel.Children.Add(ParserXmlSwitch(node));
+            }
+
+            return returnStackPanel;
+
+        }
+
+        public static StackPanel? ParserXmlSwitch(HtmlNode node)
+        {
+            switch(node.Name)
+            {
+                case "p":
+                    {
+                        StackPanel returnStackPanel = new StackPanel();
+                        returnStackPanel.Children.Add(new TextBlock { Text = node.InnerText});
+                        return returnStackPanel;
+
+                    }
+                default:
+                    {
+                        StackPanel returnStackPanel = new StackPanel();
+                        if (node.HasChildNodes)
+                        {
+                            returnStackPanel.Children.Add(new TextBlock { Text = "Unsupported node: " + node.Name + " | InnerText: Child nodes present" });
+
+                        }
+                        else
+                        {
+                            returnStackPanel.Children.Add(new TextBlock { Text = "Unsupported node: " + node.Name + " | InnerText: " + node.InnerText });
+                        }
+                        return returnStackPanel;
+                    }
+            }
+        }
+
+        // généré par copilot wth
+        public static List<HtmlNode> FlattenNestedHtmlNode(HtmlDocument MainDocument)
+        {
+            List<HtmlNode> flatList = new List<HtmlNode>();
+            void Traverse(HtmlNode node)
+            {
+                flatList.Add(node);
+                if (node.HasChildNodes)
+                {
+                    foreach (HtmlNode child in node.ChildNodes)
+                    {
+                        Traverse(child);
+                    }
+                }
+            }
+
+            foreach (HtmlNode parentNode in MainDocument.DocumentNode.ChildNodes)
+            {
+                Traverse(parentNode);
+            }
+
+            return flatList;
+        }
+
     }
 }

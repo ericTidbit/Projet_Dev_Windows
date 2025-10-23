@@ -32,7 +32,8 @@ public sealed partial class ReadingPage : Page
     {
         InitializeComponent();
         _currentLivre = App.AppReader.CurrentLivre;
-        LoadContent(_currentLivre.HtmlContentList[_currentLivre.CurrentPage]);
+        //LoadContent(_currentLivre.HtmlContentList[_currentLivre.CurrentPage]);
+        LoadEpubContent(_currentLivre.HtmlContentList[_currentLivre.CurrentPage]);
         UpdateFooter();
     }
 
@@ -50,6 +51,12 @@ public sealed partial class ReadingPage : Page
         ContentPanel.Children.Add(textBlock);
     }
 
+    public void LoadEpubContent(HtmlDocument docToLoad)
+    {
+        ContentPanel.Children.Clear();
+        ContentPanel.Children.Add(Livre.HtmlDocParser(docToLoad));
+    }
+
     public void UpdateFooter()
     {
         // TODO: Ajouter le chapitre
@@ -59,7 +66,8 @@ public sealed partial class ReadingPage : Page
 
     public void ButtonPrev_OnClick(object sender, RoutedEventArgs e)
     {
-        LoadContent(_currentLivre.HtmlContentList[_currentLivre.PrevPage()]);
+        //LoadContent(_currentLivre.HtmlContentList[_currentLivre.PrevPage()]);
+        LoadEpubContent(_currentLivre.HtmlContentList[_currentLivre.PrevPage()]);
         UpdateFooter();
     }
 
@@ -67,7 +75,8 @@ public sealed partial class ReadingPage : Page
     {
         if (_currentLivre.IsBookFinished() == false)
         {
-            LoadContent(_currentLivre.HtmlContentList[_currentLivre.NextPage()]);
+            //LoadContent(_currentLivre.HtmlContentList[_currentLivre.NextPage()]);
+            LoadEpubContent(_currentLivre.HtmlContentList[_currentLivre.NextPage()]);
             UpdateFooter();
         }
         else
