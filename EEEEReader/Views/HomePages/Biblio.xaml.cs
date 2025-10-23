@@ -21,6 +21,7 @@ using System.Threading.Tasks;
 using Windows.Foundation;
 using Windows.Foundation.Collections;
 using WinRT.Interop;
+using Windows.Devices.Display.Core;
 // To learn more about WinUI, the WinUI project structure,
 // and more about our project templates, see: http://aka.ms/winui-project-info.
 
@@ -31,14 +32,12 @@ namespace EEEEReader.Views.HomePages;
 /// </summary>
 public sealed partial class Biblio : Page
 {
-    private bool isGridLayout = true;
-
     public Biblio()
     {
         InitializeComponent();
         BiblioGridView.ItemsSource = App.AppReader.CurrentUser.Librairie.Livres;
         this.DataContext = this;
-        
+        applyLayout();
     }
     public async void SelectionFichier(object sender, RoutedEventArgs e)
     {
@@ -88,13 +87,13 @@ public sealed partial class Biblio : Page
         if (layoutBtn.Content is FontIcon icon)
         {
             
-            if (icon.Glyph == "\uE8FD")
+            if (App.AppReader.IsGridLayout)
             {
                 // Switch to list layout
                 icon.Glyph = "\uE8BA";
                 BiblioGridView.ItemTemplate = (DataTemplate)this.Resources["ListItemTemplate"];
                 BiblioGridView.ItemsPanel = (ItemsPanelTemplate)this.Resources["ListLayoutPanel"];
-                isGridLayout = false;
+                App.AppReader.IsGridLayout = false;
             }
             else
             {
@@ -102,8 +101,21 @@ public sealed partial class Biblio : Page
                 icon.Glyph = "\uE8FD";
                 BiblioGridView.ItemTemplate = (DataTemplate)this.Resources["GridItemTemplate"];
                 BiblioGridView.ItemsPanel = (ItemsPanelTemplate)this.Resources["GridLayoutPanel"];
-                isGridLayout = true;
+                App.AppReader.IsGridLayout = true;
             }
         }   
+    }
+    private void applyLayout()
+    {
+        if (App.AppReader.IsGridLayout)
+        {
+            BiblioGridView.ItemTemplate = (DataTemplate)this.Resources["GridItemTemplate"];
+            BiblioGridView.ItemsPanel = (ItemsPanelTemplate)this.Resources["GridLayoutPanel"];
+        }
+        else
+        {
+            BiblioGridView.ItemTemplate = (DataTemplate)this.Resources["ListItemTemplate"];
+            BiblioGridView.ItemsPanel = (ItemsPanelTemplate)this.Resources["ListLayoutPanel"];
+        }
     }
 }

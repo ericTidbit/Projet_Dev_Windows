@@ -34,6 +34,7 @@ namespace EEEEReader.Models
         public byte[]? CoverRaw { get; set; }
         public BitmapImage? CoverImage { get; set; }
         public int CurrentPage { get; set; }
+        public int Pourcentage { get; set; }
 
         public Livre(EpubContent content, string Titre, string Auteur = null, string Date = null, string ISBN = null, string Langue = null, string Resume = null, byte[] cover = null)
         {
@@ -53,6 +54,7 @@ namespace EEEEReader.Models
             
 
             this.CurrentPage = 0;
+            this.Pourcentage = 0;
         }
 
 
@@ -104,14 +106,20 @@ namespace EEEEReader.Models
 
             return chapterList;
         }
-        // ici pour bug de depassé nombre de page
+        public void pourcentageLivre()
+        {
+            this.Pourcentage = ((this.CurrentPage + 1) * 100) / this.HtmlContentList.Count;
+
+
+
+        }
         public int NextPage()
         {
             if (this.CurrentPage < this.HtmlContentList.Count - 1)
             {
                 this.CurrentPage++;
             }
-
+                
                 return this.CurrentPage;
         }
         public int PrevPage()
@@ -120,6 +128,7 @@ namespace EEEEReader.Models
             {
                 this.CurrentPage--;
             }
+            
 
             return this.CurrentPage;
         }
