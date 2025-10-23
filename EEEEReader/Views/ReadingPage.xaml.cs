@@ -65,11 +65,9 @@ public sealed partial class ReadingPage : Page
 
     public async void ButtonNext_OnClick(object sender, RoutedEventArgs e)
     {
-        (bool, int) DataChangerDePage = _currentLivre.NextPage();
-
-        if (DataChangerDePage.Item1 == false)
+        if (_currentLivre.IsBookFinished() == false)
         {
-            LoadContent(_currentLivre.HtmlContentList[DataChangerDePage.Item2]);
+            LoadContent(_currentLivre.HtmlContentList[_currentLivre.NextPage()]);
             UpdateFooter();
         }
         else
