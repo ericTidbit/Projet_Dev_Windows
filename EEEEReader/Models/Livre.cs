@@ -11,6 +11,7 @@ using System.Linq;
 using System.Runtime.CompilerServices;
 using System.Runtime.InteropServices.WindowsRuntime;
 using System.Text;
+using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 using VersOne.Epub;
 using VersOne.Epub.Options;
@@ -31,7 +32,7 @@ namespace EEEEReader.Models
         public string? Date { get; set; }
         public string? ISBN { get; set; }
         public string? Langue { get; set; }
-        public string? Resume{ get; set; }
+        public string? Resume { get; set; }
         public byte[]? CoverRaw { get; set; }
         public BitmapImage? CoverImage { get; set; }
         public int CurrentPage { get; set; }
@@ -48,11 +49,11 @@ namespace EEEEReader.Models
             this.Langue = Langue;
             this.Resume = Resume;
             this.CoverRaw = cover;
-            this.CoverImage = cover != null ? LoadCoverImage(cover) : null;
+            this.CoverImage = cover != null ? LoadImageFromByteArray(cover) : null;
 
-            
-            this.CoverImage = LoadCoverImage(cover);
-            
+
+            this.CoverImage = LoadImageFromByteArray(cover);
+
 
             this.CurrentPage = 0;
             this.Pourcentage = 0;
@@ -66,7 +67,7 @@ namespace EEEEReader.Models
         // code de Andrei Ashikhmin, https://stackoverflow.com/questions/42523593/convert-byte-to-windows-ui-xaml-media-imaging-bitmapimage
         // modifié
         // soit cette méthode ne marche pas, ou EpubReader est cooked
-        public BitmapImage LoadCoverImage(byte[] data)
+        public static BitmapImage LoadImageFromByteArray(byte[] data)
         {
             if (data == null)
             {
@@ -120,8 +121,8 @@ namespace EEEEReader.Models
             {
                 this.CurrentPage++;
             }
-                
-                return this.CurrentPage;
+
+            return this.CurrentPage;
         }
         public int PrevPage()
         {
@@ -129,7 +130,7 @@ namespace EEEEReader.Models
             {
                 this.CurrentPage--;
             }
-            
+
 
             return this.CurrentPage;
         }
@@ -165,28 +166,32 @@ namespace EEEEReader.Models
 
         public RichTextBlock? ParserXmlSwitch(HtmlNode node)
         {
-            switch(node.Name)
+            switch (node.Name)
             {
                 case "#text": { return null; }
                 case "#comment": { return null; }
                 case "img":
                     {
-                        // TODO: aller chercher l'attribute src et afficher l'image de this.RawContent.Images.Local[src] (attention, formater src est probablement nécessaire)
+                        // TODO: livres d'amazon ont des images dupliquées, ignorer les doublons (propriétés data-amznremoved-m8 et data-amznremoved)
                         RichTextBlock richTextBlock = new RichTextBlock();
-                        Paragraph para = new Paragraph();
 
-                        List<string> attrList = new List<string>();
-                        foreach (HtmlAttribute attr in node.Attributes)
-                        {
-                            attrList.Add(attr.Name);
-                        }
-                        para.Inlines.Add(new Run { Text = "Found node -- img -- : " + string.Join(", ", attrList) });
+                        Image img = new Image();
+                        img.Source = GetImgFromSrc(node.GetAttributeValue("src", ""));
+                        // TODO: taille dynamique
+                        img.Width = 500;
+
+                        // il faut faire le container et le paragraphe pour mettre un image
+                        InlineUIContainer container = new InlineUIContainer();
+                        container.Child = img;
+
+                        Paragraph para = new Paragraph();
+                        para.Inlines.Add(container);
 
                         richTextBlock.Blocks.Add(para);
                         return richTextBlock;
                     }
                 case "em":
-                    { 
+                    {
                         // TODO: ignorer em, le traiter dans p
                         RichTextBlock richTextBlock = new RichTextBlock();
                         Paragraph para = new Paragraph();
@@ -251,5 +256,23 @@ namespace EEEEReader.Models
             return flatList;
         }
 
+        public BitmapImage? GetImgFromSrc(string src)
+        {
+            Match match = Regex.Match(src, @"[^\/]+\.\w\S*");
+
+            if (match.Success)
+            {
+                foreach (EpubLocalByteContentFile img in this.RawContent.Images.Local)
+                {
+                    if (img.FilePath.EndsWith(match.Value))
+                    {
+                        return Livre.LoadImageFromByteArray(img.Content);
+                    }
+                }
+            }
+
+            return null;
+
+        }
     }
 }
