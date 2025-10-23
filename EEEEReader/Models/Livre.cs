@@ -1,5 +1,6 @@
 ﻿using EEEEReader.Models;
 using HtmlAgilityPack;
+using Microsoft.UI.Text;
 using Microsoft.UI.Xaml.Controls;
 using Microsoft.UI.Xaml.Documents;
 using Microsoft.UI.Xaml.Media.Imaging;
@@ -16,6 +17,7 @@ using System.Threading.Tasks;
 using VersOne.Epub;
 using VersOne.Epub.Options;
 using Windows.Storage.Streams;
+using Windows.UI.Text;
 namespace EEEEReader.Models
 {
     public class Livre
@@ -157,7 +159,11 @@ namespace EEEEReader.Models
 
             // debug
             TextBlock debugTextBlock = new TextBlock();
-            debugTextBlock.Text = rawXml.Text;
+            debugTextBlock.Text = "\n--------- RAW XML ----------\n" + rawXml.Text + "\n--------- FLATTENED XML ----------\n";
+            foreach (HtmlNode node in childNodes)
+            {
+                debugTextBlock.Text += node.OuterHtml + "\n";
+            }
             returnStackPanel.Children.Add(debugTextBlock);
 
             return returnStackPanel;
@@ -168,8 +174,21 @@ namespace EEEEReader.Models
         {
             switch (node.Name)
             {
-                case "#text": { return null; }
-                case "#comment": { return null; }
+                // ignorés
+                case "#comment": 
+                case "span": 
+                case "div": 
+                case "meta": 
+                case "style": 
+                case "body": 
+                case "head": 
+                case "html": 
+                // traités dans p
+                case "#text": 
+                case "em": 
+                case "strong": 
+                    { return null; }
+
                 case "img":
                     {
                         // TODO: livres d'amazon ont des images dupliquées, ignorer les doublons (propriétés data-amznremoved-m8 et data-amznremoved)
@@ -190,24 +209,15 @@ namespace EEEEReader.Models
                         richTextBlock.Blocks.Add(para);
                         return richTextBlock;
                     }
-                case "em":
-                    {
-                        // TODO: ignorer em, le traiter dans p
-                        RichTextBlock richTextBlock = new RichTextBlock();
-                        Paragraph para = new Paragraph();
-
-                        para.Inlines.Add(new Run { Text = "Found node -- em -- : " + node.InnerText });
-
-                        richTextBlock.Blocks.Add(para);
-                        return richTextBlock;
-                    }
                 case "p":
                     {
-                        // TODO: traiter em, strong, etc dans des tags correspondants dans RichTextBlock
                         RichTextBlock richTextBlock = new RichTextBlock();
                         Paragraph para = new Paragraph();
 
-                        para.Inlines.Add(new Run { Text = "Found node -- p -- : " + node.InnerText });
+                        foreach (HtmlNode child in node.ChildNodes)
+                        {
+                            para.Inlines.Add(Livre.ApplyStyle(child));
+                        }
 
                         richTextBlock.Blocks.Add(para);
                         return richTextBlock;
@@ -217,15 +227,9 @@ namespace EEEEReader.Models
                         // Pour debug
                         RichTextBlock richTextBlock = new RichTextBlock();
                         Paragraph para = new Paragraph();
-                        if (node.HasChildNodes)
-                        {
-                            para.Inlines.Add(new Run { Text = "Unsupported node: " + node.Name + " | InnerText: Child nodes present" });
 
-                        }
-                        else
-                        {
-                            para.Inlines.Add(new Run { Text = "Unsupported node: " + node.Name + " | InnerText: " + node.InnerText });
-                        }
+                        para.Inlines.Add(new Run { Text = "Unsupported node in ParserXmlSwitch -- Node type : " + node.Name});
+
                         richTextBlock.Blocks.Add(para);
                         return richTextBlock;
                     }
@@ -273,6 +277,37 @@ namespace EEEEReader.Models
 
             return null;
 
+        }
+
+        public static Run ApplyStyle(HtmlNode node)
+        {
+            // TODO: traiter paragraphes avec des styles imbriqués (ex. <strong> du <em> italique </em> en gras </strong>)
+            switch (node.Name)
+            {
+                case "#text":
+                case "span":
+                case "div":
+                    {
+                        return new Run { Text = node.InnerText };
+                    }
+                case "em":
+                    {
+                        Run run = new Run { Text = node.InnerText };
+                        run.FontStyle = FontStyle.Italic;
+                        return run;
+                    }
+                case "strong":
+                    {
+                        Run run = new Run { Text = node.InnerText };
+                        run.FontWeight = FontWeights.Bold;
+                        return run;
+                    }
+                default:
+                    {
+                        return new Run { Text = "Unsupported node in ApplyStyle -- Node Type : " + node.Name};
+                    }
+
+            }
         }
     }
 }
