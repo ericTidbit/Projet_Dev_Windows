@@ -77,6 +77,7 @@ public sealed partial class ReadingPage : Page
         {
             //LoadContent(_currentLivre.HtmlContentList[_currentLivre.NextPage()]);
             LoadEpubContent(_currentLivre.HtmlContentList[_currentLivre.NextPage()]);
+            _currentLivre.pourcentageLivre();
             UpdateFooter();
         }
         else
