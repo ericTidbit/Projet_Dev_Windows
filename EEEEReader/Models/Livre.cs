@@ -160,6 +160,7 @@ namespace EEEEReader.Models
             }
 
             // debug, cause beaucoup de temps de chargement
+            /*
             Paragraph debugPara = new Paragraph();
             debugPara.Inlines.Add(new Run { Text = "\n--------- RAW XML ----------\n" + rawXml.Text });
             Run flatXmlRun = new Run { Text = "\n--------- FLATTENED NODES ----------\n" };
@@ -169,6 +170,7 @@ namespace EEEEReader.Models
             }
             debugPara.Inlines.Add(flatXmlRun);
             parsedNode.Blocks.Add(debugPara);
+            */
             // --
 
             return parsedNode;
@@ -180,6 +182,7 @@ namespace EEEEReader.Models
         {
             switch (node.Name)
             {
+                // TODO: h1, h2, h3, h4, h5, h6
                 // ignorés
                 case "#comment": 
                 case "span": 
