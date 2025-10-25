@@ -143,36 +143,42 @@ namespace EEEEReader.Models
             return this.CurrentPage >= this.HtmlContentList.Count - 1;
         }
 
-        public StackPanel HtmlDocParser(HtmlDocument rawXml)
+        public RichTextBlock HtmlDocParser(HtmlDocument rawXml)
         {
-            StackPanel returnStackPanel = new StackPanel();
+            RichTextBlock parsedNode = new RichTextBlock();
 
             List<HtmlNode> childNodes = Livre.FlattenHtmlDocument(rawXml);
 
             foreach (HtmlNode node in childNodes)
             {
-                RichTextBlock parsedNode = ParserXmlSwitch(node);
-                if (parsedNode != null)
+                Paragraph? parsedNodeParagraph = ParserXmlSwitch(node);
+
+                if (parsedNodeParagraph != null)
                 {
-                    returnStackPanel.Children.Add(parsedNode);
+                    parsedNode.Blocks.Add(parsedNodeParagraph);
                 }
             }
 
-            // debug
-            TextBlock debugTextBlock = new TextBlock();
-            debugTextBlock.Text = "\n--------- RAW XML ----------\n" + rawXml.Text + "\n--------- FLATTENED XML ----------\n";
+            // debug, cause beaucoup de temps de chargement
+            /*
+            Paragraph debugPara = new Paragraph();
+            debugPara.Inlines.Add(new Run { Text = "\n--------- RAW XML ----------\n" + rawXml.Text });
+            Run flatXmlRun = new Run { Text = "\n--------- FLATTENED NODES ----------\n" };
             foreach (HtmlNode node in childNodes)
             {
-                debugTextBlock.Text += node.OuterHtml + "\n";
+                flatXmlRun.Text += node.OuterHtml + "\n";
             }
-            returnStackPanel.Children.Add(debugTextBlock);
+            debugPara.Inlines.Add(flatXmlRun);
+            parsedNode.Blocks.Add(debugPara);
+            */
+            // --
 
-            return returnStackPanel;
+            return parsedNode;
 
         }
 
         // TODO: extrêmement inefficace, à améliorer
-        public RichTextBlock? ParserXmlSwitch(HtmlNode node)
+        public Paragraph? ParserXmlSwitch(HtmlNode node)
         {
             switch (node.Name)
             {
@@ -194,26 +200,22 @@ namespace EEEEReader.Models
                 case "img":
                     {
                         // TODO: livres d'amazon ont des images dupliquées, ignorer les doublons (propriétés data-amznremoved-m8 et data-amznremoved)
-                        RichTextBlock richTextBlock = new RichTextBlock();
-
                         Image img = new Image();
                         img.Source = GetImgFromSrc(node.GetAttributeValue("src", ""));
                         // TODO: taille dynamique
                         img.Width = 500;
 
-                        // il faut faire le container et le paragraphe pour mettre un image
+                        // il faut faire le container pour mettre une image dans un paragraphe
                         InlineUIContainer container = new InlineUIContainer();
                         container.Child = img;
 
                         Paragraph para = new Paragraph();
                         para.Inlines.Add(container);
 
-                        richTextBlock.Blocks.Add(para);
-                        return richTextBlock;
+                        return para;
                     }
                 case "p":
                     {
-                        RichTextBlock richTextBlock = new RichTextBlock();
                         Paragraph para = new Paragraph();
 
                         List<Run> styledRuns = Livre.ApplyStyle(node);
@@ -223,19 +225,16 @@ namespace EEEEReader.Models
                             para.Inlines.Add(styledRun);
                         }
 
-                        richTextBlock.Blocks.Add(para);
-                        return richTextBlock;
+                        return para;
                     }
                 default:
                     {
                         // Pour debug
-                        RichTextBlock richTextBlock = new RichTextBlock();
                         Paragraph para = new Paragraph();
 
-                        para.Inlines.Add(new Run { Text = "Unsupported node in ParserXmlSwitch -- Node type : " + node.Name});
+                        para.Inlines.Add(new Run { Text = "Unsupported node in ParserXmlSwitch -- Node type : " + node.Name + "\n\tRaw xml : " + node.OuterHtml});
 
-                        richTextBlock.Blocks.Add(para);
-                        return richTextBlock;
+                        return para;
                     }
             }
         }
