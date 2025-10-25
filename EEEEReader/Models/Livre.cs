@@ -160,7 +160,6 @@ namespace EEEEReader.Models
             }
 
             // debug, cause beaucoup de temps de chargement
-            /*
             Paragraph debugPara = new Paragraph();
             debugPara.Inlines.Add(new Run { Text = "\n--------- RAW XML ----------\n" + rawXml.Text });
             Run flatXmlRun = new Run { Text = "\n--------- FLATTENED NODES ----------\n" };
@@ -170,7 +169,6 @@ namespace EEEEReader.Models
             }
             debugPara.Inlines.Add(flatXmlRun);
             parsedNode.Blocks.Add(debugPara);
-            */
             // --
 
             return parsedNode;
@@ -325,8 +323,9 @@ namespace EEEEReader.Models
             // TODO: traiter paragraphes avec des styles imbriqués (ex. <strong> du <em> italique </em> en gras </strong>)
             switch (node.Name)
             {
-                // n'enlève pas les styles, car span est utilisé inline
+                // n'enlève pas les styles, car est inline
                 case "span":
+                case "sup":
                     { return (null, styleFlags); }
                 // enlève les styles, pour éviter d'affecter les prochaines nodes
                 case "p":
@@ -335,7 +334,7 @@ namespace EEEEReader.Models
                 case "#text":
                     {
                         
-                        Run run = new Run { Text = node.InnerText };
+                        Run run = new Run { Text = Livre.XmlPatternReplacer(node.InnerText) };
                         if (styleFlags.Contains("em"))
                         {
                             run.FontStyle = FontStyle.Italic;
@@ -366,6 +365,24 @@ namespace EEEEReader.Models
                     }
 
             }
+        }
+
+        public static string XmlPatternReplacer(string input)
+        {
+            string output = input;
+            Dictionary<string, string> patternMap = new Dictionary<string, string>();
+
+            // TODO: plus de patterns
+            // format (pattern, remplacement)
+            patternMap.Add(@"&amp;", "&");
+            patternMap.Add(@"&#160;", "");
+
+            foreach (string pattern in patternMap.Keys)
+            {
+                output = Regex.Replace(output, pattern, patternMap[pattern]);
+            }
+
+            return output;
         }
     }
 }
