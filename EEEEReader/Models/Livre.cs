@@ -373,6 +373,7 @@ namespace EEEEReader.Models
             Dictionary<string, string> patternMap = new Dictionary<string, string>();
 
             // TODO: plus de patterns
+            // https://www.ascii-code.com/
             // format (pattern, remplacement)
             patternMap.Add(@"&amp;", "&");
             patternMap.Add(@"&#160;", "");
