@@ -52,15 +52,19 @@ namespace EEEEReader.Models
         }
         public void AjouterLivreRecent(Livre livre)
         {
-            // enlever les doublon
-            if (LivresRecent.Count > 5)
+            // regarder la logique pour etre certain que tous fonctionne 
+            if (!LivresRecent.Contains(livre))
             {
-                LivresRecent.RemoveAt(0);
-                LivresRecent.Add(livre);
-            }
-            else
-            {
-                LivresRecent.Add(livre);
+                if (LivresRecent.Count > 5)
+                {
+                    LivresRecent.RemoveAt(0);
+                    LivresRecent.Add(livre);
+                }
+                else
+                {
+                    //change la prioriter du livre le remettre comme 5eme
+                    LivresRecent.Add(livre);
+                }
             }
             
 
