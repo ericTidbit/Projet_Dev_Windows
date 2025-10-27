@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Security.Cryptography;
 using System.Text;
 
@@ -9,6 +10,9 @@ namespace EEEEReader.Models
         public string Nom { get; set; }
 
         private string _pwd;
+
+        public List<Livre> LivresRecent { get; set; } = new List<Livre>();
+
         public string Pwd 
         { 
             get => _pwd;
@@ -45,6 +49,22 @@ namespace EEEEReader.Models
         public bool VerifierPassword(string password)
         {
             return HashPassword(password) == _pwd;
+        }
+        public void AjouterLivreRecent(Livre livre)
+        {
+            // enlever les doublon
+            if (LivresRecent.Count > 5)
+            {
+                LivresRecent.RemoveAt(0);
+                LivresRecent.Add(livre);
+            }
+            else
+            {
+                LivresRecent.Add(livre);
+            }
+            
+
+
         }
     }
 }

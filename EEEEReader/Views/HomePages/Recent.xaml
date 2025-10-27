@@ -5,10 +5,79 @@
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
     xmlns:local="using:EEEEReader.Views"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
-    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" xmlns:model="using:EEEEReader.Models"
     mc:Ignorable="d">
 
-    <Grid>
-        <TextBlock Name="currentUser" FontSize="23" HorizontalAlignment="Center" VerticalAlignment="Center" />
+    <Page.Resources>
+        <ItemsPanelTemplate x:Key="GridLayoutPanel">
+            <ItemsWrapGrid Orientation="Horizontal" />
+        </ItemsPanelTemplate>
+
+        <ItemsPanelTemplate x:Key="ListLayoutPanel">
+            <ItemsStackPanel Orientation="Vertical" HorizontalAlignment="Left" />
+        </ItemsPanelTemplate>
+
+        <DataTemplate x:Key="GridItemTemplate" x:DataType="model:Livre">
+            <StackPanel
+             Padding="10"
+             Orientation="Vertical"
+             Spacing="10">
+                <Image
+                 Width="100"
+                 Height="150"
+                 Source="{x:Bind CoverImage}" />
+                <TextBlock FontWeight="Bold" Text="{x:Bind Titre}" />
+                <TextBlock Foreground="{ThemeResource TextFillColorSecondaryBrush}" Text="{x:Bind Auteur}" />
+            </StackPanel>
+        </DataTemplate>
+
+        <DataTemplate x:Key="ListItemTemplate" x:DataType="model:Livre" >
+            <Border BorderBrush="{ThemeResource CardStrokeColorDefaultBrush}" 
+                 BorderThickness="2,2,2,2"
+                 CornerRadius="8"
+                 Width="1000" 
+                 Background="{ThemeResource LayerFillColorDefaultBrush}">
+                <Grid Padding="10" ColumnSpacing="15">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="Auto" />
+                        <ColumnDefinition Width="*" />
+                    </Grid.ColumnDefinitions>
+                    <Image
+                     Grid.Column="0"
+                     Width="50"
+                     Height="75"
+                     Source="{x:Bind CoverImage}" />
+                    <StackPanel Grid.Column="1" VerticalAlignment="Center" Spacing="5">
+                        <TextBlock FontWeight="Bold" FontSize="16" Text="{x:Bind Titre}" />
+                        <TextBlock Foreground="{ThemeResource TextFillColorSecondaryBrush}" Text="{x:Bind Auteur}" />
+                    </StackPanel>
+                </Grid>
+            </Border>
+        </DataTemplate>
+    </Page.Resources>
+
+    <Grid Padding="10" RowSpacing="10">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="AUTO" />
+            <RowDefinition Height="*" />
+        </Grid.RowDefinitions>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="*" />
+            <ColumnDefinition Width="AUTO" />
+            <ColumnDefinition Width="AUTO" />
+        </Grid.ColumnDefinitions>
+        
+
+       
+
+        
+        <GridView
+         x:Name="BiblioGridView"
+         Grid.Row="1"
+         IsItemClickEnabled="True"
+         ItemClick="OnItemClick"
+         ItemTemplate="{StaticResource GridItemTemplate}"
+         ItemsPanel="{StaticResource GridLayoutPanel}">
+        </GridView>
     </Grid>
 </Page>
