@@ -36,6 +36,7 @@ namespace EEEEReader.Views
         {
             if (App.MainWindow?.Content is Frame mainFrame)
             {
+                App.AppReader.CurrentUser.AjouterLivreRecent(App.AppReader.CurrentLivre);
                 mainFrame.Navigate(typeof(ReadingPage));
             }
         }
