@@ -113,7 +113,7 @@ namespace EEEEReader.Models
         }
         public void pourcentageLivre()
         {
-            this.Pourcentage = ((this.CurrentPage + 1) * 100) / this.HtmlContentList.Count;
+            this.Pourcentage = ((this.CurrentPage) * 100) / (this.HtmlContentList.Count - 1);
 
 
 
