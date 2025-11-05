@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace EEEEReader.Models
+namespace EEEEReader.Data.Models
 {
     public class Administrateur : Utilisateur
     {

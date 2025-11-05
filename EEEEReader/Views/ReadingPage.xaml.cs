@@ -12,9 +12,10 @@ using Microsoft.UI.Xaml.Data;
 using Microsoft.UI.Xaml.Input;
 using Microsoft.UI.Xaml.Media;
 using Microsoft.UI.Xaml.Navigation;
-using EEEEReader.Models;
+using EEEEReader.Data.Models;
 using VersOne.Epub;
 using HtmlAgilityPack;
+using EEEEReader.ViewModels;
 
 // To learn more about WinUI, the WinUI project structure,
 // and more about our project templates, see: http://aka.ms/winui-project-info.
@@ -26,14 +27,15 @@ namespace EEEEReader.Views;
 /// </summary>
 public sealed partial class ReadingPage : Page
 {
-    public Livre _currentLivre { get; set; }
+    private LivreViewModel _currentLivreViewModel { get; set; }
+    private Livre _currentLivre { get; set; }
     public string FooterText { get; set; }
     public ReadingPage()
     {
         InitializeComponent();
-        _currentLivre = App.AppReader.CurrentLivre;
-        //LoadContent(_currentLivre.HtmlContentList[_currentLivre.CurrentPage]);
-        LoadEpubContent(_currentLivre.HtmlContentList[_currentLivre.CurrentPage]);
+        _currentLivreViewModel = App.AppReader.CurrentLivreViewModel;
+        //LoadContent(_currentLivreViewModel.HtmlContentList[_currentLivreViewModel.CurrentPage]);
+        LoadEpubContent(_currentLivreViewModel.HtmlContentList[_currentLivre.CurrentPage]);
         UpdateFooter();
     }
 
@@ -54,7 +56,7 @@ public sealed partial class ReadingPage : Page
     public void LoadEpubContent(HtmlDocument docToLoad)
     {
         ContentPanel.Children.Clear();
-        ContentPanel.Children.Add(_currentLivre.HtmlDocParser(docToLoad));
+        ContentPanel.Children.Add(_currentLivreViewModel.HtmlDocParser(docToLoad));
     }
 
     public void UpdateFooter()
@@ -68,23 +70,23 @@ public sealed partial class ReadingPage : Page
     public void ButtonPrev_OnClick(object sender, RoutedEventArgs e)
     {
         //LoadContent(_currentLivre.HtmlContentList[_currentLivre.PrevPage()]);
-        LoadEpubContent(_currentLivre.HtmlContentList[_currentLivre.PrevPage()]);
-        _currentLivre.pourcentageLivre();
+        LoadEpubContent(_currentLivreViewModel.HtmlContentList[_currentLivreViewModel.PrevPage()]);
+        _currentLivreViewModel.pourcentageLivre();
         UpdateFooter();
     }
 
     public async void ButtonNext_OnClick(object sender, RoutedEventArgs e)
     {
-        if (_currentLivre.IsBookFinished() == false)
+        if (_currentLivreViewModel.IsBookFinished() == false)
         {
             //LoadContent(_currentLivre.HtmlContentList[_currentLivre.NextPage()]);
-            LoadEpubContent(_currentLivre.HtmlContentList[_currentLivre.NextPage()]);
-            _currentLivre.pourcentageLivre();
+            LoadEpubContent(_currentLivreViewModel.HtmlContentList[_currentLivreViewModel.NextPage()]);
+            _currentLivreViewModel.pourcentageLivre();
             UpdateFooter();
         }
         else
         {
-            _currentLivre.pourcentageLivre();
+            _currentLivreViewModel.pourcentageLivre();
             /*quand tu arrive a la fin du livre :) */
             ContentDialog dialog = new ContentDialog()
             {

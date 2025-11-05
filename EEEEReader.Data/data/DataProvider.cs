@@ -1,4 +1,4 @@
-using EEEEReader.Models;
+using EEEEReader.Data.Models;
 using System.Collections.Generic;
 
 public class DataProvider : IDataProvider

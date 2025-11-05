@@ -1,4 +1,5 @@
-using EEEEReader.Models;
+using EEEEReader.Data.Models;
+using EEEEReader.ViewModels;
 using EEEEReader.Views.HomePages;
 using Microsoft.UI.Xaml;
 using Microsoft.UI.Xaml.Controls;
@@ -26,11 +27,11 @@ namespace EEEEReader.Views
     /// </summary>
     public sealed partial class PreviewPage : Page
     {
-        public Livre PreviewedLivre { get; set; }
+        public LivreViewModel PreviewedLivre { get; set; }
         public PreviewPage()
         {
             InitializeComponent();
-            PreviewedLivre = App.AppReader.CurrentLivre;
+            PreviewedLivre = App.AppReader.CurrentLivreViewModel;
         }
 
         public void LireLivre_Click(object sender, RoutedEventArgs e)
@@ -38,7 +39,7 @@ namespace EEEEReader.Views
             // changer le nom de la fonction
             if (App.MainWindow?.Content is Frame mainFrame)
             {
-                App.AppReader.CurrentUser.AjouterLivreRecent(App.AppReader.CurrentLivre);
+                App.AppReader.CurrentUser.AjouterLivreRecent(App.AppReader.CurrentLivreViewModel.Livre);
                 mainFrame.Navigate(typeof(ReadingPage));
             }
         }
@@ -47,7 +48,7 @@ namespace EEEEReader.Views
             if (App.MainWindow?.Content is Frame mainFrame)
             {
             
-                App.AppReader.CurrentUser.Librairie.SupprimerLivre(App.AppReader.CurrentLivre);
+                App.AppReader.CurrentUser.Librairie.SupprimerLivre(App.AppReader.CurrentLivreViewModel.Livre);
                 this.Frame?.Navigate(typeof(Biblio));
 
             }

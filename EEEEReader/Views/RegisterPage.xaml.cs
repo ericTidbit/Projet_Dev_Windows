@@ -1,4 +1,4 @@
-using EEEEReader.Models;
+using EEEEReader.Data.Models;
 using Microsoft.UI.Xaml;
 using Microsoft.UI.Xaml.Controls;
 using System;

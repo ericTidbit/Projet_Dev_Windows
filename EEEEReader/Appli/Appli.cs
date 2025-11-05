@@ -1,20 +1,22 @@
-﻿using System;
+﻿using EEEEReader.Data.Models;
+using EEEEReader.ViewModels;
+using Microsoft.UI.Xaml;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using Windows.Media.Protection.PlayReady;
-using Microsoft.UI.Xaml;
 
-namespace EEEEReader.Models
+namespace EEEEReader
 {
+    // Note: pas dans EEEEReader.Data parce que c'est l'application en elle même
     public class Appli
     {
         public List<Client> Clients { get; set; } = new List<Client>();
         public List<Administrateur> Admins { get; set; } = new List<Administrateur>();
-        public Utilisateur? CurrentUser { get; set; }
-        public Livre? CurrentLivre { get; set; }
         public ElementTheme CurrentTheme { get; set; } = ElementTheme.Light; // Default a light
+        public Utilisateur? CurrentUser { get; set; }
+        public LivreViewModel? CurrentLivreViewModel { get; set; }
         public bool IsGridLayout { get; set; } = true;
 
         public Appli()
@@ -23,6 +25,7 @@ namespace EEEEReader.Models
             var admin = new Administrateur("e", "e");
             Admins.Add(admin);
         }
+
 
         public void AddClient(string nom, string pwd)
         {

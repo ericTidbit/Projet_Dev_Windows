@@ -6,7 +6,7 @@
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:local="using:EEEEReader.Views"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-    xmlns:model="using:EEEEReader.Models"
+    xmlns:model="using:EEEEReader.ViewModels"
     mc:Ignorable="d">
 
     <Page.Resources>
@@ -18,7 +18,7 @@
             <ItemsStackPanel Orientation="Vertical" HorizontalAlignment="Left" />
         </ItemsPanelTemplate>
 
-        <DataTemplate x:Key="GridItemTemplate" x:DataType="model:Livre">
+        <DataTemplate x:Key="GridItemTemplate" x:DataType="model:LivreViewModel">
             <StackPanel
                 Padding="10"
                 Orientation="Vertical"
@@ -34,7 +34,8 @@
             </StackPanel>
         </DataTemplate>
 
-        <DataTemplate x:Key="ListItemTemplate" x:DataType="model:Livre" >
+        <!-- TODO: à cause du datatype LivreViewModel, on essai de mettre des livres (de CurrentUtilisateur.Librairie.Livres) dans un ViewModel -- ce qui ne marche pas -->
+        <DataTemplate x:Key="ListItemTemplate" x:DataType="model:LivreViewModel" >
             <Border BorderBrush="{ThemeResource CardStrokeColorDefaultBrush}" 
                     BorderThickness="2,2,2,2"
                     CornerRadius="8"

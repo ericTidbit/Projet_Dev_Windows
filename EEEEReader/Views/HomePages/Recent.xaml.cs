@@ -1,7 +1,7 @@
 using EEEEReader.ViewModels.Pages;
 using EEEEReader.Views.HomePages;
 using EEEEReader.Views;
-using EEEEReader.Models;
+using EEEEReader.Data.Models;
 using EEEEReader.ViewModels.Pages;
 using Microsoft.UI.Xaml;
 using Microsoft.UI.Xaml.Controls;
@@ -51,7 +51,7 @@ public sealed partial class Recent : Page
     }
     private void OnItemClick(object sender, ItemClickEventArgs e)
     {
-        App.AppReader.CurrentLivre = (EEEEReader.Models.Livre)e.ClickedItem;
+        App.AppReader.CurrentLivreViewModel.Livre = (EEEEReader.Data.Models.Livre)e.ClickedItem;
         this.Frame?.Navigate(typeof(EEEEReader.Views.PreviewPage));
     }
     

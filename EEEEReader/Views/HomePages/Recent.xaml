@@ -5,7 +5,7 @@
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
     xmlns:local="using:EEEEReader.Views"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
-    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" xmlns:model="using:EEEEReader.Models"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" xmlns:model="using:EEEEReader.ViewModels"
     mc:Ignorable="d">
 
     <Page.Resources>
@@ -17,7 +17,7 @@
             <ItemsStackPanel Orientation="Vertical" HorizontalAlignment="Left" />
         </ItemsPanelTemplate>
 
-        <DataTemplate x:Key="GridItemTemplate" x:DataType="model:Livre">
+        <DataTemplate x:Key="GridItemTemplate" x:DataType="model:LivreViewModel">
             <StackPanel
              Padding="10"
              Orientation="Vertical"
@@ -31,7 +31,7 @@
             </StackPanel>
         </DataTemplate>
 
-        <DataTemplate x:Key="ListItemTemplate" x:DataType="model:Livre" >
+        <DataTemplate x:Key="ListItemTemplate" x:DataType="model:LivreViewModel" >
             <Border BorderBrush="{ThemeResource CardStrokeColorDefaultBrush}" 
                  BorderThickness="2,2,2,2"
                  CornerRadius="8"

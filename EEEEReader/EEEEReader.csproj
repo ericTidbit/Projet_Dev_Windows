@@ -44,6 +44,9 @@
   <ItemGroup>
     <Folder Include="ViewModels\Pages\" />
   </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\EEEEReader.Data\EEEEReader.Data.csproj" />
+  </ItemGroup>
 
   <!--
     Defining the "HasPackageAndPublishMenuAddedByProject" property here allows the Solution

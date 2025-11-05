@@ -1,6 +1,7 @@
+using EEEEReader.ViewModels;
 using EEEEReader.ViewModels.Pages;
-using EEEEReader.Views.HomePages;
 using EEEEReader.Views;
+using EEEEReader.Views.HomePages;
 using Microsoft.UI.Windowing;
 using Microsoft.UI.Xaml;
 using Microsoft.UI.Xaml.Controls;
@@ -18,10 +19,10 @@ using System.IO;
 using System.Linq;
 using System.Runtime.InteropServices.WindowsRuntime;
 using System.Threading.Tasks;
+using Windows.Devices.Display.Core;
 using Windows.Foundation;
 using Windows.Foundation.Collections;
 using WinRT.Interop;
-using Windows.Devices.Display.Core;
 // To learn more about WinUI, the WinUI project structure,
 // and more about our project templates, see: http://aka.ms/winui-project-info.
 
@@ -35,7 +36,8 @@ public sealed partial class Biblio : Page
     public Biblio()
     {
         InitializeComponent();
-        BiblioGridView.ItemsSource = App.AppReader.CurrentUser.Librairie.Livres;
+        // Wrap chaque livre avec un LivreViewModel pour être compatible avec le layout
+        BiblioGridView.ItemsSource = App.AppReader.CurrentUser.Librairie.Livres.Select(livre => new LivreViewModel(livre)).ToList(); 
         this.DataContext = this;
         applyLayout();
     }
@@ -77,7 +79,7 @@ public sealed partial class Biblio : Page
 
     private void OnItemClick(object sender, ItemClickEventArgs e)
     {
-        App.AppReader.CurrentLivre = (EEEEReader.Models.Livre)e.ClickedItem;
+        App.AppReader.CurrentLivreViewModel.Livre = (EEEEReader.Data.Models.Livre)e.ClickedItem;
         this.Frame?.Navigate(typeof(EEEEReader.Views.PreviewPage));
     }
 

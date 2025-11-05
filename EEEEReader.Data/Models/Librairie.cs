@@ -1,5 +1,4 @@
-﻿using Microsoft.UI.Xaml.Documents;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Diagnostics;
@@ -7,9 +6,9 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using VersOne.Epub;
-using Windows.ApplicationModel.Store.Preview.InstallControl;
 
-namespace EEEEReader.Models
+
+namespace EEEEReader.Data.Models
 {
     public class Librairie
     {
@@ -30,7 +29,8 @@ namespace EEEEReader.Models
         }
         public void SupprimerLivre(Livre livre)
         {
-            if (Livres.Contains(livre)) {
+            if (Livres.Contains(livre))
+            {
                 Livres.Remove(livre);
             }
             else

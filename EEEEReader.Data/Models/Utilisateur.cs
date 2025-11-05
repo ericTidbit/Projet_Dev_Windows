@@ -3,8 +3,9 @@ using System.Collections.Generic;
 using System.Security.Cryptography;
 using System.Text;
 
-namespace EEEEReader.Models
+namespace EEEEReader.Data.Models
 {
+    // note: pas dans viewmodel parce que abstract
     public abstract class Utilisateur
     {
         public string Nom { get; set; }
@@ -66,9 +67,6 @@ namespace EEEEReader.Models
                     LivresRecent.Add(livre);
                 }
             }
-            
-
-
         }
     }
 }

@@ -1,71 +1,68 @@
-﻿using EEEEReader.Models;
+﻿using EEEEReader.Data.Models;
 using HtmlAgilityPack;
 using Microsoft.UI.Text;
 using Microsoft.UI.Xaml.Controls;
 using Microsoft.UI.Xaml.Documents;
-using Microsoft.UI.Xaml.Media.Imaging;
 using System;
 using System.Collections.Generic;
-using System.Collections.ObjectModel;
-using System.ComponentModel.Design;
 using System.Diagnostics;
 using System.Linq;
-using System.Runtime.CompilerServices;
 using System.Runtime.InteropServices.WindowsRuntime;
 using System.Text;
 using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 using VersOne.Epub;
-using VersOne.Epub.Options;
 using Windows.Storage.Streams;
 using Windows.UI.Text;
-namespace EEEEReader.Models
+using Microsoft.UI.Text;
+using Microsoft.UI.Xaml.Controls;
+using Microsoft.UI.Xaml.Documents;
+using Microsoft.UI.Xaml.Media.Imaging;
+
+namespace EEEEReader.ViewModels
 {
-    public class Livre
+    public class LivreViewModel : BaseViewModel
     {
-        // temporaire en attendant l'intégration sql
-        // id est également l'index dans la librairie
-        // pas d'id si le livre n'est pas dans une librairie
-        public int? Id { get; set; }
-        // --
-        public EpubContent RawContent { get; set; }
-        public List<HtmlDocument> HtmlContentList { get; set; }
-        public string Titre { get; set; }
-        public string? Auteur { get; set; }
-        public string? Date { get; set; }
-        public string? ISBN { get; set; }
-        public string? Langue { get; set; }
-        public string? Resume { get; set; }
-        public byte[]? CoverRaw { get; set; }
-        public BitmapImage? CoverImage { get; set; }
-        public int CurrentPage { get; set; }
-        public int Pourcentage { get; set; }
+        private Livre _livre;
+        // dépends du UI, donc ne peut être dans le modèle
+        private BitmapImage? _coverImage;
+        // ici pour baisser la complexité de Livre
+        private List<HtmlDocument>? _htmlContentList;
 
-        public Livre(EpubContent content, string Titre, string Auteur = null, string Date = null, string ISBN = null, string Langue = null, string Resume = null, byte[] cover = null)
+        public LivreViewModel(Livre livre)
         {
-            this.RawContent = content;
-            this.HtmlContentList = LoadXamlContent(content);
-            this.Titre = Titre;
-            this.Auteur = Auteur;
-            this.Date = Date;
-            this.ISBN = ISBN;
-            this.Langue = Langue;
-            this.Resume = Resume;
-            this.CoverRaw = cover;
-            this.CoverImage = cover != null ? LoadImageFromByteArray(cover) : null;
+            _livre = livre;
+        }
+        public LivreViewModel(EpubContent content, string Titre, string Auteur = null, string Date = null, string ISBN = null, string Langue = null, string Resume = null, byte[] cover = null)
+        {
+            _livre.RawContent = content;
+            _livre.Titre = Titre;
+            _livre.Auteur = Auteur;
+            _livre.Date = Date;
+            _livre.ISBN = ISBN;
+            _livre.Langue = Langue;
+            _livre.Resume = Resume;
+            _livre.CoverRaw = cover;
+            _livre.CurrentPage = 0;
+            _livre.Pourcentage = 0;
 
-
-            this.CoverImage = LoadImageFromByteArray(cover);
-
-
-            this.CurrentPage = 0;
-            this.Pourcentage = 0;
+            _coverImage = LoadImageFromByteArray(cover);
+            _htmlContentList = LoadXamlContent(content);
         }
 
-
-        public Livre()
-        {
+        public Livre Livre 
+        { 
+            get => _livre; 
+            set => _livre = value;
         }
+        public string Titre => _livre.Titre;
+        public string Auteur => _livre.Auteur;
+        public string Resume => _livre.Resume ?? "Aucun résumé disponible.";
+        public BitmapImage? CoverImage => _coverImage;
+        public List<HtmlDocument> HtmlContentList => _htmlContentList;
+        public int CurrentPage => _livre.CurrentPage;
+        public int Pourcentage => _livre.Pourcentage;
+
 
         // code de Andrei Ashikhmin, https://stackoverflow.com/questions/42523593/convert-byte-to-windows-ui-xaml-media-imaging-bitmapimage
         // modifié
@@ -113,41 +110,41 @@ namespace EEEEReader.Models
         }
         public void pourcentageLivre()
         {
-            this.Pourcentage = ((this.CurrentPage) * 100) / (this.HtmlContentList.Count - 1);
+            _livre.Pourcentage = ((_livre.CurrentPage) * 100) / (_htmlContentList.Count - 1);
 
 
 
         }
         public int NextPage()
         {
-            if (this.CurrentPage < this.HtmlContentList.Count - 1)
+            if (_livre.CurrentPage < _htmlContentList.Count - 1)
             {
-                this.CurrentPage++;
+                _livre.CurrentPage++;
             }
 
-            return this.CurrentPage;
+            return _livre.CurrentPage;
         }
         public int PrevPage()
         {
-            if (this.CurrentPage > 0)
+            if (_livre.CurrentPage > 0)
             {
-                this.CurrentPage--;
+                _livre.CurrentPage--;
             }
 
 
-            return this.CurrentPage;
+            return _livre.CurrentPage;
         }
 
         public bool IsBookFinished()
         {
-            return this.CurrentPage >= this.HtmlContentList.Count - 1;
+            return _livre.CurrentPage >= _htmlContentList.Count - 1;
         }
 
         public RichTextBlock HtmlDocParser(HtmlDocument rawXml)
         {
             RichTextBlock parsedNode = new RichTextBlock();
 
-            List<HtmlNode> childNodes = Livre.FlattenHtmlDocument(rawXml);
+            List<HtmlNode> childNodes = LivreViewModel.FlattenHtmlDocument(rawXml);
 
             foreach (HtmlNode node in childNodes)
             {
@@ -220,7 +217,7 @@ namespace EEEEReader.Models
                     {
                         Paragraph para = new Paragraph();
 
-                        List<Run> styledRuns = Livre.ApplyStyle(node);
+                        List<Run> styledRuns = LivreViewModel.ApplyStyle(node);
 
                         foreach (Run styledRun in styledRuns)
                         {
@@ -238,7 +235,7 @@ namespace EEEEReader.Models
                     {
                         Paragraph para = new Paragraph();
 
-                        List<Run> styledRuns = Livre.ApplyStyle(node, new List<string>() { node.Name });
+                        List<Run> styledRuns = LivreViewModel.ApplyStyle(node, new List<string>() { node.Name });
 
                         foreach (Run styledRun in styledRuns)
                         {
@@ -308,11 +305,11 @@ namespace EEEEReader.Models
 
             if (match.Success)
             {
-                foreach (EpubLocalByteContentFile img in this.RawContent.Images.Local)
+                foreach (EpubLocalByteContentFile img in _livre.RawContent.Images.Local)
                 {
                     if (img.FilePath.EndsWith(match.Value))
                     {
-                        return Livre.LoadImageFromByteArray(img.Content);
+                        return LivreViewModel.LoadImageFromByteArray(img.Content);
                     }
                 }
             }
@@ -325,7 +322,7 @@ namespace EEEEReader.Models
         {
             List<Run> outputRuns = new List<Run>();
 
-            List<HtmlNode> flatRootNode = Livre.FlattenHtmlNode(rootNode);
+            List<HtmlNode> flatRootNode = LivreViewModel.FlattenHtmlNode(rootNode);
             List<string> nextStyleFlags = new List<string>();
 
             if (startFlags != null)
@@ -361,7 +358,7 @@ namespace EEEEReader.Models
                 case "#text":
                     {
 
-                        Run run = new Run { Text = Livre.XmlPatternReplacer(node.InnerText) };
+                        Run run = new Run { Text = LivreViewModel.XmlPatternReplacer(node.InnerText) };
                         if (styleFlags.Contains("em"))
                         {
                             run.FontStyle = FontStyle.Italic;
