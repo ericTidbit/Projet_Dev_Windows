@@ -184,18 +184,19 @@ namespace EEEEReader.Models
             {
                 // TODO: h1, h2, h3, h4, h5, h6
                 // ignorés
-                case "#comment": 
-                case "span": 
-                case "div": 
-                case "meta": 
-                case "style": 
-                case "body": 
-                case "head": 
-                case "html": 
+                case "#comment":
+                case "span":
+                case "div":
+                case "meta":
+                case "style":
+                case "body":
+                case "head":
+                case "html":
+                case "section":
                 // traités dans p
-                case "#text": 
-                case "em": 
-                case "strong": 
+                case "#text":
+                case "em":
+                case "strong":
                     { return null; }
 
                 case "img":
@@ -228,12 +229,30 @@ namespace EEEEReader.Models
 
                         return para;
                     }
+                case "h1":
+                case "h2":
+                case "h3":
+                case "h4":
+                case "h5":
+                case "h6":
+                    {
+                        Paragraph para = new Paragraph();
+
+                        List<Run> styledRuns = Livre.ApplyStyle(node, new List<string>() { node.Name });
+
+                        foreach (Run styledRun in styledRuns)
+                        {
+                            para.Inlines.Add(styledRun);
+                        }
+
+                        return para;
+                    }
                 default:
                     {
                         // Pour debug
                         Paragraph para = new Paragraph();
 
-                        para.Inlines.Add(new Run { Text = "Unsupported node in ParserXmlSwitch -- Node type : " + node.Name + "\n\tRaw xml : " + node.OuterHtml});
+                        para.Inlines.Add(new Run { Text = "Unsupported node in ParserXmlSwitch -- Node type : " + node.Name });
 
                         return para;
                     }
@@ -302,12 +321,17 @@ namespace EEEEReader.Models
 
         }
 
-        public static List<Run> ApplyStyle(HtmlNode rootNode)
+        public static List<Run> ApplyStyle(HtmlNode rootNode, List<string> startFlags = null)
         {
             List<Run> outputRuns = new List<Run>();
 
             List<HtmlNode> flatRootNode = Livre.FlattenHtmlNode(rootNode);
             List<string> nextStyleFlags = new List<string>();
+
+            if (startFlags != null)
+            {
+                nextStyleFlags.AddRange(startFlags);
+            }
 
             foreach (HtmlNode node in flatRootNode)
             {
@@ -336,18 +360,49 @@ namespace EEEEReader.Models
                     { return (null, new List<string>()); }
                 case "#text":
                     {
-                        
+
                         Run run = new Run { Text = Livre.XmlPatternReplacer(node.InnerText) };
                         if (styleFlags.Contains("em"))
                         {
                             run.FontStyle = FontStyle.Italic;
                         }
-                        else if (styleFlags.Contains("strong"))
+                        if (styleFlags.Contains("strong"))
                         {
                             run.FontWeight = FontWeights.Bold;
                         }
+                        // ne peut pas avoir plusieurs headings en même temps
+                        if (styleFlags.Contains("h1"))
+                        {
+                            run.FontSize = 32;
+                            run.FontWeight = FontWeights.Bold;
+                        }
+                        else if (styleFlags.Contains("h2"))
+                        {
+                            run.FontSize = 28;
+                            run.FontWeight = FontWeights.Bold;
+                        }
+                        else if (styleFlags.Contains("h3"))
+                        {
+                            run.FontSize = 24;
+                            run.FontWeight = FontWeights.Bold;
+                        }
+                        else if (styleFlags.Contains("h4"))
+                        {
+                            run.FontSize = 20;
+                            run.FontWeight = FontWeights.Bold;
+                        }
+                        else if (styleFlags.Contains("h5"))
+                        {
+                            run.FontSize = 16;
+                            run.FontWeight = FontWeights.Bold;
+                        }
+                        else if (styleFlags.Contains("h6"))
+                        {
+                            run.FontSize = 14;
+                            run.FontWeight = FontWeights.Bold;
+                        }
 
-                        styleFlags.Clear();
+                        // note: n'enlève pas les flags, les flags sont enlevés par les éléments en block (pas inline)
                         return (run, styleFlags);
                     }
                 case "em":
@@ -358,6 +413,16 @@ namespace EEEEReader.Models
                 case "strong":
                     {
                         styleFlags.Add("strong");
+                        return (null, styleFlags);
+                    }
+                case "h1":
+                case "h2":
+                case "h3":
+                case "h4":
+                case "h5":
+                case "h6":
+                    {
+                        styleFlags.Add(node.Name);
                         return (null, styleFlags);
                     }
                 default:
@@ -380,6 +445,8 @@ namespace EEEEReader.Models
             // format (pattern, remplacement)
             patternMap.Add(@"&amp;", "&");
             patternMap.Add(@"&#160;", "");
+            // ne marche pas rn
+            patternMap.Add(@"<\/?\w*>", "");
 
             foreach (string pattern in patternMap.Keys)
             {
