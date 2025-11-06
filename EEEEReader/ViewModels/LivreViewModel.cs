@@ -14,20 +14,19 @@ using System.Threading.Tasks;
 using VersOne.Epub;
 using Windows.Storage.Streams;
 using Windows.UI.Text;
-using Microsoft.UI.Text;
-using Microsoft.UI.Xaml.Controls;
-using Microsoft.UI.Xaml.Documents;
 using Microsoft.UI.Xaml.Media.Imaging;
+using SixLabors;
+using SixLabors.ImageSharp.PixelFormats;
+using SixLabors.ImageSharp.Processing;
+using Microsoft.UI.Xaml.Media.Animation;
+using System.IO;
+using SixLabors.ImageSharp.Formats.Png;
 
 namespace EEEEReader.ViewModels
 {
     public class LivreViewModel : BaseViewModel
     {
         private Livre _livre;
-        // dépends du UI, donc ne peut être dans le modèle
-        private BitmapImage? _coverImage;
-        // ici pour baisser la complexité de Livre
-        private List<HtmlDocument>? _htmlContentList;
 
         public LivreViewModel(Livre livre)
         {
@@ -43,11 +42,10 @@ namespace EEEEReader.ViewModels
             _livre.Langue = Langue;
             _livre.Resume = Resume;
             _livre.CoverRaw = cover;
+            _livre.CoverImage = LoadImageFromByteArray(cover);
             _livre.CurrentPage = 0;
             _livre.Pourcentage = 0;
-
-            _coverImage = LoadImageFromByteArray(cover);
-            _htmlContentList = LoadXamlContent(content);
+            _livre.HtmlContentList = Librairie.LoadXamlContent(content);
         }
 
         public Livre Livre 
@@ -58,66 +56,28 @@ namespace EEEEReader.ViewModels
         public string Titre => _livre.Titre;
         public string Auteur => _livre.Auteur;
         public string Resume => _livre.Resume ?? "Aucun résumé disponible.";
-        public BitmapImage? CoverImage => _coverImage;
-        public List<HtmlDocument> HtmlContentList => _htmlContentList;
+        public BitmapImage CoverImage => ImageSharpToBitmapImage(_livre.CoverImage);
+        public List<HtmlDocument> HtmlContentList => _livre.HtmlContentList;
         public int CurrentPage => _livre.CurrentPage;
         public int Pourcentage => _livre.Pourcentage;
 
 
-        // code de Andrei Ashikhmin, https://stackoverflow.com/questions/42523593/convert-byte-to-windows-ui-xaml-media-imaging-bitmapimage
-        // modifié
-        // soit cette méthode ne marche pas, ou EpubReader est cooked
-        public static BitmapImage LoadImageFromByteArray(byte[] data)
+        // TODO: est une méthode pour compatibilité avec ancien code -- à corriger plus tard
+        public static SixLabors.ImageSharp.Image LoadImageFromByteArray(byte[] data)
         {
-            if (data == null)
-            {
-                var bmp = new BitmapImage(new Uri("ms-appx:///Assets/Wide310x150Logo.scale-200.png"));
-                return bmp;
-            }
-
-            try
-            {
-                var bmp = new BitmapImage();
-
-                using var stream = new InMemoryRandomAccessStream();
-                stream.WriteAsync(data.AsBuffer()).AsTask().GetAwaiter().GetResult();
-                stream.Seek(0);
-                bmp.SetSource(stream);
-                Debug.WriteLine("Cover image loaded successfully.");
-                return bmp;
-            }
-            catch (Exception ex)
-            {
-                Console.WriteLine($"LoadCoverImage failed: {ex}");
-                return null;
-            }
+            return SixLabors.ImageSharp.Image.Load<Rgba32>(data);
         }
 
-        public List<HtmlDocument> LoadXamlContent(EpubContent rawContent)
-        {
-            List<HtmlDocument> chapterList = new List<HtmlDocument>();
-
-            foreach (EpubLocalTextContentFile chapter in rawContent.Html.Local)
-            {
-                string chapterString = chapter.Content;
-                HtmlDocument chapterHtml = new HtmlDocument();
-                chapterHtml.LoadHtml(chapterString);
-
-                chapterList.Add(chapterHtml);
-            }
-
-            return chapterList;
-        }
         public void pourcentageLivre()
         {
-            _livre.Pourcentage = ((_livre.CurrentPage) * 100) / (_htmlContentList.Count - 1);
+            _livre.Pourcentage = ((_livre.CurrentPage) * 100) / (_livre.HtmlContentList.Count - 1);
 
 
 
         }
         public int NextPage()
         {
-            if (_livre.CurrentPage < _htmlContentList.Count - 1)
+            if (_livre.CurrentPage < _livre.HtmlContentList.Count - 1)
             {
                 _livre.CurrentPage++;
             }
@@ -137,7 +97,7 @@ namespace EEEEReader.ViewModels
 
         public bool IsBookFinished()
         {
-            return _livre.CurrentPage >= _htmlContentList.Count - 1;
+            return _livre.CurrentPage >= _livre.HtmlContentList.Count - 1;
         }
 
         public RichTextBlock HtmlDocParser(HtmlDocument rawXml)
@@ -199,10 +159,16 @@ namespace EEEEReader.ViewModels
                 case "img":
                     {
                         // TODO: livres d'amazon ont des images dupliquées, ignorer les doublons (propriétés data-amznremoved-m8 et data-amznremoved)
-                        Image img = new Image();
-                        img.Source = GetImgFromSrc(node.GetAttributeValue("src", ""));
+                        SixLabors.ImageSharp.Image shImg = GetImgFromSrc(node.GetAttributeValue("src", ""));
                         // TODO: taille dynamique
-                        img.Width = 500;
+                        int Width = 500;
+                        int height = (int)(shImg.Height * (500.0 / shImg.Width));
+
+                        shImg.Mutate(x => x.Resize(Width, height));
+
+                        // convertir ImageSharp à BitmapImage
+                        Image img = new Image();
+                        img.Source = ImageSharpToBitmapImage(shImg);
 
                         // il faut faire le container pour mettre une image dans un paragraphe
                         InlineUIContainer container = new InlineUIContainer();
@@ -299,10 +265,9 @@ namespace EEEEReader.ViewModels
             return flatList;
         }
 
-        public BitmapImage? GetImgFromSrc(string src)
+        public SixLabors.ImageSharp.Image? GetImgFromSrc(string src)
         {
             Match match = Regex.Match(src, @"[^\/]+\.\w\S*");
-
             if (match.Success)
             {
                 foreach (EpubLocalByteContentFile img in _livre.RawContent.Images.Local)
@@ -316,6 +281,19 @@ namespace EEEEReader.ViewModels
 
             return null;
 
+        }
+
+        // à moitié gpt
+        public static BitmapImage ImageSharpToBitmapImage(SixLabors.ImageSharp.Image img)
+        {
+            using MemoryStream ms = new MemoryStream();
+            img.Save(ms, new PngEncoder());
+            ms.Seek(0, SeekOrigin.Begin);
+
+            BitmapImage bitmapImage = new BitmapImage();
+            bitmapImage.SetSource(ms.AsRandomAccessStream());
+
+            return bitmapImage;
         }
 
         public static List<Run> ApplyStyle(HtmlNode rootNode, List<string> startFlags = null)

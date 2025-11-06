@@ -79,7 +79,7 @@ public sealed partial class Biblio : Page
 
     private void OnItemClick(object sender, ItemClickEventArgs e)
     {
-        App.AppReader.CurrentLivreViewModel.Livre = (EEEEReader.Data.Models.Livre)e.ClickedItem;
+        App.AppReader.CurrentLivreViewModel = (EEEEReader.ViewModels.LivreViewModel)e.ClickedItem;
         this.Frame?.Navigate(typeof(EEEEReader.Views.PreviewPage));
     }
 

@@ -34,6 +34,7 @@ public sealed partial class ReadingPage : Page
     {
         InitializeComponent();
         _currentLivreViewModel = App.AppReader.CurrentLivreViewModel;
+        _currentLivre = _currentLivreViewModel.Livre;
         //LoadContent(_currentLivreViewModel.HtmlContentList[_currentLivreViewModel.CurrentPage]);
         LoadEpubContent(_currentLivreViewModel.HtmlContentList[_currentLivre.CurrentPage]);
         UpdateFooter();

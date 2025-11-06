@@ -1,4 +1,6 @@
-﻿using System;
+﻿using HtmlAgilityPack;
+using SixLabors.ImageSharp.PixelFormats;
+using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Diagnostics;
@@ -21,7 +23,7 @@ namespace EEEEReader.Data.Models
         }
         public void AjouterLivre(EpubContent content, string titre, string auteur, string date, string isbn, string langue = "", string resume = "", byte[] cover = null)
         {
-            Livre livre = new Livre(content, titre, auteur, date, isbn, langue, resume, cover);
+            Livre livre = new Livre(content, titre, auteur, date, isbn, langue, resume, cover, SixLabors.ImageSharp.Image.Load<Rgba32>(cover), new List<HtmlDocument>(LoadXamlContent(content)));
             // temporaire en attendant l'intégration sql
             livre.Id = Livres.IndexOf(livre);
             // --
@@ -37,6 +39,21 @@ namespace EEEEReader.Data.Models
             {
                 Debug.WriteLine("il n'est pas dans la liste");
             }
+        }
+        public static List<HtmlDocument> LoadXamlContent(EpubContent rawContent)
+        {
+            List<HtmlDocument> chapterList = new List<HtmlDocument>();
+
+            foreach (EpubLocalTextContentFile chapter in rawContent.Html.Local)
+            {
+                string chapterString = chapter.Content;
+                HtmlDocument chapterHtml = new HtmlDocument();
+                chapterHtml.LoadHtml(chapterString);
+
+                chapterList.Add(chapterHtml);
+            }
+
+            return chapterList;
         }
     }
 }

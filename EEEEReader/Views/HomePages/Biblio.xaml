@@ -34,7 +34,7 @@
             </StackPanel>
         </DataTemplate>
 
-        <!-- TODO: à cause du datatype LivreViewModel, on essai de mettre des livres (de CurrentUtilisateur.Librairie.Livres) dans un ViewModel -- ce qui ne marche pas -->
+        <!-- TODO: à cause du datatype LivreViewModel, on essai de mettre des livres (de CurrentUtilisateur.Librairie.Livres) dans un ViewModel - ce qui ne marche pas -->
         <DataTemplate x:Key="ListItemTemplate" x:DataType="model:LivreViewModel" >
             <Border BorderBrush="{ThemeResource CardStrokeColorDefaultBrush}" 
                     BorderThickness="2,2,2,2"
