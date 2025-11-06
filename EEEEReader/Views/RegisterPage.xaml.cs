@@ -57,5 +57,10 @@ namespace EEEEReader.Views
                 await dialog.ShowAsync();
             }
         }
+
+        private void AnnulerClick(object sender, RoutedEventArgs e)
+        {
+            this.Frame?.Navigate(typeof(LoginPage));
+        }
     }
 }
