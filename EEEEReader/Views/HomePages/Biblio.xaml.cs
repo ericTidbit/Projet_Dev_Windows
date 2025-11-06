@@ -1,3 +1,4 @@
+using EEEEReader.Data.Models;
 using EEEEReader.ViewModels;
 using EEEEReader.ViewModels.Pages;
 using EEEEReader.Views;
@@ -33,11 +34,14 @@ namespace EEEEReader.Views.HomePages;
 /// </summary>
 public sealed partial class Biblio : Page
 {
+    private ObservableCollection<Livre> _livres;
+    private ObservableCollection<LivreViewModel> _livreViewModels;
     public Biblio()
     {
         InitializeComponent();
         // Wrap chaque livre avec un LivreViewModel pour être compatible avec le layout
-        BiblioGridView.ItemsSource = App.AppReader.CurrentUser.Librairie.Livres.Select(livre => new LivreViewModel(livre)).ToList(); 
+        this._livres = App.AppReader.CurrentUser.Librairie.Livres;
+        BiblioGridView.ItemsSource = this._livreViewModels;
         this.DataContext = this;
         applyLayout();
     }
@@ -46,7 +50,7 @@ public sealed partial class Biblio : Page
         string? path = await choisirFichierUtilisateur(App.MainWindow!);
         if (path != null)
         {
-            biblioViewModels extraire = new ViewModels.Pages.biblioViewModels();
+            BiblioViewModels extraire = new ViewModels.Pages.BiblioViewModels();
             bool result = extraire.extraireMetaData(path);
             if (result == false)
             {

@@ -43,9 +43,6 @@
     <PackageReference Include="VersOne.Epub" Version="3.3.4" />
   </ItemGroup>
   <ItemGroup>
-    <Folder Include="ViewModels\Pages\" />
-  </ItemGroup>
-  <ItemGroup>
     <ProjectReference Include="..\EEEEReader.Data\EEEEReader.Data.csproj" />
   </ItemGroup>
 

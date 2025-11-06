@@ -10,10 +10,10 @@ using System.Threading.Tasks;
 using VersOne.Epub;
 namespace EEEEReader.ViewModels.Pages
 {
-    public class biblioViewModels
+    public class BiblioViewModels : MainViewModel
     {
-        /*retourn vrai si le livre est dans un bon format et non si le livre peux pas etre extre */ 
-        public bool extraireMetaData(string Path )
+        /*retourn vrai si le livre est dans un bon format et non si le livre peux pas etre extre */
+        public bool extraireMetaData(string Path)
         {
             try
             {
@@ -22,8 +22,8 @@ namespace EEEEReader.ViewModels.Pages
                 var langue = livremetadata.Schema.Package.Metadata.Languages;
 
                 /* string content, string Titre, string Auteur, string Date, string ISBN, string Langue, string Resume*/
-                
-                /* ajout ISBN a la place de 667*/ 
+
+                /* ajout ISBN a la place de 667*/
                 if (dateee.Count != 0)
                 {
                     App.AppReader.CurrentUser.Librairie.AjouterLivre(livremetadata.Content, livremetadata.Title, livremetadata.Author, dateee[0].Date, "667", langue[0].Language, livremetadata.Description, livremetadata.CoverImage);
@@ -34,14 +34,11 @@ namespace EEEEReader.ViewModels.Pages
                 }
                 return true;
             }
-            catch {
-                
-                Debug.WriteLine("c'est pas bon ton affaire la ");
+            catch
+            {
+                Debug.WriteLine("c'est INotifyPropertyChangedpas bon ton affaire la ");
                 return false;
-            
-
-        }
-            
+            }
         }
 
     }
