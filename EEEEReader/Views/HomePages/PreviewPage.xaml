@@ -45,6 +45,11 @@
                     Margin="0,10,0,10"
                     Click="LireLivre_Click"
                     Content="Lire le livre" />
+                 <Button
+                        Width="150"
+                        Margin="0,10,0,10"
+                        Click="SuprimmerLivreClick"
+                        Content="Supprimer le livre" />
                 <TextBlock
                     FontSize="24"
                     FontWeight="Bold"

@@ -22,11 +22,13 @@
             <StackPanel
                 Padding="10"
                 Orientation="Vertical"
-                Spacing="10">
+                Spacing="10"
+                AutomationProperties.Name="{x:Bind Titre}">
+                
                 <Image
                     Width="100"
                     Height="150"
-                    Source="{x:Bind CoverImage}" />
+                    Source="{x:Bind CoverImage}"/>
                 <TextBlock FontWeight="Bold" Text="{x:Bind Titre}" />
                 <TextBlock Foreground="{ThemeResource TextFillColorSecondaryBrush}" Text="{x:Bind Auteur}" />
             </StackPanel>
