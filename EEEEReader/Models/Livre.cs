@@ -72,6 +72,8 @@ namespace EEEEReader.Models
         // code de Andrei Ashikhmin, https://stackoverflow.com/questions/42523593/convert-byte-to-windows-ui-xaml-media-imaging-bitmapimage
         // modifié
         // soit cette méthode ne marche pas, ou EpubReader est cooked
+        
+        // mettre dans viewModel
         public static BitmapImage LoadImageFromByteArray(byte[] data)
         {
             if (data == null)
@@ -145,122 +147,9 @@ namespace EEEEReader.Models
             return this.CurrentPage >= this.HtmlContentList.Count - 1;
         }
 
-        public RichTextBlock HtmlDocParser(HtmlDocument rawXml)
-        {
-            RichTextBlock parsedNode = new RichTextBlock();
+        
 
-            List<HtmlNode> childNodes = Livre.FlattenHtmlDocument(rawXml);
-
-            foreach (HtmlNode node in childNodes)
-            {
-                Paragraph? parsedNodeParagraph = ParserXmlSwitch(node);
-
-                if (parsedNodeParagraph != null)
-                {
-                    parsedNode.Blocks.Add(parsedNodeParagraph);
-                }
-            }
-
-            // debug, cause beaucoup de temps de chargement
-            /*
-            Paragraph debugPara = new Paragraph();
-            debugPara.Inlines.Add(new Run { Text = "\n--------- RAW XML ----------\n" + rawXml.Text });
-            Run flatXmlRun = new Run { Text = "\n--------- FLATTENED NODES ----------\n" };
-            foreach (HtmlNode node in childNodes)
-            {
-                flatXmlRun.Text += node.OuterHtml + "\n";
-            }
-            debugPara.Inlines.Add(flatXmlRun);
-            parsedNode.Blocks.Add(debugPara);
-            */
-            // --
-
-            return parsedNode;
-
-        }
-
-        // TODO: extrêmement inefficace, à améliorer
-        public Paragraph? ParserXmlSwitch(HtmlNode node)
-        {
-            switch (node.Name)
-            {
-                // TODO: h1, h2, h3, h4, h5, h6
-                // ignorés
-                case "#comment":
-                case "span":
-                case "div":
-                case "meta":
-                case "style":
-                case "body":
-                case "head":
-                case "html":
-                case "section":
-                // traités dans p
-                case "#text":
-                case "em":
-                case "strong":
-                    { return null; }
-
-                case "img":
-                    {
-                        // TODO: livres d'amazon ont des images dupliquées, ignorer les doublons (propriétés data-amznremoved-m8 et data-amznremoved)
-                        Image img = new Image();
-                        img.Source = GetImgFromSrc(node.GetAttributeValue("src", ""));
-                        // TODO: taille dynamique
-                        img.Width = 500;
-
-                        // il faut faire le container pour mettre une image dans un paragraphe
-                        InlineUIContainer container = new InlineUIContainer();
-                        container.Child = img;
-
-                        Paragraph para = new Paragraph();
-                        para.Inlines.Add(container);
-
-                        return para;
-                    }
-                case "p":
-                    {
-                        Paragraph para = new Paragraph();
-
-                        List<Run> styledRuns = Livre.ApplyStyle(node);
-
-                        foreach (Run styledRun in styledRuns)
-                        {
-                            para.Inlines.Add(styledRun);
-                        }
-
-                        return para;
-                    }
-                case "h1":
-                case "h2":
-                case "h3":
-                case "h4":
-                case "h5":
-                case "h6":
-                    {
-                        Paragraph para = new Paragraph();
-
-                        List<Run> styledRuns = Livre.ApplyStyle(node, new List<string>() { node.Name });
-
-                        foreach (Run styledRun in styledRuns)
-                        {
-                            para.Inlines.Add(styledRun);
-                        }
-
-                        return para;
-                    }
-                default:
-                    {
-                        // Pour debug
-                        Paragraph para = new Paragraph();
-
-                        para.Inlines.Add(new Run { Text = "Unsupported node in ParserXmlSwitch -- Node type : " + node.Name });
-
-                        return para;
-                    }
-            }
-        }
-
+        
         // partiellement généré par copilot
         public static List<HtmlNode> FlattenHtmlDocument(HtmlDocument MainDocument)
         {
@@ -304,24 +193,7 @@ namespace EEEEReader.Models
             return flatList;
         }
 
-        public BitmapImage? GetImgFromSrc(string src)
-        {
-            Match match = Regex.Match(src, @"[^\/]+\.\w\S*");
-
-            if (match.Success)
-            {
-                foreach (EpubLocalByteContentFile img in this.RawContent.Images.Local)
-                {
-                    if (img.FilePath.EndsWith(match.Value))
-                    {
-                        return Livre.LoadImageFromByteArray(img.Content);
-                    }
-                }
-            }
-
-            return null;
-
-        }
+       
 
         public static List<Run> ApplyStyle(HtmlNode rootNode, List<string> startFlags = null)
         {
