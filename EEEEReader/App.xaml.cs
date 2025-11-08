@@ -17,6 +17,7 @@ using Windows.Foundation;
 using Windows.Foundation.Collections;
 using EEEEReader.Models;
 using EEEEReader.Views;
+using EEEEReader.data;
 
 namespace EEEEReader
 {
@@ -35,7 +36,8 @@ namespace EEEEReader
         public App()
         {
             InitializeComponent();
-            AppReader = new Appli();
+            // il faut load le profile le data la :)
+            AppReader = new DataProvider().GetData();
             LoadSavedTheme();
         }
 

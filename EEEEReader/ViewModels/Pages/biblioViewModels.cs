@@ -13,6 +13,9 @@ namespace EEEEReader.ViewModels.Pages
     public class biblioViewModels
     {
         /*retourn vrai si le livre est dans un bon format et non si le livre peux pas etre extre */ 
+
+        // la maniere d'extraire le livre devrait etre dans viewmodel 
+
         public bool extraireMetaData(string Path )
         {
             try

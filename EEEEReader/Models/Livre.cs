@@ -20,6 +20,8 @@ using VersOne.Epub.Options;
 using Windows.Storage.Streams;
 using Windows.UI.Text;
 namespace EEEEReader.Models
+
+// dependance a changer d'endroit :)
 {
     public class Livre
     {
