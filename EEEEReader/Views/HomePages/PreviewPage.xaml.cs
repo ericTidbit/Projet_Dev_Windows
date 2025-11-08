@@ -1,4 +1,5 @@
 using EEEEReader.Models;
+using EEEEReader.Views.HomePages;
 using Microsoft.UI.Xaml;
 using Microsoft.UI.Xaml.Controls;
 using Microsoft.UI.Xaml.Controls.Primitives;
@@ -34,10 +35,21 @@ namespace EEEEReader.Views
 
         public void LireLivre_Click(object sender, RoutedEventArgs e)
         {
+            // changer le nom de la fonction
             if (App.MainWindow?.Content is Frame mainFrame)
             {
                 App.AppReader.CurrentUser.AjouterLivreRecent(App.AppReader.CurrentLivre);
                 mainFrame.Navigate(typeof(ReadingPage));
+            }
+        }
+        public void SuprimmerLivreClick(object sender, RoutedEventArgs e)
+        {
+            if (App.MainWindow?.Content is Frame mainFrame)
+            {
+            
+                App.AppReader.CurrentUser.Librairie.SupprimerLivre(App.AppReader.CurrentLivre);
+                this.Frame?.Navigate(typeof(Biblio));
+
             }
         }
     }

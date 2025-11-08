@@ -2,6 +2,7 @@
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.Diagnostics;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -26,6 +27,16 @@ namespace EEEEReader.Models
             livre.Id = Livres.IndexOf(livre);
             // --
             Livres.Add(livre);
+        }
+        public void SupprimerLivre(Livre livre)
+        {
+            if (Livres.Contains(livre)) {
+                Livres.Remove(livre);
+            }
+            else
+            {
+                Debug.WriteLine("il n'est pas dans la liste");
+            }
         }
     }
 }
