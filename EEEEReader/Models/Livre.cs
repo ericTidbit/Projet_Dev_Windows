@@ -46,6 +46,7 @@ namespace EEEEReader.Models
         public Livre(EpubContent content, string Titre, string Auteur = null, string Date = null, string ISBN = null, string Langue = null, string Resume = null, byte[] cover = null)
         {
             this.RawContent = content;
+            // viewmodel 
             this.HtmlContentList = LoadXamlContent(content);
             this.Titre = Titre;
             this.Auteur = Auteur;
@@ -54,6 +55,7 @@ namespace EEEEReader.Models
             this.Langue = Langue;
             this.Resume = Resume;
             this.CoverRaw = cover;
+            // coverImage va être dans ui ou dans 
             this.CoverImage = cover != null ? LoadImageFromByteArray(cover) : null;
 
 

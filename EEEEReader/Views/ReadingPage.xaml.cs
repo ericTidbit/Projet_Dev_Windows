@@ -67,7 +67,7 @@ public sealed partial class ReadingPage : Page
     {
         RichTextBlock parsedNode = new RichTextBlock();
 
-        List<HtmlNode> childNodes = Livre.FlattenHtmlDocument(rawXml);
+        List<HtmlNode> childNodes = FlattenHtmlDocument(rawXml);
 
         foreach (HtmlNode node in childNodes)
         {
@@ -230,7 +230,7 @@ public sealed partial class ReadingPage : Page
     {
         List<Run> outputRuns = new List<Run>();
 
-        List<HtmlNode> flatRootNode = Livre.FlattenHtmlNode(rootNode);
+        List<HtmlNode> flatRootNode = FlattenHtmlNode(rootNode);
         List<string> nextStyleFlags = new List<string>();
 
         if (startFlags != null)
@@ -269,7 +269,7 @@ public sealed partial class ReadingPage : Page
             case "#text":
                 {
 
-                    Run run = new Run { Text = Livre.XmlPatternReplacer(node.InnerText) };
+                    Run run = new Run { Text = XmlPatternReplacer(node.InnerText) };
                     if (styleFlags.Contains("em"))
                     {
                         run.FontStyle = Windows.UI.Text.FontStyle.Italic;
@@ -316,6 +316,11 @@ public sealed partial class ReadingPage : Page
             case "em":
                 {
                     styleFlags.Add("em");
+                    return (null, styleFlags);
+                }
+            case "ol":
+                {
+                    styleFlags.Add("ol");
                     return (null, styleFlags);
                 }
             case "strong":
