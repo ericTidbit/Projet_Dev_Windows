@@ -1,3 +1,4 @@
+using ABI.System.ComponentModel;
 using EEEEReader.Data.Models;
 using EEEEReader.ViewModels;
 using EEEEReader.ViewModels.Pages;
@@ -16,6 +17,7 @@ using Microsoft.Windows.Storage.Pickers;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.Collections.Specialized;
 using System.IO;
 using System.Linq;
 using System.Runtime.InteropServices.WindowsRuntime;
@@ -41,10 +43,36 @@ public sealed partial class Biblio : Page
         InitializeComponent();
         // Wrap chaque livre avec un LivreViewModel pour être compatible avec le layout
         this._livres = App.AppReader.CurrentUser.Librairie.Livres;
+
+        // prof
+        _livreViewModels = new ObservableCollection<LivreViewModel>();
+        foreach (Livre livre in _livres)
+        {
+            _livreViewModels.Add(new LivreViewModel(livre));
+        }
+
+        _livres.CollectionChanged += Livres_CollectionChanged;
+
         BiblioGridView.ItemsSource = this._livreViewModels;
         this.DataContext = this;
         applyLayout();
     }
+
+    // de la prof
+    private void Livres_CollectionChanged(object? sender, NotifyCollectionChangedEventArgs e)
+    {
+        if (e.Action == NotifyCollectionChangedAction.Add)
+        {
+            if (e.NewItems != null)
+            {
+                foreach (Livre livre in e.NewItems)
+                {
+                    _livreViewModels.Add(new LivreViewModel(livre));
+                }
+            }
+        }
+    }
+
     public async void SelectionFichier(object sender, RoutedEventArgs e)
     {
         string? path = await choisirFichierUtilisateur(App.MainWindow!);
