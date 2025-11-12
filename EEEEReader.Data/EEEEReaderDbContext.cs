@@ -5,6 +5,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using EEEEReader.Data.Models;
+using EEEEReader.Models;
 
 namespace EEEEReader.Data
 {
@@ -14,7 +15,7 @@ namespace EEEEReader.Data
 
         public EEEEReaderDbContext() : base() { }
 
-        public DbSet<Client> Clients { get; set; }
+        public DbSet<Utilisateur> Clients { get; set; }
         public DbSet<Livre> Livres { get; set; }
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)

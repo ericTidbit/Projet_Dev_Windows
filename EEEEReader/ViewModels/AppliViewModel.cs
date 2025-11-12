@@ -1,4 +1,5 @@
 ﻿using EEEEReader.Data.Models;
+using EEEEReader.Models;
 using EEEEReader.Views.HomePages;
 using Microsoft.UI.Xaml;
 using System;

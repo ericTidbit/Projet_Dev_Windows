@@ -18,6 +18,8 @@ using Windows.Foundation.Collections;
 using EEEEReader.ViewModels;
 using EEEEReader.Views;
 using EEEEReader;
+using System.Threading.Tasks;
+using EEEEReader.Models;
 
 namespace EEEEReader
 {
@@ -53,6 +55,7 @@ namespace EEEEReader
 
         protected override void OnLaunched(Microsoft.UI.Xaml.LaunchActivatedEventArgs args)
         {
+
             //creation d'une frame qui est mise dans l'app 
             var m_window = new MainWindow();
             Frame rootFrame = new Frame();
@@ -65,6 +68,7 @@ namespace EEEEReader
             MainWindow = m_window;
             m_window.Activate();
         }
+        
 
         void OnNavigationFailed(object sender, NavigationFailedEventArgs e)
         {

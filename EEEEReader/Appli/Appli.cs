@@ -5,6 +5,8 @@ using System.Text;
 using System.Threading.Tasks;
 using Windows.Media.Protection.PlayReady;
 using Microsoft.UI.Xaml;
+using EEEEReader.Data.Models;
+using EEEEReader.ViewModels;
 
 namespace EEEEReader.Models
 {
@@ -15,6 +17,7 @@ namespace EEEEReader.Models
         public Livre? CurrentLivre { get; set; }
         public ElementTheme CurrentTheme { get; set; } = ElementTheme.Light; // Default a light
         public bool IsGridLayout { get; set; } = true;
+        public LivreViewModel CurrentLivreViewModel { get; set; }
 
         public Appli()
         {
