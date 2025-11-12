@@ -1,63 +1,42 @@
-﻿using EEEEReader.Data.Models;
-using EEEEReader.ViewModels;
-using Microsoft.UI.Xaml;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Windows.Media.Protection.PlayReady;
+using Microsoft.UI.Xaml;
 
-namespace EEEEReader
+namespace EEEEReader.Models
 {
-    // Note: pas dans EEEEReader.Data parce que c'est l'application en elle même
     public class Appli
     {
-        public List<Client> Clients { get; set; } = new List<Client>();
-        public List<Administrateur> Admins { get; set; } = new List<Administrateur>();
-        public ElementTheme CurrentTheme { get; set; } = ElementTheme.Light; // Default a light
+        public List<Utilisateur> Utilisateurs { get; set; } = new List<Utilisateur>();
         public Utilisateur? CurrentUser { get; set; }
-        public LivreViewModel? CurrentLivreViewModel { get; set; }
+        public Livre? CurrentLivre { get; set; }
+        public ElementTheme CurrentTheme { get; set; } = ElementTheme.Light; // Default a light
         public bool IsGridLayout { get; set; } = true;
 
         public Appli()
         {
             //create test user
-            var admin = new Administrateur("e", "e");
-            Admins.Add(admin);
+            var utilisateur = new Utilisateur("e", "e");
+            Utilisateurs.Add(utilisateur);
         }
-
 
         public void AddClient(string nom, string pwd)
         {
-            var client = new Client(nom, pwd);
-            Clients.Add(client);
+            var user = new Utilisateur(nom, pwd);
+            Utilisateurs.Add(user);
         }
 
-        public void AddAdmin(string nom, string pwd)
-        {
-            var admin = new Administrateur(nom, pwd);
-            Admins.Add(admin);
-        }
 
         public bool CheckLoginClient(string nom, string pwd)
         {
-            foreach (var client in Clients)
+            foreach (var user in Utilisateurs)
             {
-                if (client.Nom == nom && client.VerifierPassword(pwd))
+                if (user.Nom == nom && user.VerifierPassword(pwd))
                 {
-                    CurrentUser = client;
-                    return true;
-                }
-            }
-            return false;
-        }
-        public bool CheckLoginAdmin(string nom, string pwd)
-        {
-            foreach (var admin in Admins)
-            {
-                if (admin.Nom == nom && admin.VerifierPassword(pwd))
-                {
-                    CurrentUser = admin;
+                    CurrentUser = user;
                     return true;
                 }
             }
