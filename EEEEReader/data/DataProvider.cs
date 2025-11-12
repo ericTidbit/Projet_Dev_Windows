@@ -9,12 +9,11 @@ namespace EEEEReader.data
     public class DataProvider : IDataProvider
     {
         private Appli _application;
-        private List<Client> _clients;
+        private List<Utilisateur> _utilisateurs;
         private List<Livre> _livres;
-
         public DataProvider()
         {
-            _clients = new List<Client>();
+            _utilisateurs = new List<Utilisateur>();
             _livres = new List<Livre>();
             _application = InitialiserDonnees();
         }

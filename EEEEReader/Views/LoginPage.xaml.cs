@@ -22,11 +22,6 @@ namespace EEEEReader.Views
                 this.Frame?.Navigate(typeof(Home));
                 
             }
-            else if (App.AppReader.CheckLoginAdmin(username, password))
-            {
-                this.Frame?.Navigate(typeof(Home));
-                
-            }
             else
             {
                 // clear

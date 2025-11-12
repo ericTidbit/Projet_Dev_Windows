@@ -5,7 +5,7 @@ using System.Text;
 
 namespace EEEEReader.Models
 {
-    public abstract class Utilisateur
+    public class Utilisateur
     {
         public string Nom { get; set; }
 
