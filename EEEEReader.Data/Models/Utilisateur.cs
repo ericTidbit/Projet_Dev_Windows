@@ -10,9 +10,6 @@ namespace EEEEReader.Models
     {
         public int Id { get; set; }
         public string Nom { get; set; }
-
-        private string _pwd;
-
         public List<Livre> LivresRecent { get; set; } = new List<Livre>();
         public string Pwd {  get; set; }
         public Librairie Librairie { get; set; }
