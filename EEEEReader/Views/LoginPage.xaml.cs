@@ -17,7 +17,7 @@ namespace EEEEReader.Views
             string password = PasswordBox.Password;
 
 
-            if (App.AppReader.CheckLoginClient(username, password))
+            if (App.AppReader.CheckLoginUtilisateur(username, password))
             {
                 this.Frame?.Navigate(typeof(Home));
                 

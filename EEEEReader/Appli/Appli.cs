@@ -7,43 +7,41 @@ using Windows.Media.Protection.PlayReady;
 using Microsoft.UI.Xaml;
 using EEEEReader.Data.Models;
 using EEEEReader.ViewModels;
+using EEEEReader.ViewModels.Pages;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace EEEEReader.Models
 {
     public class Appli
     {
-        public List<Utilisateur> Utilisateurs { get; set; } = new List<Utilisateur>();
+        public LoginUtilisateursViewModel LoginViewModel { get; set; }
         public Utilisateur? CurrentUser { get; set; }
         public Livre? CurrentLivre { get; set; }
         public ElementTheme CurrentTheme { get; set; } = ElementTheme.Light; // Default a light
         public bool IsGridLayout { get; set; } = true;
-        public LivreViewModel CurrentLivreViewModel { get; set; }
+        public LivreViewModel? CurrentLivreViewModel { get; set; }
 
         public Appli()
         {
-            //create test user
-            var utilisateur = new Utilisateur("e", "e");
-            Utilisateurs.Add(utilisateur);
+            LoginViewModel = new LoginUtilisateursViewModel();
+            
+            // Create test user
+            LoginViewModel.AddClient("e", "e");
         }
 
         public void AddClient(string nom, string pwd)
         {
-            var user = new Utilisateur(nom, pwd);
-            Utilisateurs.Add(user);
+            LoginViewModel.AddClient(nom, pwd);
         }
 
-
-        public bool CheckLoginClient(string nom, string pwd)
+        public bool CheckLoginUtilisateur(string nom, string pwd)
         {
-            foreach (var user in Utilisateurs)
+            bool result = LoginViewModel.CheckLoginUtilisateur(nom, pwd);
+            if (result)
             {
-                if (user.Nom == nom && user.VerifierPassword(pwd))
-                {
-                    CurrentUser = user;
-                    return true;
-                }
+                CurrentUser = LoginViewModel.CurrentUser?._user;
             }
-            return false;
+            return result;
         }
     }
 }
