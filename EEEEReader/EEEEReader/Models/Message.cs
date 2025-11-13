@@ -26,5 +26,6 @@ namespace EEEEReader.Models
         /// Auteur du message
         /// </summary>
         public string Auteur { get; set; } = string.Empty;
+
     }
 }
