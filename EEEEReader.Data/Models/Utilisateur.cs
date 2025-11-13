@@ -42,9 +42,12 @@ namespace EEEEReader.Models
                     LivresRecent.Add(livre);
                 }
             }
-            
+        }
 
-
+        public bool VerifierPassword(string pwd)
+        {
+            // TODO: faire vraie fonction
+            return true;
         }
     }
 }

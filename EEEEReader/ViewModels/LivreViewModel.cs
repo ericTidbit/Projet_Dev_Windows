@@ -100,5 +100,17 @@ namespace EEEEReader.ViewModels
             return _livre.CurrentPage >= _livre.HtmlContentList.Count - 1;
         }
 
+        // TODO: remove duplicate function in HtmlDocumentToRichTextBlockConverter
+        public static BitmapImage ImageSharpToBitmapImage(SixLabors.ImageSharp.Image img)
+        {
+            using MemoryStream ms = new MemoryStream();
+            img.Save(ms, new PngEncoder());
+            ms.Seek(0, SeekOrigin.Begin);
+
+            BitmapImage bitmapImage = new BitmapImage();
+            bitmapImage.SetSource(ms.AsRandomAccessStream());
+
+            return bitmapImage;
+        }
     }
 }
