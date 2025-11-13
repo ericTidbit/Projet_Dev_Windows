@@ -14,7 +14,8 @@ namespace EEEEReader.ViewModels
 {
     public class UtilisateursViewModel : BaseViewModel
     {
-        private Utilisateur _user;
+        public Utilisateur _user;
+        
         public UtilisateursViewModel(Utilisateur user)
         {
             ObservableCollection<ValidationResult> listeValidations = new ObservableCollection<ValidationResult>();
