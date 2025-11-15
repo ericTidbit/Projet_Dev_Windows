@@ -1,8 +1,7 @@
-﻿using System;
-using System.Collections.Generic;
-using System.IO;
-using System.Linq;
-using System.Runtime.InteropServices.WindowsRuntime;
+﻿using EEEEReader.Data;
+using EEEEReader.Models;
+using EEEEReader.ViewModels;
+using EEEEReader.Views;
 using Microsoft.UI.Xaml;
 using Microsoft.UI.Xaml.Controls;
 using Microsoft.UI.Xaml.Controls.Primitives;
@@ -10,13 +9,16 @@ using Microsoft.UI.Xaml.Data;
 using Microsoft.UI.Xaml.Input;
 using Microsoft.UI.Xaml.Media;
 using Microsoft.UI.Xaml.Navigation;
+using System;
+using System.Collections.Generic;
+using System.IO;
+using System.Linq;
+using System.Runtime.InteropServices.WindowsRuntime;
 using Windows.ApplicationModel;
 using Windows.ApplicationModel.Activation;
 using Windows.Foundation;
 using Windows.Foundation.Collections;
-using EEEEReader.ViewModels;
-using EEEEReader.Views;
-using EEEEReader.Models;
+using EEEEReader.Data;
 
 namespace EEEEReader
 {
@@ -102,6 +104,12 @@ namespace EEEEReader
             {
                 frame.RequestedTheme = theme;
             }
+        }
+        private void InitialiserBaseDeDonnees()
+        {
+            using EEEEReaderDbContext context = new EEEEReaderDbContext();
+            DataSeeder seeder = new DataSeeder(context);
+            seeder.Seed();
         }
     }
 }

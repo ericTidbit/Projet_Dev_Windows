@@ -1,4 +1,6 @@
 ﻿using EEEEReader.Data.Models;
+using EEEEReader.Models;
+using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -15,30 +17,27 @@ namespace EEEEReader.Data
             _context = context;
         }
 
-        public async Task SeedAsync()
+        public void Seed()
         {
             // Ne seed que si BD vide
             if (_context.Livres.Any())
                 return;
 
-            List<Livre> Livres = new List<Livre>
+            List<Utilisateur> utilisateurs = new List<Utilisateur>
             {
-                new Livre(
-                    RawContent: null,
-                    Titre: "Livre exemple",
-                    Auteur: "Auteur exemple",
-                    Date: "2024",
-                    ISBN: "978-0000000000",
-                    Langue: "fr",
-                    Resume: "Résumé exemple",
-                    CoverRaw: null,
-                    CoverImage: null,
-                    HtmlContentList: null
-                )
+                new Utilisateur("e", "e")
+                {
+                    IsAdmin = true
+                },
+                new Utilisateur("test", "test")
+                {
+                    IsAdmin = false
+                }
+
             };
 
-            _context.Livres.AddRange(Livres);
-            await _context.SaveChangesAsync();
+            _context.Utilisateurs.AddRange(utilisateurs);
+            _context.SaveChangesAsync();
         }
     }
 }

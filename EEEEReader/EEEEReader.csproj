@@ -45,6 +45,9 @@
   <ItemGroup>
     <ProjectReference Include="..\EEEEReader.Data\EEEEReader.Data.csproj" />
   </ItemGroup>
+  <ItemGroup>
+    <Folder Include="Appli\" />
+  </ItemGroup>
 
   <!--
     Defining the "HasPackageAndPublishMenuAddedByProject" property here allows the Solution

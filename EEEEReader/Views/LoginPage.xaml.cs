@@ -17,7 +17,7 @@ namespace EEEEReader.Views
             string password = PasswordBox.Password;
 
 
-            if (App.AppReader.CheckLoginUtilisateur(username, password))
+            if (CheckLoginUtilisateur(username, password))
             {
                 this.Frame?.Navigate(typeof(Home));
                 
@@ -39,6 +39,20 @@ namespace EEEEReader.Views
                 await dialog.ShowAsync();
             }
         }
+        // mettre pour que ca respecte le viewmodel Changer
+        public bool CheckLoginUtilisateur(string nom, string pwd)
+        {
+            foreach (var user in App.AppReader.Utilisateurs)
+            {
+                if (user.Nom == nom && user.VerifierPassword(pwd))
+                {
+                    App.AppReader.CurrentUser = user;
+                    return true;
+                }
+            }
+            return false;
+        }
+
 
         private void OnRegisterClick(object sender, RoutedEventArgs e)
         {

@@ -15,8 +15,9 @@ namespace EEEEReader.Data
 
         public EEEEReaderDbContext() : base() { }
 
-        public DbSet<Utilisateur> Clients { get; set; }
+        public DbSet<Utilisateur> Utilisateurs { get; set; }
         public DbSet<Livre> Livres { get; set; }
+        public DbSet<Librairie> Librairies { get; set; }
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {

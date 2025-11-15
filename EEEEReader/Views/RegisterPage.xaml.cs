@@ -1,4 +1,5 @@
 using EEEEReader.Data.Models;
+using EEEEReader.Models;
 using Microsoft.UI.Xaml;
 using Microsoft.UI.Xaml.Controls;
 using System;
@@ -22,7 +23,8 @@ namespace EEEEReader.Views
             {
                 if (password == confirm)
                 {
-                    App.AppReader.AddClient(username, password);
+                    Utilisateur ajouterUtilisateur = new Utilisateur(username, password);
+                    App.AppReader.Utilisateurs.Add(ajouterUtilisateur);
 
                     //retourne au login
                     this.Frame?.Navigate(typeof(LoginPage));
@@ -57,6 +59,7 @@ namespace EEEEReader.Views
                 await dialog.ShowAsync();
             }
         }
+        
 
         private void AnnulerClick(object sender, RoutedEventArgs e)
         {
