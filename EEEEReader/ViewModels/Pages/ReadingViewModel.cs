@@ -1,30 +1,59 @@
 ﻿using EEEEReader.Data.Models;
 using HtmlAgilityPack;
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using System.ComponentModel;
+using System.Runtime.CompilerServices;
 
 namespace EEEEReader.ViewModels.Pages
 {
-    public class ReadingViewModel
+    public class ReadingViewModel : INotifyPropertyChanged
     {
-        private LivreViewModel _currentLivreViewModel { get; set; }
-        private Livre _currentLivre { get; set; }
-        private HtmlDocument _currentHtml {  get; set; }
-        public string FooterText { get; set; }
+        public event PropertyChangedEventHandler? PropertyChanged;
+        private void OnPropertyChanged([CallerMemberName] string? propName = null)
+            => PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propName));
+
+        private LivreViewModel _currentLivreViewModel;
+        private Livre _currentLivre;
+        private HtmlDocument _currentHtml;
+        private string _footerText;
 
         public LivreViewModel currentLivreViewModel => _currentLivreViewModel;
         public Livre currentLivre => _currentLivre;
-        public HtmlDocument CurrentHtml => _currentHtml;
 
-        public ReadingViewModel()
+        public HtmlDocument CurrentHtml
         {
-            _currentLivreViewModel = App.AppReader.CurrentLivreViewModel;
-            _currentLivre = _currentLivreViewModel.Livre;
-            _currentHtml = _currentLivre.HtmlContentList[_currentLivre.CurrentPage];
-            //LoadContent(_currentLivreViewModel.HtmlContentList[_currentLivreViewModel.CurrentPage]);
+            get => _currentHtml;
+            private set
+            {
+                if (_currentHtml != value)
+                {
+                    _currentHtml = value;
+                    OnPropertyChanged();
+                }
+            }
+        }
+
+        public string FooterText
+        {
+            get => _footerText;
+            private set
+            {
+                if (_footerText != value)
+                {
+                    _footerText = value;
+                    OnPropertyChanged();
+                }
+            }
+        }
+
+        public ReadingViewModel(LivreViewModel livreViewModel)
+        {
+            _currentLivreViewModel = livreViewModel ?? throw new ArgumentNullException(nameof(livreViewModel));
+            _currentLivre = _currentLivreViewModel.Livre
+                            ?? throw new ArgumentNullException(nameof(_currentLivreViewModel.Livre));
+
+            CurrentHtml = _currentLivre.HtmlContentList[_currentLivre.CurrentPage];
+            UpdateFooter();
         }
 
         public void UpdateFooter()
@@ -35,13 +64,15 @@ namespace EEEEReader.ViewModels.Pages
         public void NextPage()
         {
             _currentLivreViewModel?.NextPage();
-            _currentHtml = _currentLivre.HtmlContentList[_currentLivre.CurrentPage];
+            CurrentHtml = _currentLivre.HtmlContentList[_currentLivre.CurrentPage];
+            UpdateFooter();
         }
 
         public void PrevPage()
         {
             _currentLivreViewModel.PrevPage();
-            _currentHtml = _currentLivre.HtmlContentList[_currentLivre.CurrentPage];
+            CurrentHtml = _currentLivre.HtmlContentList[_currentLivre.CurrentPage];
+            UpdateFooter();
         }
     }
 }

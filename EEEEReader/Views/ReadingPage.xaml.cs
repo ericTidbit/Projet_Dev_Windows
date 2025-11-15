@@ -28,11 +28,25 @@ namespace EEEEReader.Views;
 /// </summary>
 public sealed partial class ReadingPage : Page
 {
-    private ReadingViewModel ReadingViewModel {  get; set; }
+    public ReadingViewModel ReadingViewModel { get; set; }
     public ReadingPage()
     {
         InitializeComponent();
-        ReadingViewModel = new ReadingViewModel();
+    }
+    protected override void OnNavigatedTo(NavigationEventArgs e)
+    {
+        base.OnNavigatedTo(e);
+
+        
+        if (e.Parameter is LivreViewModel livreVm)
+        {
+            ReadingViewModel = new ReadingViewModel(livreVm);
+            DataContext = ReadingViewModel;
+        }
+        else
+        {
+            // ici tu peux loguer / debugger si besoin
+        }
     }
 
     public void ButtonPrev_OnClick(object sender, RoutedEventArgs e)

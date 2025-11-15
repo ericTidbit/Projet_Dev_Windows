@@ -51,7 +51,6 @@ public sealed partial class Recent : Page
     }
     private void OnItemClick(object sender, ItemClickEventArgs e)
     {
-        App.AppReader.CurrentLivreViewModel.Livre = (EEEEReader.Data.Models.Livre)e.ClickedItem;
         this.Frame?.Navigate(typeof(EEEEReader.Views.PreviewPage));
     }
     

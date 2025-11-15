@@ -111,8 +111,10 @@ public sealed partial class Biblio : Page
 
     private void OnItemClick(object sender, ItemClickEventArgs e)
     {
-        App.AppReader.CurrentLivreViewModel = (EEEEReader.ViewModels.LivreViewModel)e.ClickedItem;
-        this.Frame?.Navigate(typeof(EEEEReader.Views.PreviewPage));
+        // faut changer ca pour que ca soit pas dans le Appli directement
+        //App.AppReader.CurrentLivreViewModel = (EEEEReader.ViewModels.LivreViewModel)e.ClickedItem;
+        var livreVM = (EEEEReader.ViewModels.LivreViewModel)e.ClickedItem;
+        this.Frame?.Navigate(typeof(EEEEReader.Views.PreviewPage), livreVM);
     }
 
     private void changeLayout(object sender, RoutedEventArgs e)

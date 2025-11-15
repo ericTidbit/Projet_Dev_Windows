@@ -19,7 +19,7 @@ namespace EEEEReader.Models
         public Livre? CurrentLivre { get; set; }
         public bool IsDarkMode { get; set; } = false; // par défaut pas dark mode
         public bool IsGridLayout { get; set; } = true;
-        public LivreViewModel? CurrentLivreViewModel { get; set; }
+        //public LivreViewModel? CurrentLivreViewModel { get; set; }
 
         public Appli()
         {
