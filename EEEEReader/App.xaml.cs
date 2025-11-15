@@ -10,15 +10,12 @@ using Microsoft.UI.Xaml.Data;
 using Microsoft.UI.Xaml.Input;
 using Microsoft.UI.Xaml.Media;
 using Microsoft.UI.Xaml.Navigation;
-using Microsoft.UI.Xaml.Shapes;
 using Windows.ApplicationModel;
 using Windows.ApplicationModel.Activation;
 using Windows.Foundation;
 using Windows.Foundation.Collections;
 using EEEEReader.ViewModels;
 using EEEEReader.Views;
-using EEEEReader;
-using System.Threading.Tasks;
 using EEEEReader.Models;
 
 namespace EEEEReader
@@ -31,10 +28,6 @@ namespace EEEEReader
         public static Window? MainWindow { get; private set; }
         public static Appli AppReader { get; private set; }
 
-        /// <summary>
-        /// Initializes the singleton application object.  This is the first line of authored code
-        /// executed, and as such is the logical equivalent of main() or WinMain().
-        /// </summary>
         public App()
         {
             InitializeComponent();
@@ -42,43 +35,68 @@ namespace EEEEReader
             LoadSavedTheme();
         }
 
+        // Load the saved theme from local settings and set AppReader.IsDarkMode
         private void LoadSavedTheme()
         {
             var localSettings = Windows.Storage.ApplicationData.Current.LocalSettings;
+
             if (localSettings.Values.TryGetValue("AppTheme", out object themeValue))
             {
-                AppReader.CurrentTheme = (string)themeValue == "Dark" 
-                    ? ElementTheme.Dark 
-                    : ElementTheme.Light;
+                var themeString = themeValue as string;
+
+                // true if "Dark", otherwise false (Light)
+                AppReader.IsDarkMode = string.Equals(themeString, "Dark", StringComparison.OrdinalIgnoreCase);
             }
+            else
+            {
+                // Default to light if nothing saved
+                AppReader.IsDarkMode = false;
+            }
+        }
+
+        // Convert boolean to ElementTheme
+        private ElementTheme GetActualTheme()
+        {
+            return AppReader.IsDarkMode ? ElementTheme.Dark : ElementTheme.Light;
         }
 
         protected override void OnLaunched(Microsoft.UI.Xaml.LaunchActivatedEventArgs args)
         {
-
-            //creation d'une frame qui est mise dans l'app 
+            // Create the main window and root frame
             var m_window = new MainWindow();
             Frame rootFrame = new Frame();
             rootFrame.NavigationFailed += OnNavigationFailed;
-                   
-            rootFrame.RequestedTheme = AppReader.CurrentTheme;
-            
+
+            // Apply theme to the frame
+            rootFrame.RequestedTheme = GetActualTheme();
+
+            // Navigate to login page
             rootFrame.Navigate(typeof(LoginPage), args.Arguments);
             m_window.Content = rootFrame;
             MainWindow = m_window;
             m_window.Activate();
         }
-        
 
         void OnNavigationFailed(object sender, NavigationFailedEventArgs e)
         {
             throw new Exception("Failed to load Page " + e.SourcePageType.FullName);
         }
 
-        public static void ChangeTheme(ElementTheme theme)
+        /// <summary>
+        /// Change the theme at runtime using a boolean.
+        /// isDark = true  -> Dark theme
+        /// isDark = false -> Light theme
+        /// </summary>
+        public static void ChangeTheme(bool isDark)
         {
-            AppReader.CurrentTheme = theme;
-            
+            AppReader.IsDarkMode = isDark;
+
+            ElementTheme theme = isDark ? ElementTheme.Dark : ElementTheme.Light;
+
+            // Save the preference
+            var localSettings = Windows.Storage.ApplicationData.Current.LocalSettings;
+            localSettings.Values["AppTheme"] = isDark ? "Dark" : "Light";
+
             // Apply theme to the window's content Frame
             if (MainWindow?.Content is Frame frame)
             {

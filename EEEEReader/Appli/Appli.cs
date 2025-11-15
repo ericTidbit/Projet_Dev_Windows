@@ -17,7 +17,7 @@ namespace EEEEReader.Models
         public LoginUtilisateursViewModel LoginViewModel { get; set; }
         public Utilisateur? CurrentUser { get; set; }
         public Livre? CurrentLivre { get; set; }
-        public ElementTheme CurrentTheme { get; set; } = ElementTheme.Light; // Default a light
+        public bool IsDarkMode { get; set; } = false; // par défaut pas dark mode
         public bool IsGridLayout { get; set; } = true;
         public LivreViewModel? CurrentLivreViewModel { get; set; }
 

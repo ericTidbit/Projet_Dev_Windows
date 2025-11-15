@@ -12,6 +12,7 @@ using Microsoft.UI.Xaml.Data;
 using Microsoft.UI.Xaml.Input;
 using Microsoft.UI.Xaml.Media;
 using Microsoft.UI.Xaml.Navigation;
+using EEEEReader;
 
 // To learn more about WinUI, the WinUI project structure,
 // and more about our project templates, see: http://aka.ms/winui-project-info.
@@ -32,13 +33,13 @@ public sealed partial class Param : Page
     private void LoadThemePreference()
     {
         // True si dark est active
-        ThemeToggle.IsOn = App.AppReader.CurrentTheme == ElementTheme.Dark;
+        ThemeToggle.IsOn = App.AppReader.IsDarkMode;
     }
 
     private void ThemeToggle_Toggled(object sender, RoutedEventArgs e)
     {
         ElementTheme theme = ThemeToggle.IsOn ? ElementTheme.Dark : ElementTheme.Light;
-        App.ChangeTheme(theme);
+        App.ChangeTheme(ThemeToggle.IsOn);
     }
 
     private void Deconnection(object sender, RoutedEventArgs e)
