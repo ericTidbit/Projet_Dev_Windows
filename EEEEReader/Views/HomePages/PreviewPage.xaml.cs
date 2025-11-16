@@ -11,8 +11,10 @@ namespace EEEEReader.Views
     /// An empty page that can be used on its own or navigated to within a Frame.
     /// </summary>
     public sealed partial class PreviewPage : Page
+
     {
-    
+        public UtilisateursViewModel? CurrentUser { get; private set; }
+
         public LivreViewModel PreviewedLivre { get; private set; }
 
         public PreviewPage()
@@ -25,23 +27,23 @@ namespace EEEEReader.Views
         {
             base.OnNavigatedTo(e);
 
-            if (e.Parameter is LivreViewModel livreVm)
-            {
-                PreviewedLivre = livreVm;
+            var data = ((LivreViewModel Livre, UtilisateursViewModel User))e.Parameter;
 
-             
-                DataContext = PreviewedLivre;
-            }
+            PreviewedLivre = data.Livre;
+            CurrentUser = data.User;
+
+            DataContext = PreviewedLivre;
         }
 
         public void LireLivre_Click(object sender, RoutedEventArgs e)
         {
             if (App.MainWindow?.Content is Frame mainFrame && PreviewedLivre is not null)
             {
-           
-                App.AppReader.CurrentUser.AjouterLivreRecent(PreviewedLivre.Livre);
+                
+               
 
-                mainFrame.Navigate(typeof(ReadingPage), PreviewedLivre);
+                //App.AppReader.CurrentUser.AjouterLivreRecent(PreviewedLivre.Livre);
+                mainFrame.Navigate(typeof(ReadingPage), (PreviewedLivre, User: CurrentUser));
             }
         }
 
@@ -49,8 +51,8 @@ namespace EEEEReader.Views
         {
             if (App.MainWindow?.Content is Frame mainFrame && PreviewedLivre is not null)
             {
-                App.AppReader.CurrentUser.Librairie.SupprimerLivre(PreviewedLivre.Livre);
-                this.Frame?.Navigate(typeof(Biblio));
+                CurrentUser.Librairie.SupprimerLivre(PreviewedLivre.Livre);
+                this.Frame?.Navigate(typeof(Biblio), CurrentUser);
             }
         }
     }

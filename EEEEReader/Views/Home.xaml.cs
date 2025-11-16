@@ -76,7 +76,6 @@ namespace EEEEReader.Views
             // entries in the backstack.
             Type preNavPageType = HomeFrame.CurrentSourcePageType;
 
-            // Only navigate if the selected page isn't currently loaded.
             if (navPageType is not null && !Type.Equals(preNavPageType, navPageType))
             {
                 HomeFrame.Navigate(navPageType, CurrentUser, transitionInfo);

@@ -58,7 +58,6 @@ public sealed partial class Biblio : Page
         {
             CurrentUser = user;
 
-            // 🔹 Maintenant on peut utiliser CurrentUser en toute sécurité
             _livres = CurrentUser.Librairie.Livres;
 
             _livreViewModels = new ObservableCollection<LivreViewModel>();
@@ -134,7 +133,7 @@ public sealed partial class Biblio : Page
         // faut changer ca pour que ca soit pas dans le Appli directement
         //App.AppReader.CurrentLivreViewModel = (EEEEReader.ViewModels.LivreViewModel)e.ClickedItem;
         var livreVM = (EEEEReader.ViewModels.LivreViewModel)e.ClickedItem;
-        this.Frame?.Navigate(typeof(EEEEReader.Views.PreviewPage), livreVM);
+        this.Frame?.Navigate(typeof(EEEEReader.Views.PreviewPage), (Livre: livreVM, User: CurrentUser));
     }
 
     private void changeLayout(object sender, RoutedEventArgs e)

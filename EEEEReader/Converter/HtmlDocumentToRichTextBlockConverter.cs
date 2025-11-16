@@ -22,6 +22,7 @@ namespace EEEEReader.Converter
 {
     internal class HtmlDocumentToRichTextBlockConverter : IValueConverter
     {
+        public EpubContent? CurrentContent { get; set; }
         public object Convert(object value, Type targetType, object parameter, string language)
         {
             if (value is HtmlDocument rawXml)
@@ -206,7 +207,8 @@ namespace EEEEReader.Converter
             Match match = Regex.Match(src, @"[^\/]+\.\w\S*");
             if (match.Success)
             {
-                foreach (EpubLocalByteContentFile img in App.AppReader.CurrentLivre.RawContent.Images.Local)
+                //change pour pas utiliser appli directement
+                foreach (EpubLocalByteContentFile img in CurrentContent.Images.Local)
                 {
                     if (img.FilePath.EndsWith(match.Value))
                     {
