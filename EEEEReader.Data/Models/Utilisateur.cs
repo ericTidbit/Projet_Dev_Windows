@@ -25,7 +25,7 @@ namespace EEEEReader.Models
             IsAdmin = false;
         }
 
-        // TODO mettre ça ailleur
+        
         public void AjouterLivreRecent(Livre livre)
         {
             // regarder la logique pour etre certain que tous fonctionne 

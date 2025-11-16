@@ -6,17 +6,25 @@ using System.Linq;
 using System.Security.Cryptography;
 using System.Text;
 using System.Threading.Tasks;
+using Windows.Media.Protection.PlayReady;
 
 namespace EEEEReader.ViewModels.Pages
 {
     public class LoginUtilisateursViewModel : BaseViewModel
     {
         private ObservableCollection<UtilisateursViewModel> _utilisateurs;
+        
         private UtilisateursViewModel? _currentUser;
 
-        public LoginUtilisateursViewModel()
+        private IDataProvider _utilisateurDataProvider;
+
+        public LoginUtilisateursViewModel(IDataProvider utilisateurDataProvider)
         {
+            _utilisateurDataProvider = utilisateurDataProvider
+                                       ?? throw new ArgumentNullException(nameof(utilisateurDataProvider));
+
             _utilisateurs = new ObservableCollection<UtilisateursViewModel>();
+            ChargerUtilisateurs();
         }
 
         public ObservableCollection<UtilisateursViewModel> Utilisateurs
@@ -60,10 +68,15 @@ namespace EEEEReader.ViewModels.Pages
 
         public void AddClient(string nom, string pwd)
         {
+            // ajouter dans 
             string hashedPassword = HashPassword(pwd);
             var utilisateur = new Utilisateur(nom, hashedPassword);
+
+            _utilisateurDataProvider.AjouterUtilisateur(utilisateur);
+
             var utilisateurViewModel = new UtilisateursViewModel(utilisateur);
             Utilisateurs.Add(utilisateurViewModel);
+
         }
 
         private static string HashPassword(string password)
@@ -77,6 +90,17 @@ namespace EEEEReader.ViewModels.Pages
                     builder.Append(b.ToString("x2"));
                 }
                 return builder.ToString();
+            }
+        }
+        public void ChargerUtilisateurs()
+        {
+            _utilisateurs.Clear();
+
+            List<Utilisateur> utilisateursData = _utilisateurDataProvider.GetUtilisateursData();
+
+            foreach (var utilisateur in utilisateursData)
+            {
+                _utilisateurs.Add(new UtilisateursViewModel(utilisateur));
             }
         }
     }

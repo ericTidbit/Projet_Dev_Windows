@@ -2,44 +2,41 @@ using EEEEReader.Data.Models;
 using EEEEReader.Models;
 using System;
 using System.Collections.Generic;
-/*
-// fonctionnalit? de tri va ?tre un select ici qui va le montr?
-namespace EEEEReader.data
+
+namespace EEEEReader.Data
 {
     public class DataProvider : IDataProvider
     {
-        private Appli _application;
-        private List<Utilisateur> _utilisateurs;
-        private List<Livre> _livres;
-        public DataProvider()
+        private readonly List<Utilisateur> _utilisateurs;
+        private readonly List<Livre> _livres;
+
+        public DataProvider(EEEEReaderDbContext dbContext)
         {
             _utilisateurs = new List<Utilisateur>();
             _livres = new List<Livre>();
-            _application = InitialiserDonnees();
+
+            SeedData();
         }
 
-        // permet de r?cup?rer les donn?es (ton application)
-        public Appli GetData()
+        public void AjouterUtilisateur(Utilisateur utilisateur)
         {
-            return _application;
+            if (utilisateur == null)
+                throw new ArgumentNullException(nameof(utilisateur));
+
+            _utilisateurs.Add(utilisateur);
         }
 
-        List<Data> IDataProvider.GetData()
+        // Retourne tous les utilisateurs
+        public List<Utilisateur> GetUtilisateursData()
         {
-            throw new NotImplementedException();
+            return new List<Utilisateur>(_utilisateurs);
         }
 
-        List<Data.Models.Data> IDataProvider.GetData()
+        private void SeedData()
         {
-            throw new NotImplementedException();
-        }
+            _utilisateurs.Add(new Utilisateur("e", "3f79bb7b435b05321651daefd374cdc681dc06faa65e374e38337b88ca046dea") { IsAdmin = true });
+            _utilisateurs.Add(new Utilisateur("test", "test") { IsAdmin = false });
 
-        private Appli InitialiserDonnees()
-        {
-            var app = new Appli();
-            //app.AddClient("test", "ouioui");
-            return app;
         }
     }
 }
-*/

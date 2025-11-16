@@ -1,3 +1,5 @@
+using EEEEReader.Data;
+using EEEEReader.ViewModels.Pages;
 using Microsoft.UI.Xaml;
 using Microsoft.UI.Xaml.Controls;
 using System;
@@ -6,9 +8,15 @@ namespace EEEEReader.Views
 {
     public sealed partial class LoginPage : Page
     {
+        public LoginUtilisateursViewModel ViewModel;
+
         public LoginPage()
         {
             this.InitializeComponent();
+            var dbContext = new EEEEReaderDbContext();
+            var dataProvider = new DataProvider(dbContext);
+            ViewModel = new LoginUtilisateursViewModel(dataProvider);
+            this.DataContext = ViewModel;
         }
 
         private async void OnLoginClick(object sender, RoutedEventArgs e)
@@ -17,7 +25,7 @@ namespace EEEEReader.Views
             string password = PasswordBox.Password;
 
 
-            if (CheckLoginUtilisateur(username, password))
+            if (ViewModel.CheckLoginUtilisateur(username, password))
             {
                 this.Frame?.Navigate(typeof(Home));
                 
@@ -40,6 +48,7 @@ namespace EEEEReader.Views
             }
         }
         // mettre pour que ca respecte le viewmodel Changer
+        /*
         public bool CheckLoginUtilisateur(string nom, string pwd)
         {
             foreach (var user in App.AppReader.Utilisateurs)
@@ -52,6 +61,7 @@ namespace EEEEReader.Views
             }
             return false;
         }
+        */
 
 
         private void OnRegisterClick(object sender, RoutedEventArgs e)
