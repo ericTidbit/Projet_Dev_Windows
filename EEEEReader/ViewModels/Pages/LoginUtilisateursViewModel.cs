@@ -7,6 +7,7 @@ using System.Security.Cryptography;
 using System.Text;
 using System.Threading.Tasks;
 using Windows.Media.Protection.PlayReady;
+using Windows.System;
 
 namespace EEEEReader.ViewModels.Pages
 {
@@ -53,17 +54,18 @@ namespace EEEEReader.ViewModels.Pages
             }
         }
 
-        public bool CheckLoginUtilisateur(string nom, string pwd)
+        public (bool, UtilisateursViewModel?) CheckLoginUtilisateur(string nom, string pwd)
         {
             foreach (var user in Utilisateurs)
             {
                 if (user.Nom == nom && user.VerifierPassword(pwd))
                 {
-                    CurrentUser = user;
-                    return true;
+                    // ici mettre la donné pour que  
+                    _currentUser = user;
+                    return (true,user);
                 }
             }
-            return false;
+            return (false, null);
         }
 
         public void AddClient(string nom, string pwd)

@@ -1,4 +1,5 @@
 using EEEEReader.Data;
+using EEEEReader.ViewModels;
 using EEEEReader.ViewModels.Pages;
 using Microsoft.UI.Xaml;
 using Microsoft.UI.Xaml.Controls;
@@ -24,11 +25,14 @@ namespace EEEEReader.Views
             string username = UserNameBox.Text;
             string password = PasswordBox.Password;
 
-
-            if (ViewModel.CheckLoginUtilisateur(username, password))
+            (bool, UtilisateursViewModel? user) LoginArgument = ViewModel.CheckLoginUtilisateur(username, password);
+            bool succes = LoginArgument.Item1;
+            UtilisateursViewModel? CurrentUser = LoginArgument.Item2;
+            if (LoginArgument.Item1)
             {
-                this.Frame?.Navigate(typeof(Home));
-                
+                // tuple changer juste essayer pour que ca fonctionne :)
+                (bool success, UtilisateursViewModel? user) test = ViewModel.CheckLoginUtilisateur(username, password);
+                this.Frame?.Navigate(typeof(Home), CurrentUser);
             }
             else
             {

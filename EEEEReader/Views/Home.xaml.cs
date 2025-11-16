@@ -1,3 +1,4 @@
+using EEEEReader.ViewModels;
 using Microsoft.UI.Xaml;
 using Microsoft.UI.Xaml.Controls;
 using Microsoft.UI.Xaml.Controls.Primitives;
@@ -26,9 +27,21 @@ namespace EEEEReader.Views
     /// </summary>
     public sealed partial class Home : Page
     {
+
+        public UtilisateursViewModel? CurrentUser { get; private set; }
         public Home()
         {
             InitializeComponent();
+        }
+        // extrait le user parce que il est passé dans un navigue into
+        protected override void OnNavigatedTo(NavigationEventArgs e)
+        {
+            base.OnNavigatedTo(e);
+
+            if (e.Parameter is UtilisateursViewModel user)
+            {
+                CurrentUser = user;
+            }
         }
 
         private void HomeFrame_NavigationFailed(object sender, NavigationFailedEventArgs e)
@@ -66,7 +79,7 @@ namespace EEEEReader.Views
             // Only navigate if the selected page isn't currently loaded.
             if (navPageType is not null && !Type.Equals(preNavPageType, navPageType))
             {
-                HomeFrame.Navigate(navPageType, null, transitionInfo);
+                HomeFrame.Navigate(navPageType, CurrentUser, transitionInfo);
             }
         }
 
@@ -133,7 +146,7 @@ namespace EEEEReader.Views
 
         private void ToReadingPage(object sender, RoutedEventArgs e)
         {
-            this.Frame?.Navigate(typeof(EEEEReader.Views.ReadingPage));
+            this.Frame?.Navigate(typeof(EEEEReader.Views.ReadingPage), CurrentUser);
         }
     }
 }

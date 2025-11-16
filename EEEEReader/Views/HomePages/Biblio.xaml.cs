@@ -1,4 +1,4 @@
-using ABI.System.ComponentModel;
+﻿using ABI.System.ComponentModel;
 using EEEEReader.Data.Models;
 using EEEEReader.ViewModels;
 using EEEEReader.ViewModels.Pages;
@@ -36,27 +36,44 @@ namespace EEEEReader.Views.HomePages;
 /// </summary>
 public sealed partial class Biblio : Page
 {
+    public UtilisateursViewModel? CurrentUser { get; private set; }
     private ObservableCollection<Livre> _livres;
     private ObservableCollection<LivreViewModel> _livreViewModels;
     public Biblio()
     {
         InitializeComponent();
-        // Wrap chaque livre avec un LivreViewModel pour �tre compatible avec le layout
-        this._livres = App.AppReader.CurrentUser.Librairie.Livres;
+        // doesnt load the good thing it should load The dataProvider 
+        // Wrap chaque livre avec un LivreViewModel pour être compatible avec le layout
+
+        //this._livres = App.AppReader.CurrentUser.Librairie.Livres;
 
         // prof
-        _livreViewModels = new ObservableCollection<LivreViewModel>();
-        foreach (Livre livre in _livres)
-        {
-            _livreViewModels.Add(new LivreViewModel(livre));
-        }
-
-        _livres.CollectionChanged += Livres_CollectionChanged;
-
-        BiblioGridView.ItemsSource = this._livreViewModels;
         this.DataContext = this;
-        applyLayout();
     }
+    protected override void OnNavigatedTo(NavigationEventArgs e)
+    {
+        base.OnNavigatedTo(e);
+
+        if (e.Parameter is UtilisateursViewModel user)
+        {
+            CurrentUser = user;
+
+            // 🔹 Maintenant on peut utiliser CurrentUser en toute sécurité
+            _livres = CurrentUser.Librairie.Livres;
+
+            _livreViewModels = new ObservableCollection<LivreViewModel>();
+            foreach (Livre livre in _livres)
+            {
+                _livreViewModels.Add(new LivreViewModel(livre));
+            }
+
+            _livres.CollectionChanged += Livres_CollectionChanged;
+
+            BiblioGridView.ItemsSource = _livreViewModels;
+            applyLayout();
+        }
+    }
+
 
     // de la prof
     private void Livres_CollectionChanged(object? sender, NotifyCollectionChangedEventArgs e)
@@ -76,11 +93,15 @@ public sealed partial class Biblio : Page
     public async void SelectionFichier(object sender, RoutedEventArgs e)
     {
         string? path = await choisirFichierUtilisateur(App.MainWindow!);
-        if (path != null)
+        if (path != null && CurrentUser != null)
         {
-            BiblioViewModels extraire = new ViewModels.Pages.BiblioViewModels();
+            var extraire = new ViewModels.Pages.BiblioViewModels
+            {
+                CurrentUser = CurrentUser
+            };
+
             bool result = extraire.extraireMetaData(path);
-            if (result == false)
+            if (!result)
             {
                 ContentDialog dialog = new ContentDialog()
                 {
@@ -91,10 +112,9 @@ public sealed partial class Biblio : Page
                 };
                 await dialog.ShowAsync();
             }
-
         }
-
     }
+
     public async Task<string?> choisirFichierUtilisateur(Window window)
     {
         var hwnd = WindowNative.GetWindowHandle(window);

@@ -12,6 +12,7 @@ namespace EEEEReader.ViewModels.Pages
 {
     public class BiblioViewModels : MainViewModel
     {
+        public UtilisateursViewModel CurrentUser { get; set; }
         /*retourn vrai si le livre est dans un bon format et non si le livre peux pas etre extre */
         public bool extraireMetaData(string Path)
         {
@@ -26,11 +27,11 @@ namespace EEEEReader.ViewModels.Pages
                 /* ajout ISBN a la place de 667*/
                 if (dateee.Count != 0)
                 {
-                    App.AppReader.CurrentUser.Librairie.AjouterLivre(livremetadata.Content, livremetadata.Title, livremetadata.Author, dateee[0].Date, "667", langue[0].Language, livremetadata.Description, livremetadata.CoverImage);
+                    CurrentUser.Librairie.AjouterLivre(livremetadata.Content, livremetadata.Title, livremetadata.Author, dateee[0].Date, "667", langue[0].Language, livremetadata.Description, livremetadata.CoverImage);
                 }
                 else
                 {
-                    App.AppReader.CurrentUser.Librairie.AjouterLivre(livremetadata.Content, livremetadata.Title, livremetadata.Author, null, "667", langue[0].Language, livremetadata.Description, livremetadata.CoverImage);
+                    CurrentUser.Librairie.AjouterLivre(livremetadata.Content, livremetadata.Title, livremetadata.Author, null, "667", langue[0].Language, livremetadata.Description, livremetadata.CoverImage);
                 }
                 return true;
             }
