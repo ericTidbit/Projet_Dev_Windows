@@ -1,3 +1,4 @@
+using EEEEReader.Data;
 using EEEEReader.Data.Models;
 using EEEEReader.Models;
 using Microsoft.UI.Xaml;
@@ -11,6 +12,8 @@ namespace EEEEReader.Views
         public RegisterPage()
         {
             this.InitializeComponent();
+            var dbContext = new EEEEReaderDbContext();
+            var dataProvider = new DataProvider(dbContext);
         }
 
         private async void OnRegisterClick(object sender, RoutedEventArgs e)
@@ -23,6 +26,7 @@ namespace EEEEReader.Views
             {
                 if (password == confirm)
                 {
+                    // faire la meme chose que pour la mais avec la création 
                     Utilisateur ajouterUtilisateur = new Utilisateur(username, password);
                     App.AppReader.Utilisateurs.Add(ajouterUtilisateur);
 
