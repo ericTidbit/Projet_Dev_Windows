@@ -18,9 +18,6 @@ namespace EEEEReader.Models
 
         public Appli()
         {
-            // la fonction pour ajouter des utilisateur ne fonctionne pas encore 
-            Utilisateur test = new Utilisateur("e", "e");
-            Utilisateurs.Add(test);
 
         }
     }
