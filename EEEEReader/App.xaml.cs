@@ -64,6 +64,7 @@ namespace EEEEReader
 
         protected override void OnLaunched(Microsoft.UI.Xaml.LaunchActivatedEventArgs args)
         {
+            InitialiserBaseDeDonnees();
             // Create the main window and root frame
             var m_window = new MainWindow();
             Frame rootFrame = new Frame();

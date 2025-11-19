@@ -37,7 +37,7 @@ namespace EEEEReader.Data
             };
 
             _context.Utilisateurs.AddRange(utilisateurs);
-            _context.SaveChangesAsync();
+            _context.SaveChanges();
         }
     }
 }
