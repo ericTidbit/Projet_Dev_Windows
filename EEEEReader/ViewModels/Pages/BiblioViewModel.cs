@@ -1,7 +1,9 @@
 ﻿using EEEEReader.Data.Models;
+using EEEEReader.Models;
 using Microsoft.UI.Xaml.Controls;
 using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.Diagnostics;
 using System.IO;
 using System.Linq;
@@ -10,9 +12,17 @@ using System.Threading.Tasks;
 using VersOne.Epub;
 namespace EEEEReader.ViewModels.Pages
 {
-    public class BiblioViewModels : MainViewModel
+    public class BiblioViewModel : MainViewModel
     {
+        private ObservableCollection<Livre> _livres;
+        private ObservableCollection<LivreViewModel> _livreViewModel;
+
+
+        public ObservableCollection<Livre> Livres { get { return _livres; } set { _livres = value; } }
+        public ObservableCollection<LivreViewModel> LivreViewModels { get { return _livreViewModel; } set { _livreViewModel = value; } }
         public UtilisateursViewModel CurrentUser { get; set; }
+
+
         /*retourn vrai si le livre est dans un bon format et non si le livre peux pas etre extre */
         public bool extraireMetaData(string Path)
         {
@@ -40,6 +50,18 @@ namespace EEEEReader.ViewModels.Pages
                 Debug.WriteLine("c'est INotifyPropertyChangedpas bon ton affaire la ");
                 return false;
             }
+        }
+
+        public void SetCurrentUser(UtilisateursViewModel utilisateursViewModel)
+        {
+                    CurrentUser = utilisateursViewModel;
+                    _livres = CurrentUser.Librairie.Livres;
+
+                    _livreViewModel = new ObservableCollection<LivreViewModel>();
+                    foreach (Livre livre in _livres)
+                    {
+                        _livreViewModel.Add(new LivreViewModel(livre));
+                    }
         }
 
     }

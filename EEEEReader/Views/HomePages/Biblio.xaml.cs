@@ -36,9 +36,7 @@ namespace EEEEReader.Views.HomePages;
 /// </summary>
 public sealed partial class Biblio : Page
 {
-    public UtilisateursViewModel? CurrentUser { get; private set; }
-    private ObservableCollection<Livre> _livres;
-    private ObservableCollection<LivreViewModel> _livreViewModels;
+    public BiblioViewModel ViewModel { get; set; }
     public Biblio()
     {
         InitializeComponent();
@@ -49,6 +47,7 @@ public sealed partial class Biblio : Page
 
         // prof
         this.DataContext = this;
+        ViewModel = new BiblioViewModel();
     }
     protected override void OnNavigatedTo(NavigationEventArgs e)
     {
@@ -56,19 +55,9 @@ public sealed partial class Biblio : Page
 
         if (e.Parameter is UtilisateursViewModel user)
         {
-            CurrentUser = user;
-
-            _livres = CurrentUser.Librairie.Livres;
-
-            _livreViewModels = new ObservableCollection<LivreViewModel>();
-            foreach (Livre livre in _livres)
-            {
-                _livreViewModels.Add(new LivreViewModel(livre));
-            }
-
-            _livres.CollectionChanged += Livres_CollectionChanged;
-
-            BiblioGridView.ItemsSource = _livreViewModels;
+            ViewModel.SetCurrentUser(user);
+            BiblioGridView.ItemsSource = ViewModel.LivreViewModels;
+            ViewModel.Livres.CollectionChanged += Livres_CollectionChanged;
             applyLayout();
         }
     }
@@ -83,7 +72,7 @@ public sealed partial class Biblio : Page
             {
                 foreach (Livre livre in e.NewItems)
                 {
-                    _livreViewModels.Add(new LivreViewModel(livre));
+                    ViewModel.LivreViewModels.Add(new LivreViewModel(livre));
                 }
             }
         }
@@ -92,11 +81,11 @@ public sealed partial class Biblio : Page
     public async void SelectionFichier(object sender, RoutedEventArgs e)
     {
         string? path = await choisirFichierUtilisateur(App.MainWindow!);
-        if (path != null && CurrentUser != null)
+        if (path != null && ViewModel.CurrentUser != null)
         {
-            var extraire = new ViewModels.Pages.BiblioViewModels
+            var extraire = new ViewModels.Pages.BiblioViewModel
             {
-                CurrentUser = CurrentUser
+                CurrentUser = ViewModel.CurrentUser
             };
 
             bool result = extraire.extraireMetaData(path);
@@ -133,7 +122,7 @@ public sealed partial class Biblio : Page
         // faut changer ca pour que ca soit pas dans le Appli directement
         //App.AppReader.CurrentLivreViewModel = (EEEEReader.ViewModels.LivreViewModel)e.ClickedItem;
         var livreVM = (EEEEReader.ViewModels.LivreViewModel)e.ClickedItem;
-        this.Frame?.Navigate(typeof(EEEEReader.Views.PreviewPage), (Livre: livreVM, User: CurrentUser));
+        this.Frame?.Navigate(typeof(EEEEReader.Views.PreviewPage), (Livre: livreVM, User: ViewModel.CurrentUser));
     }
 
     private void changeLayout(object sender, RoutedEventArgs e)
