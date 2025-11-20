@@ -1,6 +1,7 @@
 using EEEEReader.Data;
 using EEEEReader.Data.Models;
 using EEEEReader.Models;
+using EEEEReader.ViewModels.Pages;
 using Microsoft.UI.Xaml;
 using Microsoft.UI.Xaml.Controls;
 using System;
@@ -9,28 +10,27 @@ namespace EEEEReader.Views
 {
     public sealed partial class RegisterPage : Page
     {
+        public RegisterViewModel ViewModel;
         public RegisterPage()
         {
             this.InitializeComponent();
             var dbContext = new EEEEReaderDbContext();
             var dataProvider = new DataProvider(dbContext);
+            ViewModel = new RegisterViewModel(dataProvider);
+            this.DataContext = ViewModel;
         }
 
+        // viewModel
         private async void OnRegisterClick(object sender, RoutedEventArgs e)
         {
             string username = UserNameBox.Text;
             string password = PasswordBox.Password;
             string confirm = PasswordConfirmationBox.Password;
-
-            if (username != "" && password != "")
-            {
-                if (password == confirm)
+            bool correcte = ViewModel.RegardeMDP(username, password, confirm);
+            
+                if (correcte)
                 {
-                    // faire la meme chose que pour la mais avec la création 
-                    Utilisateur ajouterUtilisateur = new Utilisateur(username, password);
-                    App.AppReader.Utilisateurs.Add(ajouterUtilisateur);
-
-                    //retourne au login
+                    
                     this.Frame?.Navigate(typeof(LoginPage));
                 }
                 else
@@ -50,19 +50,8 @@ namespace EEEEReader.Views
                     await dialog.ShowAsync();
                 }
             }
-            else
-            {
-                // message d'erreur
-                ContentDialog dialog = new ContentDialog()
-                {
-                    Title = "Erreur",
-                    Content = "Les informations ne peuves pas être vides.",
-                    CloseButtonText = "OK",
-                    XamlRoot = this.Content.XamlRoot
-                };
-                await dialog.ShowAsync();
-            }
-        }
+         
+        
         
 
         private void AnnulerClick(object sender, RoutedEventArgs e)
