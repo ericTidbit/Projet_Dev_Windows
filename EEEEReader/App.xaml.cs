@@ -109,6 +109,7 @@ namespace EEEEReader
         private void InitialiserBaseDeDonnees()
         {
             using EEEEReaderDbContext context = new EEEEReaderDbContext();
+            context.Database.EnsureCreated();
             DataSeeder seeder = new DataSeeder(context);
             seeder.Seed();
         }
