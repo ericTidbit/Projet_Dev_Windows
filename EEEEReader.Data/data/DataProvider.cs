@@ -21,10 +21,12 @@ namespace EEEEReader.Data
 
         public void AjouterUtilisateur(Utilisateur utilisateur)
         {
+            // ne fonctionne pas 
             if (utilisateur == null)
                 throw new ArgumentNullException(nameof(utilisateur));
 
-            _utilisateurs.Add(utilisateur);
+            _dbContext.Utilisateurs.Add(utilisateur);
+            _dbContext.SaveChanges();
         }
 
         public List<Utilisateur> GetUtilisateursData()
