@@ -59,7 +59,7 @@ public sealed partial class Recent : Page
         string? path = await choisirFichierUtilisateur(App.MainWindow!);
         if (path != null)
         {
-            BiblioViewModels extraire = new ViewModels.Pages.BiblioViewModels();
+            BiblioViewModel extraire = new ViewModels.Pages.BiblioViewModel();
             bool result = extraire.extraireMetaData(path);
             if (result == false)
             {
