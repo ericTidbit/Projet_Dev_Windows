@@ -23,21 +23,7 @@ namespace EEEEReader.Data
             if (_context.Livres.Any())
                 return;
 
-            List<Utilisateur> utilisateurs = new List<Utilisateur>
-            {
-                new Utilisateur("e", "3f79bb7b435b05321651daefd374cdc681dc06faa65e374e38337b88ca046dea")
-                {
-                    IsAdmin = true
-                },
-                new Utilisateur("test", "3f79bb7b435b05321651daefd374cdc681dc06faa65e374e38337b88ca046dea")
-                {
-                    IsAdmin = false
-                }
-
-            };
-
-            _context.Utilisateurs.AddRange(utilisateurs);
-            _context.SaveChanges();
+            
         }
     }
 }
