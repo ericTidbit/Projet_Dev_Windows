@@ -36,6 +36,12 @@ namespace EEEEReader.Data
             return _dbContext.Utilisateurs.ToList();
         }
 
+        public void AjouterLivreToUtilisateur(Livre livre, Utilisateur utilisateur)
+        {
+            _dbContext.Livres.Add(livre);
+        }
+        
+        
         private static string HashPassword(string password)
         {
             using (SHA256 sha256 = SHA256.Create())
@@ -49,5 +55,6 @@ namespace EEEEReader.Data
                 return builder.ToString();
             }
         }
+        
     }
 }

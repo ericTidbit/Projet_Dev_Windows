@@ -5,5 +5,6 @@ using System.Collections.Generic;
 public interface IDataProvider
 {
     void AjouterUtilisateur(Utilisateur utilisateur);
+    void AjouterLivreToUtilisateur(Livre livre, Utilisateur utilisateur);
     List<Utilisateur> GetUtilisateursData();
 }

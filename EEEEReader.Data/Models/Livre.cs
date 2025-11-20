@@ -25,6 +25,7 @@ namespace EEEEReader.Data.Models
         // pas d'id si le livre n'est pas dans une librairie
         public int? Id { get; set; }
         // --
+        public byte[] FichierEpub { get; set; }
         public string Titre { get; set; }
         public string? Auteur { get; set; }
         public string? Date { get; set; }
@@ -34,6 +35,8 @@ namespace EEEEReader.Data.Models
         public byte[]? CoverRaw { get; set; }
         public int CurrentPage { get; set; }
         public int Pourcentage { get; set; }
+        public int UtilisateurId { get; set; }
+        
         [NotMapped]
         public EpubContent RawContent { get; set; }
 
@@ -43,8 +46,9 @@ namespace EEEEReader.Data.Models
         [NotMapped]
         public List<HtmlDocument> HtmlContentList { get; set; }
 
-        public Livre(EpubContent RawContent, string Titre, string Auteur, string Date, string ISBN, string Langue, string Resume, byte[] CoverRaw, Image CoverImage, List<HtmlDocument> HtmlContentList)
+        public Livre(byte[] FichierEpubComplet, EpubContent RawContent, string Titre, string Auteur, string Date, string ISBN, string Langue, string Resume, byte[] CoverRaw, Image CoverImage, List<HtmlDocument> HtmlContentList, int utilisateurId)
         {
+            this.FichierEpub = FichierEpubComplet;
             this.RawContent = RawContent;
             this.Titre = Titre;
             this.Auteur = Auteur;
@@ -57,6 +61,7 @@ namespace EEEEReader.Data.Models
             this.CurrentPage = 0;
             this.Pourcentage = 0;
             this.HtmlContentList = HtmlContentList;
+            UtilisateurId = utilisateurId;
         }
     }
 }

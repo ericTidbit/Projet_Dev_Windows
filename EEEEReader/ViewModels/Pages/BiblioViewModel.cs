@@ -5,6 +5,7 @@ using Microsoft.Windows.Storage.Pickers;
 using System;
 using System.Collections.ObjectModel;
 using System.Diagnostics;
+using System.IO;
 using System.Threading.Tasks;
 using VersOne.Epub;
 using WinRT.Interop;
@@ -21,11 +22,19 @@ namespace EEEEReader.ViewModels.Pages
         public UtilisateursViewModel CurrentUser { get; set; }
 
 
-        /*retourn vrai si le livre est dans un bon format et non si le livre peux pas etre extre */
+        // devrais être effectuer a chaque fois lorsque l'utilisateur entre dans biblio
+        
+
+        // lors de la création d'un l'objet est crée en premier ensuite elle va se sauvegarder dans la base de
+        // donc il faut dans la base donnée juste le fichier ainsi que la l'id de l'utilisateur
+        
+        // ensutie pour extraire les metadeta il faut utiliser cette fonction et passé a travers chacun 
+        // des livre possèder par cette utlisateur
         public bool extraireMetaData(string Path)
         {
             try
             {
+                byte[] epubEnByte = File.ReadAllBytes(Path);
                 var livremetadata = EpubReader.ReadBook(Path);
                 var dateee = livremetadata.Schema.Package.Metadata.Dates;
                 var langue = livremetadata.Schema.Package.Metadata.Languages;
@@ -35,11 +44,14 @@ namespace EEEEReader.ViewModels.Pages
                 /* ajout ISBN a la place de 667*/
                 if (dateee.Count != 0)
                 {
-                    CurrentUser.Librairie.AjouterLivre(livremetadata.Content, livremetadata.Title, livremetadata.Author, dateee[0].Date, "667", langue[0].Language, livremetadata.Description, livremetadata.CoverImage);
+                    Livre livre= CurrentUser.Librairie.AjouterLivre(CurrentUser.Id,epubEnByte,livremetadata.Content, livremetadata.Title, livremetadata.Author, dateee[0].Date, "667", langue[0].Language, livremetadata.Description, livremetadata.CoverImage);
+                    
+                
                 }
                 else
                 {
-                    CurrentUser.Librairie.AjouterLivre(livremetadata.Content, livremetadata.Title, livremetadata.Author, null, "667", langue[0].Language, livremetadata.Description, livremetadata.CoverImage);
+                    Livre livre = CurrentUser.Librairie.AjouterLivre(CurrentUser.Id, epubEnByte, livremetadata.Content, livremetadata.Title, livremetadata.Author, null, "667", langue[0].Language, livremetadata.Description, livremetadata.CoverImage);
+                
                 }
                 return true;
             }
@@ -62,7 +74,7 @@ namespace EEEEReader.ViewModels.Pages
             }
         }
 
-        // 100% c'est chatgpt qui a fait cette fonction
+        // non actually c'est stackoverflow 
         public async Task<string?> ChoisirFichierUtilisateur(Window window)
         {
             var hwnd = WindowNative.GetWindowHandle(window);

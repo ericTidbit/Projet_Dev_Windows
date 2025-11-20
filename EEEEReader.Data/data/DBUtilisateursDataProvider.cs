@@ -1,4 +1,5 @@
-﻿using EEEEReader.Models;
+﻿using EEEEReader.Data.Models;
+using EEEEReader.Models;
 using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
@@ -28,6 +29,10 @@ namespace EEEEReader.Data.data
         public List<Utilisateur> GetUtilisateursData()
         {
             return _context.Utilisateurs.ToList();
+        }
+        public void AjouterLivreToUtilisateur(Livre livre, Utilisateur utilisateur) 
+        { 
+            _context.Livres.Add(livre);
         }
     }
 }

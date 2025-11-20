@@ -22,14 +22,20 @@ namespace EEEEReader.Data.Models
             Livres = new ObservableCollection<Livre>();
         
         }
-        public void AjouterLivre(EpubContent content, string titre, string auteur, string date, string isbn, string langue = "", string resume = "", byte[] cover = null)
+        // doit être dans le ViewModel pour process le epub  faudra changer un peu l'architecture mais 
+        // mais ca devrais être correcte 
+        public Livre AjouterLivre(int currentUserId,byte[] EpubToByte, EpubContent content, string titre, string auteur, string date, string isbn, string langue = "", string resume = "", byte[] cover = null)
         {
-            Livre livre = new Livre(content, titre, auteur, date, isbn, langue, resume, cover, SixLabors.ImageSharp.Image.Load<Rgba32>(cover), new List<HtmlDocument>(LoadXamlContent(content)));
+            Livre livre = new Livre(EpubToByte,content, titre, auteur, date, isbn, langue, resume, cover, SixLabors.ImageSharp.Image.Load<Rgba32>(cover), new List<HtmlDocument>(LoadXamlContent(content)),currentUserId );
             // temporaire en attendant l'intégration sql
             livre.Id = Livres.IndexOf(livre);
             // --
+          
             Livres.Add(livre);
+            // devrais changer de place mais en attendant pour que tous fonctionne important
+            return livre;
         }
+
         public void SupprimerLivre(Livre livre)
         {
             if (Livres.Contains(livre))
