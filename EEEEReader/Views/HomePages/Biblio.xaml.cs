@@ -1,31 +1,11 @@
-﻿using ABI.System.ComponentModel;
-using EEEEReader.Data.Models;
+﻿using EEEEReader.Data.Models;
 using EEEEReader.ViewModels;
 using EEEEReader.ViewModels.Pages;
-using EEEEReader.Views;
-using EEEEReader.Views.HomePages;
-using Microsoft.UI.Windowing;
 using Microsoft.UI.Xaml;
 using Microsoft.UI.Xaml.Controls;
-using Microsoft.UI.Xaml.Controls.Primitives;
-using Microsoft.UI.Xaml.Data;
-using Microsoft.UI.Xaml.Input;
-using Microsoft.UI.Xaml.Media;
-using Microsoft.UI.Xaml.Media.Animation;
 using Microsoft.UI.Xaml.Navigation;
-using Microsoft.Windows.Storage.Pickers;
 using System;
-using System.Collections.Generic;
-using System.Collections.ObjectModel;
 using System.Collections.Specialized;
-using System.IO;
-using System.Linq;
-using System.Runtime.InteropServices.WindowsRuntime;
-using System.Threading.Tasks;
-using Windows.Devices.Display.Core;
-using Windows.Foundation;
-using Windows.Foundation.Collections;
-using WinRT.Interop;
 // To learn more about WinUI, the WinUI project structure,
 // and more about our project templates, see: http://aka.ms/winui-project-info.
 
@@ -80,7 +60,7 @@ public sealed partial class Biblio : Page
 
     public async void SelectionFichier(object sender, RoutedEventArgs e)
     {
-        string? path = await choisirFichierUtilisateur(App.MainWindow!);
+        string? path = await ViewModel.ChoisirFichierUtilisateur(App.MainWindow!);
         if (path != null && ViewModel.CurrentUser != null)
         {
             var extraire = new ViewModels.Pages.BiblioViewModel
@@ -103,18 +83,6 @@ public sealed partial class Biblio : Page
         }
     }
 
-    public async Task<string?> choisirFichierUtilisateur(Window window)
-    {
-        var hwnd = WindowNative.GetWindowHandle(window);
-        var winId = Microsoft.UI.Win32Interop.GetWindowIdFromWindow(hwnd);
-        var appWin = AppWindow.GetFromWindowId(winId);
-
-        var picker = new FileOpenPicker(appWin.Id);
-        picker.FileTypeFilter.Add(".epub");
-
-        var file = await picker.PickSingleFileAsync();
-        return file?.Path;
-    }
 
 
     private void OnItemClick(object sender, ItemClickEventArgs e)

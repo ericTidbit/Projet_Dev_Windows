@@ -1,15 +1,13 @@
 ﻿using EEEEReader.Data.Models;
-using EEEEReader.Models;
-using Microsoft.UI.Xaml.Controls;
+using Microsoft.UI.Windowing;
+using Microsoft.UI.Xaml;
+using Microsoft.Windows.Storage.Pickers;
 using System;
-using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Diagnostics;
-using System.IO;
-using System.Linq;
-using System.Text;
 using System.Threading.Tasks;
 using VersOne.Epub;
+using WinRT.Interop;
 namespace EEEEReader.ViewModels.Pages
 {
     public class BiblioViewModel : MainViewModel
@@ -54,14 +52,28 @@ namespace EEEEReader.ViewModels.Pages
 
         public void SetCurrentUser(UtilisateursViewModel utilisateursViewModel)
         {
-                    CurrentUser = utilisateursViewModel;
-                    _livres = CurrentUser.Librairie.Livres;
+            CurrentUser = utilisateursViewModel;
+            _livres = CurrentUser.Librairie.Livres;
 
-                    _livreViewModel = new ObservableCollection<LivreViewModel>();
-                    foreach (Livre livre in _livres)
-                    {
-                        _livreViewModel.Add(new LivreViewModel(livre));
-                    }
+            _livreViewModel = new ObservableCollection<LivreViewModel>();
+            foreach (Livre livre in _livres)
+            {
+                _livreViewModel.Add(new LivreViewModel(livre));
+            }
+        }
+
+        // 100% c'est chatgpt qui a fait cette fonction
+        public async Task<string?> ChoisirFichierUtilisateur(Window window)
+        {
+            var hwnd = WindowNative.GetWindowHandle(window);
+            var winId = Microsoft.UI.Win32Interop.GetWindowIdFromWindow(hwnd);
+            var appWin = AppWindow.GetFromWindowId(winId);
+
+            var picker = new FileOpenPicker(appWin.Id);
+            picker.FileTypeFilter.Add(".epub");
+
+            var file = await picker.PickSingleFileAsync();
+            return file?.Path;
         }
 
     }
