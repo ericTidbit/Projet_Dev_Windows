@@ -38,42 +38,39 @@ namespace EEEEReader.ViewModels.Pages
             _utilisateurDataProvider = utilisateurDataProvider;
         }
 
-        
+
 
 
 
         public bool extraireMetaData(string Path)
         {
-            try
+
+            byte[] epubEnByte = File.ReadAllBytes(Path);
+            var livremetadata = EpubReader.ReadBook(Path);
+            var dateee = livremetadata.Schema.Package.Metadata.Dates;
+            var langue = livremetadata.Schema.Package.Metadata.Languages;
+
+            /* string content, string Titre, string Auteur, string Date, string ISBN, string Langue, string Resume*/
+
+            /* ajout ISBN a la place de 667*/
+            if (dateee.Count != 0)
             {
-                byte[] epubEnByte = File.ReadAllBytes(Path);
-                var livremetadata = EpubReader.ReadBook(Path);
-                var dateee = livremetadata.Schema.Package.Metadata.Dates;
-                var langue = livremetadata.Schema.Package.Metadata.Languages;
+                Livre livre = CurrentUser.Librairie.AjouterLivre(CurrentUser.Id, epubEnByte, livremetadata.Content, livremetadata.Title, livremetadata.Author, dateee[0].Date, "667", langue[0].Language, livremetadata.Description, livremetadata.CoverImage);
 
-                /* string content, string Titre, string Auteur, string Date, string ISBN, string Langue, string Resume*/
-
-                /* ajout ISBN a la place de 667*/
-                if (dateee.Count != 0)
-                {
-                    Livre livre= CurrentUser.Librairie.AjouterLivre(CurrentUser.Id,epubEnByte,livremetadata.Content, livremetadata.Title, livremetadata.Author, dateee[0].Date, "667", langue[0].Language, livremetadata.Description, livremetadata.CoverImage);
-
-                    _utilisateurDataProvider.AjouterLivreToUtilisateur(livre);
-                    return true;
-                }
-                else
-                {
-                    Livre livre = CurrentUser.Librairie.AjouterLivre(CurrentUser.Id, epubEnByte, livremetadata.Content, livremetadata.Title, livremetadata.Author, null, "667", langue[0].Language, livremetadata.Description, livremetadata.CoverImage);
-                    _utilisateurDataProvider.AjouterLivreToUtilisateur(livre);
-                }
+                _utilisateurDataProvider.AjouterLivreToUtilisateur(livre);
                 return true;
             }
-            catch
+            else
             {
-                Debug.WriteLine("c'est INotifyPropertyChangedpas bon ton affaire la ");
-                return false;
+                Livre livre = CurrentUser.Librairie.AjouterLivre(CurrentUser.Id, epubEnByte, livremetadata.Content, livremetadata.Title, livremetadata.Author, null, "667", langue[0].Language, livremetadata.Description, livremetadata.CoverImage);
+                _utilisateurDataProvider.AjouterLivreToUtilisateur(livre);
+                return true;
             }
+            return false;
         }
+           
+                
+
 
         public void SetCurrentUser(UtilisateursViewModel utilisateursViewModel)
         {
