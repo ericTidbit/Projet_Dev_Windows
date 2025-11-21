@@ -34,5 +34,10 @@ namespace EEEEReader.Data.data
         { 
             _context.Livres.Add(livre);
         }
+
+        public void AjouterLivreToUtilisateur(Livre livre)
+        {
+            throw new NotImplementedException();
+        }
     }
 }

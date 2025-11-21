@@ -1,8 +1,10 @@
-using EEEEReader.ViewModels.Pages;
-using EEEEReader.Views.HomePages;
-using EEEEReader.Views;
+using EEEEReader.Data;
 using EEEEReader.Data.Models;
 using EEEEReader.ViewModels.Pages;
+using EEEEReader.ViewModels.Pages;
+using EEEEReader.Views;
+using EEEEReader.Views.HomePages;
+using Microsoft.UI.Windowing;
 using Microsoft.UI.Xaml;
 using Microsoft.UI.Xaml.Controls;
 using Microsoft.UI.Xaml.Controls.Primitives;
@@ -10,6 +12,7 @@ using Microsoft.UI.Xaml.Data;
 using Microsoft.UI.Xaml.Input;
 using Microsoft.UI.Xaml.Media;
 using Microsoft.UI.Xaml.Navigation;
+using Microsoft.Windows.Storage.Pickers;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -19,8 +22,6 @@ using System.Threading.Tasks;
 using Windows.Foundation;
 using Windows.Foundation.Collections;
 using WinRT.Interop;
-using Microsoft.Windows.Storage.Pickers;
-using Microsoft.UI.Windowing;
 
 
 // To learn more about WinUI, the WinUI project structure,
@@ -33,14 +34,22 @@ namespace EEEEReader.Views.HomePages;
 /// </summary>
 public sealed partial class Recent : Page
 {
+    private readonly DataProvider _dataProvider;
+    private IDataProvider dataProvider;
+
     public Livre PreviewedLivre { get; set; }
     public Recent()
     {
         InitializeComponent();
         BiblioGridView.ItemsSource = App.AppReader.CurrentUser.LivresRecent;
+
+        var dbContext = new EEEEReaderDbContext();
+        _dataProvider = new DataProvider(dbContext);
+
         this.DataContext = this;
     }
-    
+
+
 
         public void LireLivre_Click(object sender, RoutedEventArgs e)
     {
@@ -54,12 +63,13 @@ public sealed partial class Recent : Page
         this.Frame?.Navigate(typeof(EEEEReader.Views.PreviewPage));
     }
     
+    // recent ne devrait pas selectionner des chose 
     public async void SelectionFichier(object sender, RoutedEventArgs e)
     {
         string? path = await choisirFichierUtilisateur(App.MainWindow!);
         if (path != null)
         {
-            BiblioViewModel extraire = new ViewModels.Pages.BiblioViewModel();
+            BiblioViewModel extraire = new ViewModels.Pages.BiblioViewModel(dataProvider);
             bool result = extraire.extraireMetaData(path);
             if (result == false)
             {

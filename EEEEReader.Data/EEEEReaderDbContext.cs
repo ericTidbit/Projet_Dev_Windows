@@ -6,6 +6,7 @@ using System.Text;
 using System.Threading.Tasks;
 using EEEEReader.Data.Models;
 using EEEEReader.Models;
+using System.Diagnostics;
 
 namespace EEEEReader.Data
 {
@@ -28,6 +29,7 @@ namespace EEEEReader.Data
                     "EEEEreader", "EEEEReader.db");
 
                 Directory.CreateDirectory(Path.GetDirectoryName(dbPath)!);
+                Debug.WriteLine("path de la db", dbPath);
 
                 optionsBuilder.UseSqlite($"Data Source={dbPath}");
             }

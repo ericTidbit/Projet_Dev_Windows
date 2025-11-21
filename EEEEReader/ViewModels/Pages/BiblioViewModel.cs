@@ -8,6 +8,7 @@ using System.Diagnostics;
 using System.IO;
 using System.Threading.Tasks;
 using VersOne.Epub;
+using Windows.ApplicationModel.Appointments.AppointmentsProvider;
 using WinRT.Interop;
 namespace EEEEReader.ViewModels.Pages
 {
@@ -21,15 +22,26 @@ namespace EEEEReader.ViewModels.Pages
         public ObservableCollection<LivreViewModel> LivreViewModels { get { return _livreViewModel; } set { _livreViewModel = value; } }
         public UtilisateursViewModel CurrentUser { get; set; }
 
+        private IDataProvider _utilisateurDataProvider;
+
 
         // devrais être effectuer a chaque fois lorsque l'utilisateur entre dans biblio
-        
+
 
         // lors de la création d'un l'objet est crée en premier ensuite elle va se sauvegarder dans la base de
         // donc il faut dans la base donnée juste le fichier ainsi que la l'id de l'utilisateur
-        
+
         // ensutie pour extraire les metadeta il faut utiliser cette fonction et passé a travers chacun 
         // des livre possèder par cette utlisateur
+        public BiblioViewModel(IDataProvider utilisateurDataProvider)
+        {
+            _utilisateurDataProvider = utilisateurDataProvider;
+        }
+
+        
+
+
+
         public bool extraireMetaData(string Path)
         {
             try
@@ -45,13 +57,14 @@ namespace EEEEReader.ViewModels.Pages
                 if (dateee.Count != 0)
                 {
                     Livre livre= CurrentUser.Librairie.AjouterLivre(CurrentUser.Id,epubEnByte,livremetadata.Content, livremetadata.Title, livremetadata.Author, dateee[0].Date, "667", langue[0].Language, livremetadata.Description, livremetadata.CoverImage);
-                    
-                
+
+                    _utilisateurDataProvider.AjouterLivreToUtilisateur(livre);
+                    return true;
                 }
                 else
                 {
                     Livre livre = CurrentUser.Librairie.AjouterLivre(CurrentUser.Id, epubEnByte, livremetadata.Content, livremetadata.Title, livremetadata.Author, null, "667", langue[0].Language, livremetadata.Description, livremetadata.CoverImage);
-                
+                    _utilisateurDataProvider.AjouterLivreToUtilisateur(livre);
                 }
                 return true;
             }

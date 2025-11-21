@@ -1,4 +1,5 @@
-﻿using EEEEReader.Data.Models;
+﻿using EEEEReader.Data;
+using EEEEReader.Data.Models;
 using EEEEReader.ViewModels;
 using EEEEReader.ViewModels.Pages;
 using Microsoft.UI.Xaml;
@@ -17,6 +18,8 @@ namespace EEEEReader.Views.HomePages;
 public sealed partial class Biblio : Page
 {
     public BiblioViewModel ViewModel { get; set; }
+    private readonly DataProvider _dataProvider;
+
     public Biblio()
     {
         InitializeComponent();
@@ -26,8 +29,12 @@ public sealed partial class Biblio : Page
         //this._livres = App.AppReader.CurrentUser.Librairie.Livres;
 
         // prof
+        var dbContext = new EEEEReaderDbContext();
+        _dataProvider = new DataProvider(dbContext);  
+
+        this.DataContext = ViewModel;
         this.DataContext = this;
-        ViewModel = new BiblioViewModel();
+        ViewModel = new BiblioViewModel(_dataProvider);
     }
     protected override void OnNavigatedTo(NavigationEventArgs e)
     {
@@ -63,12 +70,10 @@ public sealed partial class Biblio : Page
         string? path = await ViewModel.ChoisirFichierUtilisateur(App.MainWindow!);
         if (path != null && ViewModel.CurrentUser != null)
         {
-            var extraire = new ViewModels.Pages.BiblioViewModel
-            {
-                CurrentUser = ViewModel.CurrentUser
-            };
+            
+            
 
-            bool result = extraire.extraireMetaData(path);
+            bool result = ViewModel.extraireMetaData(path);
             if (!result)
             {
                 ContentDialog dialog = new ContentDialog()

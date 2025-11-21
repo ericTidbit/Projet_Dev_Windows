@@ -36,12 +36,13 @@ namespace EEEEReader.Data
             return _dbContext.Utilisateurs.ToList();
         }
 
-        public void AjouterLivreToUtilisateur(Livre livre, Utilisateur utilisateur)
+        public void AjouterLivreToUtilisateur(Livre livre)
         {
             _dbContext.Livres.Add(livre);
+            _dbContext.SaveChanges();
         }
-        
-        
+
+
         private static string HashPassword(string password)
         {
             using (SHA256 sha256 = SHA256.Create())
