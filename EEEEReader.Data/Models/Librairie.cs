@@ -28,7 +28,6 @@ namespace EEEEReader.Data.Models
         {
             Livre livre = new Livre(EpubToByte,content, titre, auteur, date, isbn, langue, resume, cover, SixLabors.ImageSharp.Image.Load<Rgba32>(cover), new List<HtmlDocument>(LoadXamlContent(content)),currentUserId );
             // temporaire en attendant l'intégration sql
-            livre.Id = Livres.IndexOf(livre);
             // --
           
             Livres.Add(livre);

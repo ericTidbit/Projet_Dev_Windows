@@ -23,7 +23,7 @@ namespace EEEEReader.Data.Models
         // temporaire en attendant l'intégration sql
         // id est également l'index dans la librairie
         // pas d'id si le livre n'est pas dans une librairie
-        public int? Id { get; set; }
+        public int Id { get; set; }
         // --
         public byte[] FichierEpub { get; set; }
         public string Titre { get; set; }
@@ -63,5 +63,6 @@ namespace EEEEReader.Data.Models
             this.HtmlContentList = HtmlContentList;
             UtilisateurId = utilisateurId;
         }
+        
     }
 }
