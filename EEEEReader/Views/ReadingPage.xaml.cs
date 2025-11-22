@@ -47,7 +47,7 @@ public sealed partial class ReadingPage : Page
         DataContext = ReadingViewModel;
         // weird comme code mais permet de donné le livre directement au converte :)
         var converter = (HtmlDocumentToRichTextBlockConverter)this.Resources["HtmlDocumentToRichTextBlockConverter"];
-        converter.CurrentContent = data.Livre.Livre.RawContent;
+        converter.CurrentContent = data.Livre.RawContent;
 
     }
 

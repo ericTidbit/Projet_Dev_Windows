@@ -13,12 +13,12 @@ namespace EEEEReader.ViewModels.Pages
             => PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propName));
 
         private LivreViewModel _currentLivreViewModel;
-        private Livre _currentLivre;
+        private LivreViewModel _currentLivre;
         private HtmlDocument _currentHtml;
         private string _footerText;
 
         public LivreViewModel currentLivreViewModel => _currentLivreViewModel;
-        public Livre currentLivre => _currentLivre;
+        public LivreViewModel currentLivre => _currentLivre;
 
         public HtmlDocument CurrentHtml
         {
@@ -49,8 +49,8 @@ namespace EEEEReader.ViewModels.Pages
         public ReadingViewModel(LivreViewModel livreViewModel)
         {
             _currentLivreViewModel = livreViewModel ?? throw new ArgumentNullException(nameof(livreViewModel));
-            _currentLivre = _currentLivreViewModel.Livre
-                            ?? throw new ArgumentNullException(nameof(_currentLivreViewModel.Livre));
+            _currentLivre = _currentLivreViewModel
+                            ?? throw new ArgumentNullException(nameof(_currentLivreViewModel));
 
             CurrentHtml = _currentLivre.HtmlContentList[_currentLivre.CurrentPage];
             UpdateFooter();

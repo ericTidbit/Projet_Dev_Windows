@@ -73,7 +73,10 @@ namespace EEEEReader.ViewModels
         public string Resume => livremetadata.Description ?? "Aucun résumé disponible.";
         // cover image n'existe pas encore c'est pour ca que ca crée un bug il faut le crée a pratir d'ici
         public BitmapImage CoverImage => ImageSharpToBitmapImage(LoadImageFromByteArray(livremetadata.CoverImage));
-        public List<HtmlDocument> HtmlContentList => _livre.HtmlContentList;
+        // il ne passe pas HtmlContent parce qu'il faut le faire dans le Viewmodel
+        public List<HtmlDocument> HtmlContentList => LoadXamlContent(livremetadata.Content);
+        public EpubContent RawContent { get; set; }
+
         public int CurrentPage => _livre.CurrentPage;
         public int Pourcentage => _livre.Pourcentage;
 
@@ -83,14 +86,29 @@ namespace EEEEReader.ViewModels
         {
             return SixLabors.ImageSharp.Image.Load<Rgba32>(data);
         }
+        public static List<HtmlDocument> LoadXamlContent(EpubContent rawContent)
+        {
+            List<HtmlDocument> chapterList = new List<HtmlDocument>();
+
+            foreach (EpubLocalTextContentFile chapter in rawContent.Html.Local)
+            {
+                string chapterString = chapter.Content;
+                HtmlDocument chapterHtml = new HtmlDocument();
+                chapterHtml.LoadHtml(chapterString);
+
+                chapterList.Add(chapterHtml);
+            }
+
+            return chapterList;
+        }
 
         public void pourcentageLivre()
         {
-            _livre.Pourcentage = ((_livre.CurrentPage) * 100) / (_livre.HtmlContentList.Count - 1);
+            _livre.Pourcentage = ((_livre.CurrentPage) * 100) / (HtmlContentList.Count - 1);
         }
         public int NextPage()
         {
-            if (_livre.CurrentPage < _livre.HtmlContentList.Count - 1)
+            if (_livre.CurrentPage < HtmlContentList.Count - 1)
             {
                 _livre.CurrentPage++;
             }
@@ -110,7 +128,7 @@ namespace EEEEReader.ViewModels
 
         public bool IsBookFinished()
         {
-            return _livre.CurrentPage >= _livre.HtmlContentList.Count - 1;
+            return _livre.CurrentPage >= HtmlContentList.Count - 1;
         }
 
         // TODO: remove duplicate function in HtmlDocumentToRichTextBlockConverter
