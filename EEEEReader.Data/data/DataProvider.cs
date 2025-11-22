@@ -50,7 +50,7 @@ namespace EEEEReader.Data
                 }
 
             }
-            return TousLesLivresDispo;
+            return LivreToUtilisateur;
         }
 
         public void AjouterLivreToUtilisateur(Livre livre)
