@@ -36,11 +36,11 @@ namespace EEEEReader.ViewModels
         {
             _livre = livre;
         }
-        public LivreViewModel(byte[] FichierEpub)
+        public LivreViewModel(Livre livre,byte[] FichierEpub)
         {
             using var ms = new MemoryStream(FichierEpub);
             livremetadata = EpubReader.ReadBook(ms);
-
+            _livre = livre;
         }
         /*
         public LivreViewModel(EpubContent content, string Titre, string Auteur = null, string Date = null, string ISBN = null, string Langue = null, string Resume = null, byte[] cover = null)

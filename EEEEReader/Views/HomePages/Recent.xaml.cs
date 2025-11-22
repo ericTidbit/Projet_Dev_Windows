@@ -67,7 +67,7 @@ public sealed partial class Recent : Page
         List<Livre> livres = _dataProvider.GetUtilisateurLivreData(CurrentUser.Id);
         foreach (Livre LivreNormal in livres)
         {
-            LivreViewModel livreVM = new LivreViewModel(LivreNormal.FichierEpub);
+            LivreViewModel livreVM = new LivreViewModel(LivreNormal, LivreNormal.FichierEpub);
             LivresVM.Add(livreVM);
         }
 
@@ -87,7 +87,9 @@ public sealed partial class Recent : Page
     }
     private void OnItemClick(object sender, ItemClickEventArgs e)
     {
-        this.Frame?.Navigate(typeof(EEEEReader.Views.PreviewPage));
+        var selectedLivre = e.ClickedItem as LivreViewModel;
+        var navigationTuple = (Livre: selectedLivre, CurrentUser: CurrentUser);
+        this.Frame?.Navigate(typeof(EEEEReader.Views.PreviewPage), navigationTuple);
     }
 
 
