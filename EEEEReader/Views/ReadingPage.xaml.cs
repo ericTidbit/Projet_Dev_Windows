@@ -1,4 +1,5 @@
 using EEEEReader.Converter;
+using EEEEReader.Data;
 using EEEEReader.Data.Models;
 using EEEEReader.ViewModels;
 using EEEEReader.ViewModels.Pages;
@@ -31,9 +32,13 @@ public sealed partial class ReadingPage : Page
 {
     public ReadingViewModel ReadingViewModel { get; set; }
     public UtilisateursViewModel? CurrentUser { get; private set; }
+    private readonly DataProvider _dataProvider;
     public ReadingPage()
     {
         InitializeComponent();
+        var dbContext = new EEEEReaderDbContext();
+        _dataProvider = new DataProvider(dbContext);
+        this.DataContext = this;
     }
     protected override void OnNavigatedTo(NavigationEventArgs e)
     {
@@ -42,7 +47,7 @@ public sealed partial class ReadingPage : Page
         var data = ((LivreViewModel Livre, UtilisateursViewModel User))e.Parameter;
 
         
-        ReadingViewModel = new ReadingViewModel(data.Livre);
+        ReadingViewModel = new ReadingViewModel(data.Livre, _dataProvider);
         CurrentUser = data.User;
         DataContext = ReadingViewModel;
         // weird comme code mais permet de donné le livre directement au converte :)

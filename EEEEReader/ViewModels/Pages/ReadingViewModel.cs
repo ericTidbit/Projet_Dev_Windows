@@ -15,11 +15,14 @@ namespace EEEEReader.ViewModels.Pages
         private LivreViewModel _currentLivreViewModel;
         private LivreViewModel _currentLivre;
         private HtmlDocument _currentHtml;
+        private IDataProvider _utilisateurDataProvider;
+
         private string _footerText;
 
         public LivreViewModel currentLivreViewModel => _currentLivreViewModel;
         public LivreViewModel currentLivre => _currentLivre;
 
+        // fonctionnalité pour changé de page
         public HtmlDocument CurrentHtml
         {
             get => _currentHtml;
@@ -46,13 +49,16 @@ namespace EEEEReader.ViewModels.Pages
             }
         }
 
-        public ReadingViewModel(LivreViewModel livreViewModel)
+        public ReadingViewModel(LivreViewModel livreViewModel, IDataProvider utilisateurDataProvider)
         {
+            _utilisateurDataProvider = utilisateurDataProvider;
+
             _currentLivreViewModel = livreViewModel ?? throw new ArgumentNullException(nameof(livreViewModel));
             _currentLivre = _currentLivreViewModel
                             ?? throw new ArgumentNullException(nameof(_currentLivreViewModel));
 
             CurrentHtml = _currentLivre.HtmlContentList[_currentLivre.CurrentPage];
+            _utilisateurDataProvider.ChangerPageDuLivre(_currentLivre.Id);
             UpdateFooter();
         }
 
@@ -65,6 +71,7 @@ namespace EEEEReader.ViewModels.Pages
         {
             _currentLivreViewModel?.NextPage();
             CurrentHtml = _currentLivre.HtmlContentList[_currentLivre.CurrentPage];
+
             UpdateFooter();
         }
 

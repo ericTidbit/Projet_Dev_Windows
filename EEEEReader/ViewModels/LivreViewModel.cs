@@ -67,7 +67,7 @@ namespace EEEEReader.ViewModels
         }
 
         //Livre livre = CurrentUser.Librairie.AjouterLivre(CurrentUser.Id, epubEnByte, livremetadata.Content, livremetadata.Title, livremetadata.Author, dateee[0].Date, "667", langue[0].Language, livremetadata.Description, livremetadata.CoverImage);
-
+        public int Id => _livre.Id;
         public string Titre => livremetadata.Title;
         public string Auteur => livremetadata.Author;
         public string Resume => livremetadata.Description ?? "Aucun résumé disponible.";
@@ -75,7 +75,7 @@ namespace EEEEReader.ViewModels
         public BitmapImage CoverImage => ImageSharpToBitmapImage(LoadImageFromByteArray(livremetadata.CoverImage));
         // il ne passe pas HtmlContent parce qu'il faut le faire dans le Viewmodel
         public List<HtmlDocument> HtmlContentList => LoadXamlContent(livremetadata.Content);
-        public EpubContent RawContent { get; set; }
+        public EpubContent RawContent => livremetadata.Content;
 
         public int CurrentPage => _livre.CurrentPage;
         public int Pourcentage => _livre.Pourcentage;
@@ -121,7 +121,7 @@ namespace EEEEReader.ViewModels
             {
                 _livre.CurrentPage--;
             }
-
+            
 
             return _livre.CurrentPage;
         }
