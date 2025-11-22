@@ -63,8 +63,16 @@ public sealed partial class Recent : Page
     }
     public void ChargerLivreRecent()
     {
+        List<LivreViewModel> LivresVM = new();
         List<Livre> livres = _dataProvider.GetUtilisateurLivreData(CurrentUser.Id);
-        BiblioGridView.ItemsSource = livres;
+        foreach (Livre LivreNormal in livres)
+        {
+            LivreViewModel livreVM = new LivreViewModel(LivreNormal.FichierEpub);
+            LivresVM.Add(livreVM);
+        }
+
+
+        BiblioGridView.ItemsSource = LivresVM;
     }
    
 
