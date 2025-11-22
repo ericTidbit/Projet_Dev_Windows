@@ -1,5 +1,6 @@
 using EEEEReader.Data;
 using EEEEReader.Data.Models;
+using EEEEReader.ViewModels;
 using EEEEReader.ViewModels.Pages;
 using EEEEReader.ViewModels.Pages;
 using EEEEReader.Views;
@@ -34,20 +35,38 @@ namespace EEEEReader.Views.HomePages;
 /// </summary>
 public sealed partial class Recent : Page
 {
+    
     private readonly DataProvider _dataProvider;
-    private IDataProvider dataProvider;
 
     public Livre PreviewedLivre { get; set; }
+    public UtilisateursViewModel? CurrentUser { get; private set; }
+    protected override void OnNavigatedTo(NavigationEventArgs e)
+    {
+        base.OnNavigatedTo(e);
+
+        if (e.Parameter is UtilisateursViewModel user)
+        {
+            CurrentUser = user;
+            ChargerLivreRecent();
+        }
+    }
+
     public Recent()
     {
         InitializeComponent();
-        BiblioGridView.ItemsSource = App.AppReader.CurrentUser.LivresRecent;
-
         var dbContext = new EEEEReaderDbContext();
         _dataProvider = new DataProvider(dbContext);
+        
 
-        this.DataContext = this;
+        // doit être une liste de livre <list>Livre
+        //BiblioGridView.ItemsSource = App.AppReader.CurrentUser.LivresRecent;
     }
+    public void ChargerLivreRecent()
+    {
+        List<Livre> livres = _dataProvider.GetUtilisateurLivreData(CurrentUser.Id);
+        BiblioGridView.ItemsSource = livres;
+    }
+   
 
 
 
@@ -62,14 +81,18 @@ public sealed partial class Recent : Page
     {
         this.Frame?.Navigate(typeof(EEEEReader.Views.PreviewPage));
     }
+
+
     
+
+
     // recent ne devrait pas selectionner des chose 
     public async void SelectionFichier(object sender, RoutedEventArgs e)
     {
         string? path = await choisirFichierUtilisateur(App.MainWindow!);
         if (path != null)
         {
-            BiblioViewModel extraire = new ViewModels.Pages.BiblioViewModel(dataProvider);
+            BiblioViewModel extraire = new ViewModels.Pages.BiblioViewModel(_dataProvider);
             bool result = extraire.extraireMetaData(path);
             if (result == false)
             {

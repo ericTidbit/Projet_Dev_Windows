@@ -30,6 +30,24 @@ namespace EEEEReader.Data.data
         {
             return _context.Utilisateurs.ToList();
         }
+        public List<Livre> GetUtilisateurLivreData(int UtilisateurId)
+        {
+            
+            List<Livre> TousLesLivresDispo = _context.Livres.ToList();
+
+            List<Livre> LivreToUtilisateur = new List<Livre>();
+
+            foreach (Livre livre in TousLesLivresDispo)
+            {
+               if (livre.UtilisateurId == UtilisateurId)
+                {
+                    LivreToUtilisateur.Add(livre);
+                }
+            
+            }
+            return TousLesLivresDispo;
+        }
+
         public void AjouterLivreToUtilisateur(Livre livre, Utilisateur utilisateur) 
         { 
             _context.Livres.Add(livre);

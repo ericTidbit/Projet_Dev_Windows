@@ -25,7 +25,7 @@
                 <Image
                  Width="100"
                  Height="150"
-                 Source="{x:Bind CoverImage}" />
+                 Source="{x:Bind CoverImage, FallbackValue=null}" />
                 <TextBlock FontWeight="Bold" Text="{x:Bind Titre}" />
                 <TextBlock Foreground="{ThemeResource TextFillColorSecondaryBrush}" Text="{x:Bind Auteur}" />
             </StackPanel>
@@ -46,7 +46,7 @@
                      Grid.Column="0"
                      Width="50"
                      Height="75"
-                     Source="{x:Bind CoverImage}" />
+                     Source="{x:Bind CoverImage, FallbackValue=null}" />
                     <StackPanel Grid.Column="1" VerticalAlignment="Center" Spacing="5">
                         <TextBlock FontWeight="Bold" FontSize="16" Text="{x:Bind Titre}" />
                         <TextBlock Foreground="{ThemeResource TextFillColorSecondaryBrush}" Text="{x:Bind Auteur}" />
