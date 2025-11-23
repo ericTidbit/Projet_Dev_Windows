@@ -52,9 +52,10 @@ namespace EEEEReader.Data
             }
             return LivreToUtilisateur;
         }
-        public void ChangerPageDuLivre(int LivreId)
+        public void ChangerPageDuLivre(int LivreId, int NouvellePage)
         {
-            _dbContext.Livres.UpdateRange(_dbContext.Livres.Where(l => l.Id == LivreId));
+            var book = _dbContext.Livres.Single(l => l.Id == LivreId);
+            book.CurrentPage = NouvellePage;
             _dbContext.SaveChanges();
         }
 

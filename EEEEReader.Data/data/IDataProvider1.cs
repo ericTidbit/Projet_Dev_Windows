@@ -7,5 +7,5 @@ public interface IDataProvider
     void AjouterUtilisateur(Utilisateur utilisateur);
     void AjouterLivreToUtilisateur(Livre livre);
     List<Utilisateur> GetUtilisateursData();
-    void ChangerPageDuLivre(int id);
+    void ChangerPageDuLivre(int id, int NouvellePage);
 }

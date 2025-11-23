@@ -58,7 +58,7 @@ namespace EEEEReader.Data.data
             throw new NotImplementedException();
         }
 
-        public void ChangerPageDuLivre(int id)
+        public void ChangerPageDuLivre(int id, int NouvellePage)
         {
             throw new NotImplementedException();
         }

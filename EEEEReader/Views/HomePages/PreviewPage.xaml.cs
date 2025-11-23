@@ -32,7 +32,6 @@ namespace EEEEReader.Views
             PreviewedLivre = data.Livre;
             CurrentUser = data.User;
 
-            DataContext = PreviewedLivre;
         }
 
         public void LireLivre_Click(object sender, RoutedEventArgs e)

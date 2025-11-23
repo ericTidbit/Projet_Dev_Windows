@@ -58,7 +58,6 @@ namespace EEEEReader.ViewModels.Pages
                             ?? throw new ArgumentNullException(nameof(_currentLivreViewModel));
 
             CurrentHtml = _currentLivre.HtmlContentList[_currentLivre.CurrentPage];
-            _utilisateurDataProvider.ChangerPageDuLivre(_currentLivre.Id);
             UpdateFooter();
         }
 
@@ -71,7 +70,7 @@ namespace EEEEReader.ViewModels.Pages
         {
             _currentLivreViewModel?.NextPage();
             CurrentHtml = _currentLivre.HtmlContentList[_currentLivre.CurrentPage];
-
+            _utilisateurDataProvider.ChangerPageDuLivre(_currentLivre.Id, _currentLivre.CurrentPage);
             UpdateFooter();
         }
 
