@@ -29,9 +29,13 @@ namespace EEEEReader
     {
         public static Window? MainWindow { get; private set; }
         public static Appli AppReader { get; private set; }
-
+        public static EEEEReaderDbContext DbContext { get; private set; }
+        public static DataProvider DataProvider { get; private set; }
         public App()
         {
+
+            DbContext = new EEEEReaderDbContext();
+            DataProvider = new DataProvider(DbContext);
             InitializeComponent();
             AppReader = new Appli();
             LoadSavedTheme();

@@ -55,8 +55,7 @@ public sealed partial class Recent : Page
     {
         InitializeComponent();
         var dbContext = new EEEEReaderDbContext();
-        _dataProvider = new DataProvider(dbContext);
-        
+        _dataProvider = App.DataProvider;
 
         // doit être une liste de livre <list>Livre
         //BiblioGridView.ItemsSource = App.AppReader.CurrentUser.LivresRecent;
