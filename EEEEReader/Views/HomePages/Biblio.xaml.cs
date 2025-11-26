@@ -6,6 +6,7 @@ using Microsoft.UI.Xaml;
 using Microsoft.UI.Xaml.Controls;
 using Microsoft.UI.Xaml.Navigation;
 using System;
+using System.Collections.Generic;
 using System.Collections.Specialized;
 // To learn more about WinUI, the WinUI project structure,
 // and more about our project templates, see: http://aka.ms/winui-project-info.
@@ -19,6 +20,7 @@ public sealed partial class Biblio : Page
 {
     public BiblioViewModel ViewModel { get; set; }
     private readonly DataProvider _dataProvider;
+    public UtilisateursViewModel? CurrentUser { get; private set; }
 
     public Biblio()
     {
@@ -30,10 +32,7 @@ public sealed partial class Biblio : Page
 
         // prof
         var dbContext = new EEEEReaderDbContext();
-        _dataProvider = new DataProvider(dbContext);  
-
-        this.DataContext = ViewModel;
-        this.DataContext = this;
+        _dataProvider = App.DataProvider;
         ViewModel = new BiblioViewModel(_dataProvider);
     }
     protected override void OnNavigatedTo(NavigationEventArgs e)
@@ -42,8 +41,9 @@ public sealed partial class Biblio : Page
 
         if (e.Parameter is UtilisateursViewModel user)
         {
+             CurrentUser = user;
             ViewModel.SetCurrentUser(user);
-            BiblioGridView.ItemsSource = ViewModel.LivreViewModels;
+            ChargerLivreRecent();
             ViewModel.Livres.CollectionChanged += Livres_CollectionChanged;
             applyLayout();
         }
@@ -63,6 +63,19 @@ public sealed partial class Biblio : Page
                 }
             }
         }
+    }
+    public void ChargerLivreRecent()
+    {
+        List<LivreViewModel> LivresVM = new();
+        List<Livre> livres = _dataProvider.GetUtilisateurLivreData(CurrentUser.Id);
+        foreach (Livre LivreNormal in livres)
+        {
+            LivreViewModel livreVM = new LivreViewModel(LivreNormal, LivreNormal.FichierEpub);
+            LivresVM.Add(livreVM);
+        }
+
+
+        BiblioGridView.ItemsSource = LivresVM;
     }
 
     public async void SelectionFichier(object sender, RoutedEventArgs e)
