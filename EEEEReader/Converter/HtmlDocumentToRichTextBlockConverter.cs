@@ -76,23 +76,6 @@ namespace EEEEReader.Converter
         {
             switch (node.Name)
             {
-                // TODO: h1, h2, h3, h4, h5, h6
-                // ignorés
-                case "#comment":
-                case "span":
-                case "div":
-                case "meta":
-                case "style":
-                case "body":
-                case "head":
-                case "html":
-                case "section":
-                // traités dans p
-                case "#text":
-                case "em":
-                case "strong":
-                    { return null; }
-
                 case "img":
                     {
                         // TODO: livres d'amazon ont des images dupliquées, ignorer les doublons (propriétés data-amznremoved-m8 et data-amznremoved)
@@ -147,6 +130,57 @@ namespace EEEEReader.Converter
 
                         return para;
                     }
+                case "ol":
+                case "ul":
+                    {
+                        Paragraph para = new Paragraph();
+
+                        //para.Inlines.Add(new Run { Text = node.Name + node.OuterHtml });
+
+                        foreach (HtmlNode childNode in node.ChildNodes)
+                        {
+                            if (childNode.Name == "li")
+                            {
+                                Run liElement = new Run { Text = "- " };
+
+                                foreach (HtmlNode flatChildNode in FlattenHtmlNode(childNode))
+                                {
+                                    if (flatChildNode.Name == "#text")
+                                    {
+                                        liElement.Text += flatChildNode.InnerHtml + "\n";
+                                    }
+                                }
+
+                                para.Inlines.Add(liElement);
+                            }
+                        }
+
+                        return para;
+                    }
+                // TODO: h1, h2, h3, h4, h5, h6
+                // ignorés
+                case "#comment":
+                case "span":
+                case "div":
+                case "meta":
+                case "style":
+                case "body":
+                case "head":
+                case "html":
+                case "section":
+                case "title":
+                case "li":
+                case "a":
+                case "nav":
+                case "footer":
+                case "header":
+                case "link":
+                case "hr":
+                // traités dans p
+                case "#text":
+                case "em":
+                case "strong":
+                    { return null; }
                 default:
                     {
                         // Pour debug
@@ -154,7 +188,7 @@ namespace EEEEReader.Converter
 
                         para.Inlines.Add(new Run { Text = "Unsupported node in ParserXmlSwitch -- Node type : " + node.Name });
 
-                        return para;
+                        return para; 
                     }
             }
         }
