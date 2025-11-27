@@ -1,4 +1,5 @@
-﻿using EEEEReader.Data.Models;
+﻿using EEEEReader.Data;
+using EEEEReader.Data.Models;
 using Microsoft.UI.Windowing;
 using Microsoft.UI.Xaml;
 using Microsoft.Windows.Storage.Pickers;
@@ -10,6 +11,7 @@ using System.Threading.Tasks;
 using VersOne.Epub;
 using Windows.ApplicationModel.Appointments.AppointmentsProvider;
 using WinRT.Interop;
+
 namespace EEEEReader.ViewModels.Pages
 {
     public class BiblioViewModel : MainViewModel
@@ -17,34 +19,38 @@ namespace EEEEReader.ViewModels.Pages
         private ObservableCollection<Livre> _livres;
         private ObservableCollection<LivreViewModel> _livreViewModel;
 
-
-        public ObservableCollection<Livre> Livres { get { return _livres; } set { _livres = value; } }
-        public ObservableCollection<LivreViewModel> LivreViewModels { get { return _livreViewModel; } set { _livreViewModel = value; } }
+        public ObservableCollection<Livre> Livres 
+        { 
+            get { return _livres; } 
+            set 
+            { 
+                _livres = value; 
+                RaisePropertyChanged();
+            } 
+        }
+        
+        public ObservableCollection<LivreViewModel> LivreViewModels 
+        { 
+            get { return _livreViewModel; } 
+            set 
+            { 
+                _livreViewModel = value; 
+                RaisePropertyChanged();
+            } 
+        }
+        
         public UtilisateursViewModel CurrentUser { get; set; }
 
         private IDataProvider _utilisateurDataProvider;
 
-
-        // devrais être effectuer a chaque fois lorsque l'utilisateur entre dans biblio
-
-
-        // lors de la création d'un l'objet est crée en premier ensuite elle va se sauvegarder dans la base de
-        // donc il faut dans la base donnée juste le fichier ainsi que la l'id de l'utilisateur
-
-        // ensutie pour extraire les metadeta il faut utiliser cette fonction et passé a travers chacun 
-        // des livre possèder par cette utlisateur
         public BiblioViewModel(IDataProvider utilisateurDataProvider)
         {
             _utilisateurDataProvider = utilisateurDataProvider;
+            _livreViewModel = new ObservableCollection<LivreViewModel>();
         }
-
-
-
-
 
         public bool extraireMetaData(string Path)
         {
-
             byte[] epubEnByte = File.ReadAllBytes(Path);
             var livremetadata = EpubReader.ReadBook(Path);
             var dateee = livremetadata.Schema.Package.Metadata.Dates;
@@ -58,33 +64,47 @@ namespace EEEEReader.ViewModels.Pages
                 Livre livre = CurrentUser.Librairie.AjouterLivre(CurrentUser.Id, epubEnByte, livremetadata.Content, livremetadata.Title, livremetadata.Author, dateee[0].Date, "667", langue[0].Language, livremetadata.Description, livremetadata.CoverImage);
 
                 _utilisateurDataProvider.AjouterLivreToUtilisateur(livre);
+                
+                LivreViewModels.Add(new LivreViewModel(livre, epubEnByte));
+                
                 return true;
             }
             else
             {
                 Livre livre = CurrentUser.Librairie.AjouterLivre(CurrentUser.Id, epubEnByte, livremetadata.Content, livremetadata.Title, livremetadata.Author, null, "667", langue[0].Language, livremetadata.Description, livremetadata.CoverImage);
                 _utilisateurDataProvider.AjouterLivreToUtilisateur(livre);
+                
+                LivreViewModels.Add(new LivreViewModel(livre, epubEnByte));
+                
                 return true;
             }
             return false;
         }
-           
-                
-
 
         public void SetCurrentUser(UtilisateursViewModel utilisateursViewModel)
         {
             CurrentUser = utilisateursViewModel;
+            
+            var livresFromDb = _utilisateurDataProvider.GetUtilisateurLivreData(utilisateursViewModel.Id);
+            
+            CurrentUser.Librairie.Livres.Clear();
+            foreach (var livre in livresFromDb)
+            {
+                CurrentUser.Librairie.Livres.Add(livre);
+            }
+            
             _livres = CurrentUser.Librairie.Livres;
 
             _livreViewModel = new ObservableCollection<LivreViewModel>();
             foreach (Livre livre in _livres)
             {
-                _livreViewModel.Add(new LivreViewModel(livre));
+                _livreViewModel.Add(new LivreViewModel(livre, livre.FichierEpub));
             }
+            
+            RaisePropertyChanged(nameof(Livres));
+            RaisePropertyChanged(nameof(LivreViewModels));
         }
 
-        // non actually c'est stackoverflow 
         public async Task<string?> ChoisirFichierUtilisateur(Window window)
         {
             var hwnd = WindowNative.GetWindowHandle(window);
@@ -97,6 +117,5 @@ namespace EEEEReader.ViewModels.Pages
             var file = await picker.PickSingleFileAsync();
             return file?.Path;
         }
-
     }
 }

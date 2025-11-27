@@ -1,4 +1,5 @@
-﻿using EEEEReader.Data.Models;
+﻿using EEEEReader.Data;
+using EEEEReader.Data.Models;
 using HtmlAgilityPack;
 using System;
 using System.ComponentModel;

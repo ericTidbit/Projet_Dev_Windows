@@ -2,10 +2,14 @@
 using EEEEReader.Models;
 using System.Collections.Generic;
 
-public interface IDataProvider
+namespace EEEEReader.Data
 {
-    void AjouterUtilisateur(Utilisateur utilisateur);
-    void AjouterLivreToUtilisateur(Livre livre);
-    List<Utilisateur> GetUtilisateursData();
-    void ChangerPageDuLivre(int id, int NouvellePage);
+    public interface IDataProvider
+    {
+        void AjouterUtilisateur(Utilisateur utilisateur);
+        void AjouterLivreToUtilisateur(Livre livre);
+        List<Utilisateur> GetUtilisateursData();
+        List<Livre> GetUtilisateurLivreData(int utilisateurId);
+        void ChangerPageDuLivre(int id, int NouvellePage);
+    }
 }
