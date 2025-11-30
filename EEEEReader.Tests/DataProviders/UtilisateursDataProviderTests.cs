@@ -2,35 +2,35 @@
 using EEEEReader.Data.data;
 using EEEEReader.Models;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.Security.Authentication.OAuth;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
-using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+
 
 namespace EEEEReader.Tests.DataProviders
 {
+    [TestClass]
     public class UtilisateursDataProviderTests
     {
         private EEEEReaderDbContext _context;
+        private DataProvider _dataProvider;
+
         // private clientDataProvider 
 
         [TestInitialize]
         public void Setup()
         {
+
             var options = new DbContextOptionsBuilder<EEEEReaderDbContext>()
                 .UseSqlite("DataSource=:memory:")
                 .Options;
 
             _context = new EEEEReaderDbContext(options);
-
             _context.Database.OpenConnection();
-
             _context.Database.EnsureCreated();
 
-            // _clientDataProvider = new CBDClientDataprovider(_context)
+            _dataProvider = new DataProvider(_context);
+
 
         }
         [TestCleanup]
@@ -48,6 +48,8 @@ namespace EEEEReader.Tests.DataProviders
 
             // Act
             // DBUtilisateursDataProvider.
+            _dataProvider.AjouterUtilisateur(utilisateur);
+            List<Utilisateur> UtilisateurDansLaDb = _dataProvider.GetUtilisateursData();
 
 
             // Assert
@@ -56,13 +58,7 @@ namespace EEEEReader.Tests.DataProviders
             // Assert.AreEqual(pwd, "1234");
             // Assert.AreEqual(, 1);
 
-            Assert.AreEqual(1,1);
-        }
-        [TestMethod]
-        public void GetUtilisateursData()
-        {
-            Utilisateur utilisateur = new Utilisateur("felix", "1234");
-
+            Assert.AreEqual(1, UtilisateurDansLaDb.Count);
         }
     }
 }
