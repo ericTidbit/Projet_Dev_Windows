@@ -18,7 +18,7 @@ namespace EEEEReader.Data
         public DataProvider(EEEEReaderDbContext dbContext)
         {
             _dbContext = dbContext ?? throw new ArgumentNullException(nameof(dbContext));
-
+            
         }
 
         public void AjouterUtilisateur(Utilisateur utilisateur)
@@ -63,6 +63,15 @@ namespace EEEEReader.Data
         {
             _dbContext.Livres.Add(livre);
             _dbContext.SaveChanges();
+        }
+        public void SupprimerLivre(int LivreId)
+        {
+            Livre? LivreASupprimer = _dbContext.Livres.FirstOrDefault(c => c.Id == LivreId);
+            if (LivreASupprimer != null)
+            {
+                _dbContext.Livres.Remove(LivreASupprimer);
+                _dbContext.SaveChanges();
+            }
         }
 
 

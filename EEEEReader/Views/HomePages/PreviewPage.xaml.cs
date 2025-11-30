@@ -1,5 +1,7 @@
+using EEEEReader.Data;
 using EEEEReader.Data.Models;
 using EEEEReader.ViewModels;
+using EEEEReader.ViewModels.Pages;
 using EEEEReader.Views.HomePages;
 using Microsoft.UI.Xaml;
 using Microsoft.UI.Xaml.Controls;
@@ -13,6 +15,7 @@ namespace EEEEReader.Views
     public sealed partial class PreviewPage : Page
 
     {
+        private readonly DataProvider _dataProvider;
         public UtilisateursViewModel? CurrentUser { get; private set; }
 
         public LivreViewModel PreviewedLivre { get; private set; }
@@ -20,9 +23,12 @@ namespace EEEEReader.Views
         public PreviewPage()
         {
             InitializeComponent();
+            var dbContext = new EEEEReaderDbContext();
+            _dataProvider = new DataProvider(dbContext);
+
         }
 
-      
+
         protected override void OnNavigatedTo(NavigationEventArgs e)
         {
             base.OnNavigatedTo(e);
@@ -50,7 +56,7 @@ namespace EEEEReader.Views
         {
             if (App.MainWindow?.Content is Frame mainFrame && PreviewedLivre is not null)
             {
-                CurrentUser.Librairie.SupprimerLivre(PreviewedLivre.Livre);
+                _dataProvider.SupprimerLivre(PreviewedLivre.Livre.Id);
                 this.Frame?.Navigate(typeof(Biblio), CurrentUser);
             }
         }
