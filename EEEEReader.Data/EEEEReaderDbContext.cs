@@ -16,9 +16,9 @@ namespace EEEEReader.Data
 
         public EEEEReaderDbContext() : base() { }
 
-        public DbSet<Utilisateur> Utilisateurs { get; set; }
-        public DbSet<Livre> Livres { get; set; }
-        public DbSet<Librairie> Librairies { get; set; }
+        public DbSet<Utilisateur> Utilisateurs => Set<Utilisateur>();
+        public DbSet<Livre> Livres => Set<Livre>();
+        //public DbSet<Librairie> Librairies { get; set; }
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
@@ -38,6 +38,8 @@ namespace EEEEReader.Data
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             base.OnModelCreating(modelBuilder);
+            modelBuilder.Ignore<Librairie>();
+            // la librairy sert a rien est fait bugger la release
         }
     }
 }

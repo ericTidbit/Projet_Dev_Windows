@@ -3,6 +3,7 @@ using System;
 using EEEEReader.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -10,12 +11,25 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace EEEEReader.Data.Migrations
 {
     [DbContext(typeof(EEEEReaderDbContext))]
-    partial class EEEEReaderDbContextModelSnapshot : ModelSnapshot
+    [Migration("20251130213032_enleverLibraire")]
+    partial class enleverLibraire
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder.HasAnnotation("ProductVersion", "9.0.10");
+
+            modelBuilder.Entity("EEEEReader.Data.Models.Librairie", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("INTEGER");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("Librairie");
+                });
 
             modelBuilder.Entity("EEEEReader.Data.Models.Livre", b =>
                 {
@@ -45,6 +59,9 @@ namespace EEEEReader.Data.Migrations
                     b.Property<string>("Langue")
                         .HasColumnType("TEXT");
 
+                    b.Property<int?>("LibrairieId")
+                        .HasColumnType("INTEGER");
+
                     b.Property<int>("Pourcentage")
                         .HasColumnType("INTEGER");
 
@@ -59,6 +76,8 @@ namespace EEEEReader.Data.Migrations
                         .HasColumnType("INTEGER");
 
                     b.HasKey("Id");
+
+                    b.HasIndex("LibrairieId");
 
                     b.HasIndex("UtilisateurId");
 
@@ -77,6 +96,9 @@ namespace EEEEReader.Data.Migrations
                     b.Property<bool>("IsAdmin")
                         .HasColumnType("INTEGER");
 
+                    b.Property<int>("LibrairieId")
+                        .HasColumnType("INTEGER");
+
                     b.Property<string>("Nom")
                         .IsRequired()
                         .HasColumnType("TEXT");
@@ -87,16 +109,38 @@ namespace EEEEReader.Data.Migrations
 
                     b.HasKey("Id");
 
+                    b.HasIndex("LibrairieId");
+
                     b.ToTable("Utilisateurs");
                 });
 
             modelBuilder.Entity("EEEEReader.Data.Models.Livre", b =>
                 {
+                    b.HasOne("EEEEReader.Data.Models.Librairie", null)
+                        .WithMany("Livres")
+                        .HasForeignKey("LibrairieId");
+
                     b.HasOne("EEEEReader.Models.Utilisateur", null)
                         .WithMany("LivresRecent")
                         .HasForeignKey("UtilisateurId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
+                });
+
+            modelBuilder.Entity("EEEEReader.Models.Utilisateur", b =>
+                {
+                    b.HasOne("EEEEReader.Data.Models.Librairie", "Librairie")
+                        .WithMany()
+                        .HasForeignKey("LibrairieId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Librairie");
+                });
+
+            modelBuilder.Entity("EEEEReader.Data.Models.Librairie", b =>
+                {
+                    b.Navigation("Livres");
                 });
 
             modelBuilder.Entity("EEEEReader.Models.Utilisateur", b =>

@@ -15,7 +15,7 @@ namespace EEEEReader.Data.Models
     public class Librairie
     {
         public ObservableCollection<Livre> Livres { get; } = new();
-        public int Id { get; set; }
+        //public int Id { get; set; }
 
         public Librairie()
         {
