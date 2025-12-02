@@ -52,6 +52,24 @@ namespace EEEEReader.Data
             }
             return LivreToUtilisateur;
         }
+        public List<Livre> GetUtilisateurLivreDataParAuteur(int UtilisateurId)
+        {
+
+            List<Livre> TousLesLivresDispo = _dbContext.Livres.ToList();
+
+            List<Livre> LivreToUtilisateur = new List<Livre>();
+
+            foreach (Livre livre in TousLesLivresDispo)
+            {
+                if (livre.UtilisateurId == UtilisateurId)
+                {
+                    LivreToUtilisateur.Add(livre);
+                }
+            }
+
+            List<Livre> livresSortedByAuteur = LivreToUtilisateur.OrderBy(l => l.Auteur).ToList();
+            return livresSortedByAuteur;
+        }
         public void ChangerPageDuLivre(int LivreId, int NouvellePage)
         {
             var book = _dbContext.Livres.Single(l => l.Id == LivreId);
@@ -73,7 +91,6 @@ namespace EEEEReader.Data
                 _dbContext.SaveChanges();
             }
         }
-
 
         private static string HashPassword(string password)
         {
