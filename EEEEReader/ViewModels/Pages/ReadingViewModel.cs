@@ -7,7 +7,7 @@ using System.Runtime.CompilerServices;
 
 namespace EEEEReader.ViewModels.Pages
 {
-    public class ReadingViewModel : INotifyPropertyChanged
+    public class ReadingViewModel : BaseViewModel
     {
         public event PropertyChangedEventHandler? PropertyChanged;
         private void OnPropertyChanged([CallerMemberName] string? propName = null)
