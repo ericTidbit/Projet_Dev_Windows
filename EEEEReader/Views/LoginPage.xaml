@@ -6,7 +6,7 @@
 
     <Grid>
         <StackPanel HorizontalAlignment="Center" VerticalAlignment="Center" Width="360" Spacing="12">
-            <TextBlock Text="Connexionffelix" FontSize="44" FontWeight="SemiBold" TextAlignment="Center" Margin="0,12"/>
+            <TextBlock Text="Connexion" FontSize="44" FontWeight="SemiBold" TextAlignment="Center" Margin="0,12"/>
             <TextBox x:Name="UserNameBox" Header="Nom d'utilisateur"/>
             <PasswordBox x:Name="PasswordBox" Header="Mot de passe"/>
 			<StackPanel Orientation="Horizontal" HorizontalAlignment="Center" Spacing="205">
