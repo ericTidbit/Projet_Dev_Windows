@@ -90,46 +90,5 @@ public sealed partial class Recent : Page
         var navigationTuple = (Livre: selectedLivre, CurrentUser: CurrentUser);
         this.Frame?.Navigate(typeof(EEEEReader.Views.PreviewPage), navigationTuple);
     }
-
-
-    
-
-
-    // recent ne devrait pas selectionner des chose 
-    public async void SelectionFichier(object sender, RoutedEventArgs e)
-    {
-        string? path = await choisirFichierUtilisateur(App.MainWindow!);
-        if (path != null)
-        {
-            BiblioViewModel extraire = new ViewModels.Pages.BiblioViewModel(_dataProvider);
-            bool result = extraire.extraireMetaData(path);
-            if (result == false)
-            {
-                ContentDialog dialog = new ContentDialog()
-                {
-                    Title = "Erreur",
-                    Content = "format du livre pas bon erreur d'extraction.",
-                    CloseButtonText = "OK",
-                    XamlRoot = this.Content.XamlRoot
-                };
-                await dialog.ShowAsync();
-            }
-
-        }
-
-    }
-    public async Task<string?> choisirFichierUtilisateur(Window window)
-    {
-        var hwnd = WindowNative.GetWindowHandle(window);
-        var winId = Microsoft.UI.Win32Interop.GetWindowIdFromWindow(hwnd);
-        var appWin = AppWindow.GetFromWindowId(winId);
-
-        var picker = new FileOpenPicker(appWin.Id);
-        picker.FileTypeFilter.Add(".epub");
-
-        var file = await picker.PickSingleFileAsync();
-        return file?.Path;
-    }
-    
     
 }
