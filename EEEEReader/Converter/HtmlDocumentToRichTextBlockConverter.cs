@@ -157,39 +157,9 @@ namespace EEEEReader.Converter
 
                         return para;
                     }
-                // TODO: h1, h2, h3, h4, h5, h6
-                // ignorés
-                case "#comment":
-                case "span":
-                case "div":
-                case "meta":
-                case "style":
-                case "body":
-                case "head":
-                case "html":
-                case "section":
-                case "title":
-                case "li":
-                case "a":
-                case "nav":
-                case "footer":
-                case "header":
-                case "link":
-                case "hr":
-                // traités dans p
-                case "#text":
-                case "em":
-                case "strong":
-                    { return null; }
+
                 default:
-                    {
-                        // Pour debug
-                        Paragraph para = new Paragraph();
-
-                        para.Inlines.Add(new Run { Text = "Unsupported node in ParserXmlSwitch -- Node type : " + node.Name });
-
-                        return para; 
-                    }
+                    { return null; }
             }
         }
 
@@ -372,13 +342,11 @@ namespace EEEEReader.Converter
                         return (null, styleFlags);
                     }
                 default:
-                    {
+ 
                         // enlève les styles, pour éviter d'affecter les prochaines nodes
-                        styleFlags.Clear();
-                        return (new Run { Text = "Unsupported node in ApplyStyle -- Node Type : " + node.Name }, styleFlags);
-                    }
+                        { return (null, new List<string>()); }
 
-            }
+                }
         }
 
         public static string XmlPatternReplacer(string input)
