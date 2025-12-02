@@ -35,19 +35,16 @@ namespace EEEEReader.Views.HomePages;
 /// </summary>
 public sealed partial class Recent : Page
 {
-    
-    private readonly DataProvider _dataProvider;
+    RecentViewModel ViewModel { get; set; }    
 
-    public Livre PreviewedLivre { get; set; }
-    public UtilisateursViewModel? CurrentUser { get; private set; }
     protected override void OnNavigatedTo(NavigationEventArgs e)
     {
         base.OnNavigatedTo(e);
 
         if (e.Parameter is UtilisateursViewModel user)
         {
-            CurrentUser = user;
-            ChargerLivreRecent();
+            ViewModel = new RecentViewModel(user);
+            Charger();
         }
     }
 
@@ -55,26 +52,15 @@ public sealed partial class Recent : Page
     {
         InitializeComponent();
         var dbContext = new EEEEReaderDbContext();
-        _dataProvider = App.DataProvider;
 
         // doit être une liste de livre <list>Livre
         //BiblioGridView.ItemsSource = App.AppReader.CurrentUser.LivresRecent;
     }
-    public void ChargerLivreRecent()
-    {
-        List<LivreViewModel> LivresVM = new();
-        List<Livre> livres = _dataProvider.GetUtilisateurLivreData(CurrentUser.Id);
-        foreach (Livre LivreNormal in livres)
-        {
-            LivreViewModel livreVM = new LivreViewModel(LivreNormal, LivreNormal.FichierEpub);
-            LivresVM.Add(livreVM);
-        }
-
-
-        BiblioGridView.ItemsSource = LivresVM;
-    }
    
-
+    public void Charger()
+    {
+        BiblioGridView.ItemsSource = ViewModel.GenererLivresRecent();
+    }
 
 
         public void LireLivre_Click(object sender, RoutedEventArgs e)
@@ -87,7 +73,7 @@ public sealed partial class Recent : Page
     private void OnItemClick(object sender, ItemClickEventArgs e)
     {
         var selectedLivre = e.ClickedItem as LivreViewModel;
-        var navigationTuple = (Livre: selectedLivre, CurrentUser: CurrentUser);
+        var navigationTuple = (Livre: selectedLivre, CurrentUser: ViewModel.CurrentUser);
         this.Frame?.Navigate(typeof(EEEEReader.Views.PreviewPage), navigationTuple);
     }
     
