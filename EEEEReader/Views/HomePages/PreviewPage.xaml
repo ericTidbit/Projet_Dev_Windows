@@ -50,10 +50,15 @@
                         Margin="0,10,0,10"
                         Click="SuprimmerLivreClick"
                         Content="Supprimer le livre" />
-                <TextBlock
-                    FontSize="24"
-                    FontWeight="Bold"
-                    Text="{x:Bind PreviewedLivre.Pourcentage}" />
+                <TextBlock FontSize="24" FontWeight="Bold">
+                        <Run Text="{x:Bind PreviewedLivre.CurrentPage}"/>
+                        <Run Text=" / "/>
+                        <Run Text="{x:Bind PreviewedLivre.HtmlContentList.Count}"/>
+                        <Run Text=" pages"/>
+                </TextBlock>
+
+
+
                 <TextBlock
                     Width="Auto"
                     FontSize="14"

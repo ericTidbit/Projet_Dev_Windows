@@ -58,6 +58,7 @@ public sealed partial class ReadingPage : Page
 
     public void ButtonPrev_OnClick(object sender, RoutedEventArgs e)
     {
+        scrollViewer.ChangeView(0, 0, null);
         ReadingViewModel.PrevPage();
         ReadingViewModel.currentLivreViewModel.pourcentageLivre();
     }
@@ -66,6 +67,7 @@ public sealed partial class ReadingPage : Page
     {
         if (ReadingViewModel.currentLivreViewModel.IsBookFinished() == false)
         {
+            scrollViewer.ChangeView(0, 0, null);
             ReadingViewModel.NextPage();
             ReadingViewModel.currentLivreViewModel.pourcentageLivre();
         }
@@ -75,8 +77,8 @@ public sealed partial class ReadingPage : Page
             /*quand tu arrive a la fin du livre :) */
             ContentDialog dialog = new ContentDialog()
             {
-                Title = "fin du livre",
-                Content = "tu es arrivé a la fin du livre.",
+                Title = "Fin du livre",
+                Content = "Un livre de plus terminé!",
                 CloseButtonText = "OK",
                 XamlRoot = this.Content.XamlRoot
             };

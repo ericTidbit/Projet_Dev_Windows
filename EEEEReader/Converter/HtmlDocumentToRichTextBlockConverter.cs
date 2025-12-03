@@ -80,11 +80,6 @@ namespace EEEEReader.Converter
                     {
                         // TODO: livres d'amazon ont des images dupliquées, ignorer les doublons (propriétés data-amznremoved-m8 et data-amznremoved)
                         SixLabors.ImageSharp.Image shImg = GetImgFromSrc(node.GetAttributeValue("src", ""));
-                        // TODO: taille dynamique
-                        int Width = 500;
-                        int height = (int)(shImg.Height * (500.0 / shImg.Width));
-
-                        shImg.Mutate(x => x.Resize(Width, height));
 
                         // convertir ImageSharp à BitmapImage
                         Image img = new Image();
@@ -92,6 +87,7 @@ namespace EEEEReader.Converter
 
                         // il faut faire le container pour mettre une image dans un paragraphe
                         InlineUIContainer container = new InlineUIContainer();
+                        img.Width = 300;
                         container.Child = img;
 
                         Paragraph para = new Paragraph();
