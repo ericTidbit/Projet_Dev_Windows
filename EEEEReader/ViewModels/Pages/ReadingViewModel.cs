@@ -9,9 +9,6 @@ namespace EEEEReader.ViewModels.Pages
 {
     public class ReadingViewModel : BaseViewModel
     {
-        public event PropertyChangedEventHandler? PropertyChanged;
-        private void OnPropertyChanged([CallerMemberName] string? propName = null)
-            => PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propName));
 
         private LivreViewModel _currentLivreViewModel;
         private LivreViewModel _currentLivre;
@@ -32,7 +29,7 @@ namespace EEEEReader.ViewModels.Pages
                 if (_currentHtml != value)
                 {
                     _currentHtml = value;
-                    OnPropertyChanged();
+                    RaisePropertyChanged();
                 }
             }
         }
@@ -45,7 +42,7 @@ namespace EEEEReader.ViewModels.Pages
                 if (_footerText != value)
                 {
                     _footerText = value;
-                    OnPropertyChanged();
+                    RaisePropertyChanged();
                 }
             }
         }
