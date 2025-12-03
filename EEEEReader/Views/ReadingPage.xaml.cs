@@ -58,6 +58,7 @@ public sealed partial class ReadingPage : Page
 
     public void ButtonPrev_OnClick(object sender, RoutedEventArgs e)
     {
+        scrollViewer.ChangeView(0, 0, null);
         ReadingViewModel.PrevPage();
         ReadingViewModel.currentLivreViewModel.pourcentageLivre();
     }
@@ -66,6 +67,7 @@ public sealed partial class ReadingPage : Page
     {
         if (ReadingViewModel.currentLivreViewModel.IsBookFinished() == false)
         {
+            scrollViewer.ChangeView(0, 0, null);
             ReadingViewModel.NextPage();
             ReadingViewModel.currentLivreViewModel.pourcentageLivre();
         }
