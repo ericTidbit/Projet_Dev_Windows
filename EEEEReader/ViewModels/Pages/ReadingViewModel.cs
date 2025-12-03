@@ -61,7 +61,7 @@ namespace EEEEReader.ViewModels.Pages
 
         public void UpdateFooter()
         {
-            FooterText = $"{_currentLivre.Titre} — {_currentLivre.Auteur}  |  Page {_currentLivre.CurrentPage + 1}  |  Progression : {_currentLivre.Pourcentage}%";
+            FooterText = $"{_currentLivre.Titre} — {_currentLivre.Auteur}  |  Page {_currentLivre.CurrentPage + 1} / {_currentLivre.HtmlContentList.Count}";
         }
 
         public void NextPage()
@@ -76,6 +76,8 @@ namespace EEEEReader.ViewModels.Pages
         {
             _currentLivreViewModel.PrevPage();
             CurrentHtml = _currentLivre.HtmlContentList[_currentLivre.CurrentPage];
+            _utilisateurDataProvider.ChangerPageDuLivre(_currentLivre.Id, _currentLivre.CurrentPage);
+
             UpdateFooter();
         }
     }
