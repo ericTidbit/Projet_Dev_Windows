@@ -77,8 +77,8 @@ public sealed partial class ReadingPage : Page
             /*quand tu arrive a la fin du livre :) */
             ContentDialog dialog = new ContentDialog()
             {
-                Title = "fin du livre",
-                Content = "tu es arrivé a la fin du livre.",
+                Title = "Fin du livre",
+                Content = "Un livre de plus terminé!",
                 CloseButtonText = "OK",
                 XamlRoot = this.Content.XamlRoot
             };
