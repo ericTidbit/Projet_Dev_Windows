@@ -76,6 +76,8 @@ namespace EEEEReader.ViewModels.Pages
         {
             _currentLivreViewModel.PrevPage();
             CurrentHtml = _currentLivre.HtmlContentList[_currentLivre.CurrentPage];
+            _utilisateurDataProvider.ChangerPageDuLivre(_currentLivre.Id, _currentLivre.CurrentPage);
+
             UpdateFooter();
         }
     }
