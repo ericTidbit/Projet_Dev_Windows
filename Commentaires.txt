@@ -1,0 +1,18 @@
+Modèle : 
+- Votre librairie, est-ce qu'elle contient des informations autres que la relation avec les Livres ? 
+- Classe modèle Section : à supprimer ?
+
+- Pas grave du tout mais c'est bizarre de voir le constructeur avant les propriétés.
+
+- Relation entre utilisateur et librairie ? (est connecté à une librairie?) Je ne vois pas la relation dans le diagramme ER, le mettre à jour au besoin.
+
+- Méthode AjouterLivreRecent dans la classe modèle Utilisateur --> J'ai l'impression qu'elle n'est pas utilisée en ce moment (?). Si utilisée, la déplacer la partie accès à la BD dans un Dataprovider et l'appeler dans le ViewModel (il peut y avoir quelques traitement/vérifications).
+
+- Va falloir m'expliquer pour quoi vous faites modelBuilder.Ignore<Librairie>();
+
+- Question : Comment vous gardez l'utilisateur connecté quand vous passez d'une page à l'autre?
+
+
+DataProvider
+
+- DataProvider pour les livres et librairies ?
