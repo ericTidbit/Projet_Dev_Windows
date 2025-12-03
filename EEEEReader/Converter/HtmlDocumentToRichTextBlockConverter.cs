@@ -23,6 +23,15 @@ namespace EEEEReader.Converter
     internal class HtmlDocumentToRichTextBlockConverter : IValueConverter
     {
         public EpubContent? CurrentContent { get; set; }
+
+        /// <summary>
+        /// Converti un HtmlDocument (HtmlAgilityPack) en RichTextBlock
+        /// </summary>
+        /// <param name="value">Valeur à convertir</param>
+        /// <param name="targetType">Param dans la doc</param>
+        /// <param name="parameter">Param dans la doc</param>
+        /// <param name="language">Param dans la doc</param>
+        /// <returns>null</returns>
         public object Convert(object value, Type targetType, object parameter, string language)
         {
             if (value is HtmlDocument rawXml)
@@ -32,11 +41,27 @@ namespace EEEEReader.Converter
             // TODO: Fix return
             return null;
         }
+
+        /// <summary>
+        /// Jamais utilisé
+        /// </summary>
+        /// <param name="value">Pas utilisé</param>
+        /// <param name="targetType">Pas utilisé</param>
+        /// <param name="parameter">Pas utilisé</param>
+        /// <param name="language">Pas utilisé</param>
+        /// <returns>Jamais, retourne une erreure</returns>
+        /// <exception cref="NotImplementedException">Toujours</exception>
         public object ConvertBack(object value, Type targetType, object parameter, string language)
         {
             throw new NotImplementedException();
         }
 
+
+        /// <summary>
+        /// Fonction principale appelée, fait une liste de paragraphs et l'ajoute dans le RichTextBlock
+        /// </summary>
+        /// <param name="rawXml">HtmlDocument à convertir</param>
+        /// <returns>Le RichTextBlock stylisé</returns>
         public RichTextBlock HtmlDocParser(HtmlDocument rawXml)
         {
             RichTextBlock parsedNode = new RichTextBlock();
@@ -53,25 +78,17 @@ namespace EEEEReader.Converter
                 }
             }
 
-            // debug, cause beaucoup de temps de chargement
-            /*
-            Paragraph debugPara = new Paragraph();
-            debugPara.Inlines.Add(new Run { Text = "\n--------- RAW XML ----------\n" + rawXml.Text });
-            Run flatXmlRun = new Run { Text = "\n--------- FLATTENED NODES ----------\n" };
-            foreach (HtmlNode node in childNodes)
-            {
-                flatXmlRun.Text += node.OuterHtml + "\n";
-            }
-            debugPara.Inlines.Add(flatXmlRun);
-            parsedNode.Blocks.Add(debugPara);
-            */
-            // --
-
             return parsedNode;
 
         }
 
-        // TODO: extrêmement inefficace, à améliorer
+
+        /// <summary>
+        /// Appelé pour chaque HtmlNode qui fait partie du HtmlDocument à parse
+        /// Passe au travers un switch pour faire l'action aproprié (ex. mettre l'image pour l'élément image)
+        /// </summary>
+        /// <param name="node">HtmlNode</param>
+        /// <returns>Le paragraphe avec le contenu</returns>
         public Paragraph? ParserXmlSwitch(HtmlNode node)
         {
             switch (node.Name)
