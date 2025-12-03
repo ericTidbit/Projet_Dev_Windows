@@ -6,8 +6,9 @@ using Microsoft.VisualStudio.TestTools.UnitTesting;
 using System.Collections.Generic;
 using System.Linq;
 
+// Félix
 
-namespace EEEEReader.Tests.DataProviders
+namespace EEEEReader.Tests.Models
 {
     [TestClass]
     public class UtilisateursDataProviderTests
