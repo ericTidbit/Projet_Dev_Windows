@@ -19,6 +19,7 @@
             <RowDefinition Height="Auto"/>
         </Grid.RowDefinitions>    
     <ScrollViewer
+        x:Name="scrollViewer"
         Grid.Row="0"
         HorizontalAlignment="Stretch"
         VerticalAlignment="Top"
