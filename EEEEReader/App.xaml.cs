@@ -19,6 +19,7 @@ using Windows.ApplicationModel.Activation;
 using Windows.Foundation;
 using Windows.Foundation.Collections;
 using EEEEReader.Data;
+using Microsoft.EntityFrameworkCore;
 
 namespace EEEEReader
 {
@@ -112,9 +113,10 @@ namespace EEEEReader
         }
         private void InitialiserBaseDeDonnees()
         {
-            using EEEEReaderDbContext context = new EEEEReaderDbContext();
-            context.Database.EnsureCreated();
-            DataSeeder seeder = new DataSeeder(context);
+            // Use shared DbContext to ensure same connection and configuration
+            DbContext.Database.Migrate();
+
+            var seeder = new DataSeeder(DbContext);
             seeder.Seed();
         }
     }
