@@ -20,10 +20,13 @@ namespace EEEEReader.Data
         public void Seed()
         {
             // Ne seed que si BD vide
-            if (_context.Livres.Any())
+            if (_context.Utilisateurs.Any())
                 return;
-
+            Utilisateur utilisateur = new Utilisateur("admin", "3f79bb7b435b05321651daefd374cdc681dc06faa65e374e38337b88ca046dea"); // mot de passe est e 
             
+            _context.Utilisateurs.Add(utilisateur);
+
+            _context.SaveChanges();
         }
     }
 }
