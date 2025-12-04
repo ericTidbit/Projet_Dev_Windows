@@ -114,6 +114,47 @@ namespace EEEEReader.Tests.Models
             Assert.AreEqual(42, updated.CurrentPage);
         }
 
+        [TestMethod]
+        public void SupprimerLivre_EnleverDeLaDatabase()
+        {
+            // Arrange
+            Utilisateur utilisateur = new("felix", "12345678");
+            _dataProvider.AjouterUtilisateur(utilisateur);
+            List<Utilisateur> utilisateurDansLaDb = _dataProvider.GetUtilisateursData();
+            Livre livreTest = CreateLivre("Echoes of Silksong", "Eric", utilisateurDansLaDb[0].Id);
+            _dataProvider.AjouterLivreToUtilisateur(livreTest);
+            List<Livre> livres = _dataProvider.GetUtilisateurLivreData(utilisateurDansLaDb[0].Id);
+
+            // Act
+            _dataProvider.SupprimerLivre(livres[0].Id);
+            List<Livre> livresSupprime = _dataProvider.GetUtilisateurLivreData(utilisateurDansLaDb[0].Id);
+
+            // Assert
+            Assert.AreEqual(0, livresSupprime.Count);
+        }
+
+        [TestMethod]
+        public void GetUtilisateurLivreDataParAuteur_RetourneTriParAuteur()
+        {
+            Utilisateur utilisateur = new("trieur", "pwd");
+            _dataProvider.AjouterUtilisateur(utilisateur);
+            int userId = _dataProvider.GetUtilisateursData().First().Id;
+
+            var livreA = CreateLivre("Titre A", "Zed", userId);
+            var livreB = CreateLivre("Titre B", "Anna", userId);
+            var livreC = CreateLivre("Titre C", "Bob", userId);
+
+            _dataProvider.AjouterLivreToUtilisateur(livreA);
+            _dataProvider.AjouterLivreToUtilisateur(livreB);
+            _dataProvider.AjouterLivreToUtilisateur(livreC);
+
+            List<Livre> livresTries = _dataProvider.GetUtilisateurLivreDataParAuteur(userId);
+
+            Assert.AreEqual(3, livresTries.Count);
+            Assert.AreEqual("Anna", livresTries[0].Auteur);
+            Assert.AreEqual("Bob", livresTries[1].Auteur);
+            Assert.AreEqual("Zed", livresTries[2].Auteur);
+        }
 
         // Felix
         [TestMethod]
