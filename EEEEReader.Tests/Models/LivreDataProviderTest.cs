@@ -75,5 +75,42 @@ namespace EEEEReader.Tests.Models
             Assert.AreEqual("Eric", livres[0].Auteur);
             Assert.AreEqual(utilisateurDansLaDb[0].Id, livres[0].UtilisateurId);
         }
+
+        [TestMethod]
+        public void GetUtilisateurLivreData_SansLivres_RetourneVide()
+        {
+            // Arrange
+            Utilisateur utilisateur = new("user2", "pwd");
+            _dataProvider.AjouterUtilisateur(utilisateur);
+            List<Utilisateur> utilisateurDansLaDb = _dataProvider.GetUtilisateursData();
+
+            // Act
+            List<Livre> livres = _dataProvider.GetUtilisateurLivreData(utilisateurDansLaDb[0].Id);
+
+            // Assert
+            Assert.IsNotNull(livres);
+            Assert.AreEqual(0, livres.Count);
+        }
+
+        [TestMethod]
+        public void ChangerPageDuLivre_MetAJourLaPageActuelle()
+        {
+            // Arrange
+            Utilisateur utilisateur = new("user3", "pwd");
+            _dataProvider.AjouterUtilisateur(utilisateur);
+            List<Utilisateur> utilisateurDansLaDb = _dataProvider.GetUtilisateursData();
+
+            Livre livreTest = CreateLivre("Echoes of Silksong", "Eric", utilisateurDansLaDb[0].Id);
+            _dataProvider.AjouterLivreToUtilisateur(livreTest);
+
+            Livre livreFromDb = _dataProvider.GetUtilisateurLivreData(utilisateurDansLaDb[0].Id).First();
+
+            // Act
+            _dataProvider.ChangerPageDuLivre(livreFromDb.Id, 42);
+            Livre updated = _dataProvider.GetUtilisateurLivreData(utilisateurDansLaDb[0].Id).First();
+
+            // Assert
+            Assert.AreEqual(42, updated.CurrentPage);
+        }
     }
 }
