@@ -22,18 +22,14 @@ namespace EEEEReader.Data
             if (_context.Utilisateurs.Any() || _context.Livres.Any())
                 return;
 
-            // 1. Création de l'utilisateur admin (mot de passe "e" hashé SHA256)
             var admin = new Utilisateur("admin", "3f79bb7b435b05321651daefd374cdc681dc06faa65e374e38337b88ca046dea");
             _context.Utilisateurs.Add(admin);
-            _context.SaveChanges(); // Pour récupérer admin.Id
+            _context.SaveChanges(); 
 
-            // 2. On prend le fichier EPUB embarqué directement dans le code
             byte[] fichierEpub = TestBooks.ConingsbyEpub;
 
-            // Optionnel : extraction de la couverture avec VersOne.Epub (très rapide)
             byte[] coverRaw = null;
 
-            // 3. Création du livre de test avec le constructeur léger
             var livreTest = new Livre(
                 fichierEpub: fichierEpub,
                 titre: "Coningsby",
