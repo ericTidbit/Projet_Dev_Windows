@@ -63,6 +63,27 @@ namespace EEEEReader.Data.Models
             this.HtmlContentList = HtmlContentList;
             UtilisateurId = utilisateurId;
         }
-        
+        public Livre(byte[] fichierEpub, string titre, string auteur, string date,
+                    string isbn, string langue, string resume, byte[] coverRaw, int utilisateurId)
+        {
+            FichierEpub = fichierEpub;
+            Titre = titre;
+            Auteur = auteur;
+            Date = date;
+            ISBN = isbn;
+            Langue = langue;
+            Resume = resume;
+            CoverRaw = coverRaw;
+            CurrentPage = 0;
+            Pourcentage = 0;
+            UtilisateurId = utilisateurId;
+
+            // Les propriétés [NotMapped] restent null par défaut
+            // Elles seront remplies plus tard si besoin (ex: lors du chargement pour lecture)
+            RawContent = null;
+            CoverImage = null;
+            HtmlContentList = null;
+        }
+
     }
 }

@@ -2,16 +2,15 @@
 using EEEEReader.Models;
 using Microsoft.EntityFrameworkCore;
 using System;
-using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using VersOne.Epub; // Optionnel : uniquement si tu veux extraire la couverture
 
 namespace EEEEReader.Data
 {
     public class DataSeeder
     {
         private readonly EEEEReaderDbContext _context;
+
         public DataSeeder(EEEEReaderDbContext context)
         {
             _context = context;
@@ -19,14 +18,38 @@ namespace EEEEReader.Data
 
         public void Seed()
         {
-            // Ne seed que si BD vide
-            if (_context.Utilisateurs.Any())
+            // Ne seed que si la base est vide
+            if (_context.Utilisateurs.Any() || _context.Livres.Any())
                 return;
-            Utilisateur utilisateur = new Utilisateur("admin", "3f79bb7b435b05321651daefd374cdc681dc06faa65e374e38337b88ca046dea"); // mot de passe est e 
-            
-            _context.Utilisateurs.Add(utilisateur);
 
+            // 1. Création de l'utilisateur admin (mot de passe "e" hashé SHA256)
+            var admin = new Utilisateur("admin", "3f79bb7b435b05321651daefd374cdc681dc06faa65e374e38337b88ca046dea");
+            _context.Utilisateurs.Add(admin);
+            _context.SaveChanges(); // Pour récupérer admin.Id
+
+            // 2. On prend le fichier EPUB embarqué directement dans le code
+            byte[] fichierEpub = TestBooks.ConingsbyEpub;
+
+            // Optionnel : extraction de la couverture avec VersOne.Epub (très rapide)
+            byte[] coverRaw = null;
+
+            // 3. Création du livre de test avec le constructeur léger
+            var livreTest = new Livre(
+                fichierEpub: fichierEpub,
+                titre: "Coningsby",
+                auteur: "Benjamin Disraeli",
+                date: "1844",
+                isbn: null,
+                langue: "en",
+                resume: "Roman politique de Benjamin Disraeli publié en 1844 sous le pseudonyme de « un jeune auteur ». Une œuvre clé du conservatisme britannique.",
+                coverRaw: coverRaw,
+                utilisateurId: admin.Id
+            );
+
+            _context.Livres.Add(livreTest);
             _context.SaveChanges();
+
+            Console.WriteLine("[DataSeeder] Utilisateur 'admin' (mdp: e) et livre 'Coningsby' ajoutés avec succès (fichier embarqué) !");
         }
     }
 }
