@@ -90,6 +90,16 @@ namespace Demo.ViewModels
         }
 
         /// <summary>
+        /// Déclenche l'événement ErrorsChanged pour notifier les changements d'erreurs de validation
+        /// </summary>
+        /// <param name="propriete">Nom de la propriété dont les erreurs ont changé</param>
+        protected void OnErrorsChanged([CallerMemberName] string propriete = "")
+        {
+            ErrorsChanged?.Invoke(this, new DataErrorsChangedEventArgs(propriete));
+            RaisePropertyChanged(nameof(EstValide));
+        }
+
+        /// <summary>
         /// Ajoute au dictionnaire des erreurs la liste d'erreurs (passée en paramètre) à la propriété passée en paramètre
         /// </summary>
         /// <param name="erreursValidation">Liste des erreurs de validation retournée par le validateur</param>
@@ -105,8 +115,7 @@ namespace Demo.ViewModels
             {
                 _errors[propriete].Add(erreur);
             }
-            ErrorsChanged?.Invoke(this, new DataErrorsChangedEventArgs(propriete));
-            RaisePropertyChanged(nameof(EstValide));
+            OnErrorsChanged(propriete);
         }
 
         /// <summary>
@@ -118,8 +127,7 @@ namespace Demo.ViewModels
             if (_errors.ContainsKey(propriete))
             {
                 _errors[propriete].Clear();
-                ErrorsChanged?.Invoke(this, new DataErrorsChangedEventArgs(propriete));
-                RaisePropertyChanged(nameof(EstValide));
+                OnErrorsChanged(propriete);
             }
         }
     }
