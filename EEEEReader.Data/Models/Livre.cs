@@ -20,11 +20,7 @@ namespace EEEEReader.Data.Models
     public class Livre
     {
         public Livre() { }
-        // temporaire en attendant l'intégration sql
-        // id est également l'index dans la librairie
-        // pas d'id si le livre n'est pas dans une librairie
         public int Id { get; set; }
-        // --
         public byte[] FichierEpub { get; set; }
         public string Titre { get; set; }
         public string? Auteur { get; set; }
@@ -63,6 +59,27 @@ namespace EEEEReader.Data.Models
             this.HtmlContentList = HtmlContentList;
             UtilisateurId = utilisateurId;
         }
-        
+        public Livre(byte[] fichierEpub, string titre, string auteur, string date,
+                    string isbn, string langue, string resume, byte[] coverRaw, int utilisateurId)
+        {
+            FichierEpub = fichierEpub;
+            Titre = titre;
+            Auteur = auteur;
+            Date = date;
+            ISBN = isbn;
+            Langue = langue;
+            Resume = resume;
+            CoverRaw = coverRaw;
+            CurrentPage = 0;
+            Pourcentage = 0;
+            UtilisateurId = utilisateurId;
+
+            // Les propriétés [NotMapped] restent null par défaut
+            // Elles seront remplies plus tard si besoin (ex: lors du chargement pour lecture)
+            RawContent = null;
+            CoverImage = null;
+            HtmlContentList = null;
+        }
+
     }
 }
