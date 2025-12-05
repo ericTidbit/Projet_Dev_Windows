@@ -16,3 +16,18 @@ Modèle :
 DataProvider
 
 - DataProvider pour les livres et librairies ?
+
+_________
+
+- Librairie.cs : je ne me souviens plus si vous allez la supprimer ou la garder mais elle contient Ajouter/modifier/supprimer mais c'est un énorme NON. C'est une classe modèle, pas de méthodes, elle doit rester clean. Ça a plus l'un ViewModel, vous pouvez l'appeler LibrairieViewModel et la déplacer dans les ViewModels.
+
+_____________
+
+Les ViewModels : 
+- LivreViewModel : 
+	- pas de RaisePropertyChanged(); ? Si vous faites des ajouts/modif, vous aurez de la difficulté à notifier C# pour lui dire que des prop sont modifiées dans le UI pour qu'elles soient mises à jour.
+	- S'assurer que _livre et livremetadata doivent vraiment coexister tous les deux. À première vu, y'a une confusion entre les deux ou ça peut induire en erreur.
+	- Nettoyer et mieux structurer cette classe SVP. Trop de code commenté, ce n'est pas pro.
+	- (Complètement optionnel mais puisque vous l'avez déjà fait pour autre chose...) Mettre les méthodes LoadImageFromByteArray, oadXamlContent, et ImageSharpToBitmapImage dans des convertisseurs. 
+
+- 
