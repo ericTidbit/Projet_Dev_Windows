@@ -20,6 +20,7 @@ DataProvider
 _________
 
 - Librairie.cs : je ne me souviens plus si vous allez la supprimer ou la garder mais elle contient Ajouter/modifier/supprimer mais c'est un énorme NON. C'est une classe modèle, pas de méthodes, elle doit rester clean. Ça a plus l'un ViewModel, vous pouvez l'appeler LibrairieViewModel et la déplacer dans les ViewModels.
+- Même chose pour Utilisateur, c'est un NON, pas de méthodes dans la classe modèle. Les méthodes doivent être dans un ViewModel, donc uniquement dans UtilisateursViewModel. Pour public bool VerifierPassword(string pwd), voir d'abord les attributs disponibles pour la validation et la confirmation de mot de passe : https://projets420.gitbook.io/asp.net/420-3p3-dev.-applications-windows/winui/formulaires#quelques-methodes-de-validation
 
 _____________
 
@@ -28,6 +29,21 @@ Les ViewModels :
 	- pas de RaisePropertyChanged(); ? Si vous faites des ajouts/modif, vous aurez de la difficulté à notifier C# pour lui dire que des prop sont modifiées dans le UI pour qu'elles soient mises à jour.
 	- S'assurer que _livre et livremetadata doivent vraiment coexister tous les deux. À première vu, y'a une confusion entre les deux ou ça peut induire en erreur.
 	- Nettoyer et mieux structurer cette classe SVP. Trop de code commenté, ce n'est pas pro.
-	- (Complètement optionnel mais puisque vous l'avez déjà fait pour autre chose...) Mettre les méthodes LoadImageFromByteArray, oadXamlContent, et ImageSharpToBitmapImage dans des convertisseurs. 
 
-- 
+- RegisterViewModel :
+	- Elle est quand même bien faite et bien structurée. Quelques petits ajustements.
+	- Utilisateurs est une collection observable elle se met à jour automatiquement, pas besoin de RaisePropertyChanged(); Même chose pour toutes vos collections observables des autres ViewModels.
+	- Dans RegarderMDP, êtes-vous sûrs que vous avez besoin de gérer les erreurs dedans ? Il faudrait utiliser les propriétés du ViewModel héritée de ValidableViewModel. Étant donné que ça a l'air d'une validation personnalisée, jetez un oeil sur ça mais ce n'est pas obligatoire, c'est uniquement si ça peut vous éviter de gérer les erreurs dans cette même fonction https://projets420.gitbook.io/asp.net/420-3p3-dev.-applications-windows/winui/formulaires#validation-personnalisee-optionnel
+	- 
+- RecentViewModel : 
+
+	- à vérifier, mais il me semble qu'il y a des propriétés sans notification.
+- Dans BiblioViewModel: Je vois un peu de logique d'accès à la BD, exemple : CurrentUser.Librairie.Livres.Clear(); et CurrentUser.Librairie.Livres.Add(livre);, doit être dans DataProvider, appeler la fonction dans ViewModel. À vérifier aussi dans tous les autres ViewModels.
+
+
+
+Le code behind : 
+- PreviewPage : dans méthode SuprimmerLivreClick, on n'appelle pas le Data Provider directememt comme : _dataProvider.SupprimerLivre(PreviewedLivre.Livre.Id);, on passe par le ViewModel. Vérifier aussi dans tous les data provider.
+
+Code Behind appelle des méthodes du ViewModel et ViewModel appelle des méthodes du data provider, le data provider accès à la base de données.
+
