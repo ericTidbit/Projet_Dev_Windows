@@ -1,4 +1,5 @@
 using EEEEReader.Data;
+using EEEEReader.Data.data;
 using EEEEReader.Data.Models;
 using EEEEReader.ViewModels;
 using EEEEReader.ViewModels.Pages;
@@ -15,7 +16,7 @@ namespace EEEEReader.Views
     public sealed partial class PreviewPage : Page
 
     {
-        private readonly DataProvider _dataProvider;
+        private readonly IDataProviderLivre _livreDataProvider;
         public UtilisateursViewModel? CurrentUser { get; private set; }
 
         public LivreViewModel PreviewedLivre { get; private set; }
@@ -23,9 +24,7 @@ namespace EEEEReader.Views
         public PreviewPage()
         {
             InitializeComponent();
-            var dbContext = new EEEEReaderDbContext();
-            _dataProvider = new DataProvider(dbContext);
-
+            _livreDataProvider = App.DataProviderLivre;
         }
 
 
@@ -44,10 +43,6 @@ namespace EEEEReader.Views
         {
             if (App.MainWindow?.Content is Frame mainFrame && PreviewedLivre is not null)
             {
-                
-               
-
-                //App.AppReader.CurrentUser.AjouterLivreRecent(PreviewedLivre.Livre);
                 mainFrame.Navigate(typeof(ReadingPage), (PreviewedLivre, User: CurrentUser));
             }
         }
@@ -56,7 +51,7 @@ namespace EEEEReader.Views
         {
             if (App.MainWindow?.Content is Frame mainFrame && PreviewedLivre is not null)
             {
-                _dataProvider.SupprimerLivre(PreviewedLivre.Livre.Id);
+                _livreDataProvider.SupprimerLivre(PreviewedLivre.Livre.Id);
                 this.Frame?.Navigate(typeof(Biblio), CurrentUser);
             }
         }

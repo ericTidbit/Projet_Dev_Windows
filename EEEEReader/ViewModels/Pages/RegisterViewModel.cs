@@ -15,7 +15,7 @@ namespace EEEEReader.ViewModels.Pages
 
     public class RegisterViewModel : ValidableViewModel
     {
-        private IDataProvider _utilisateurDataProvider;
+        private IDataProviderUtilisateur _utilisateurDataProvider;
         private ObservableCollection<UtilisateursViewModel> _utilisateurs;
 
         // Backing fields pour les propriétés validées
@@ -23,7 +23,7 @@ namespace EEEEReader.ViewModels.Pages
         private string _password = "";
         private string _confirmPassword = "";
 
-        public RegisterViewModel(IDataProvider utilisateurDataProvider)
+        public RegisterViewModel(IDataProviderUtilisateur utilisateurDataProvider)
         {
             _utilisateurDataProvider = utilisateurDataProvider
                                        ?? throw new ArgumentNullException(nameof(utilisateurDataProvider));

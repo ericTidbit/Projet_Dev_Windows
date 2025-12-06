@@ -41,11 +41,11 @@ namespace EEEEReader.ViewModels.Pages
         
         public UtilisateursViewModel CurrentUser { get; set; }
 
-        private IDataProvider _utilisateurDataProvider;
+        private IDataProviderLivre _livreDataProvider;
 
-        public BiblioViewModel(IDataProvider utilisateurDataProvider)
+        public BiblioViewModel(IDataProviderLivre livreDataProvider)
         {
-            _utilisateurDataProvider = utilisateurDataProvider;
+            _livreDataProvider = livreDataProvider;
             _livreViewModel = new ObservableCollection<LivreViewModel>();
         }
 
@@ -63,7 +63,7 @@ namespace EEEEReader.ViewModels.Pages
             {
                 Livre livre =  new Livre(epubEnByte, livremetadata.Title, livremetadata.Author, dateee[0].Date, "667", langue[0].Language, livremetadata.Description, livremetadata.CoverImage, CurrentUser.Id);
 
-                _utilisateurDataProvider.AjouterLivreToUtilisateur(livre);
+                _livreDataProvider.AjouterLivreToUtilisateur(livre);
                 
                 LivreViewModels.Add(new LivreViewModel(livre, epubEnByte));
                 
@@ -72,7 +72,7 @@ namespace EEEEReader.ViewModels.Pages
             else
             {
                 Livre livre = new Livre( epubEnByte, livremetadata.Title, livremetadata.Author, null, "667", langue[0].Language, livremetadata.Description, livremetadata.CoverImage, CurrentUser.Id);
-                _utilisateurDataProvider.AjouterLivreToUtilisateur(livre);
+                _livreDataProvider.AjouterLivreToUtilisateur(livre);
                 
                 LivreViewModels.Add(new LivreViewModel(livre, epubEnByte));
                 
@@ -85,7 +85,7 @@ namespace EEEEReader.ViewModels.Pages
         {
             CurrentUser = utilisateursViewModel;
             
-            var livresFromDb = _utilisateurDataProvider.GetUtilisateurLivreData(utilisateursViewModel.Id);
+            var livresFromDb = _livreDataProvider.GetUtilisateurLivreData(utilisateursViewModel.Id);
             
             /*
             CurrentUser.Librairie.Livres.Clear();

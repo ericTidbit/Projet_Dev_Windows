@@ -1,4 +1,5 @@
 ﻿using EEEEReader.Data;
+using EEEEReader.Data.data;
 using EEEEReader.Data.Models;
 using EEEEReader.ViewModels;
 using EEEEReader.ViewModels.Pages;
@@ -16,15 +17,12 @@ namespace EEEEReader.Views.HomePages;
 public sealed partial class Biblio : Page
 {
     public BiblioViewModel ViewModel { get; set; }
-    private readonly DataProvider _dataProvider;
 
     public Biblio()
     {
         InitializeComponent();
 
-        var dbContext = new EEEEReaderDbContext();
-        _dataProvider = new DataProvider(dbContext);  
-        ViewModel = new BiblioViewModel(_dataProvider);
+        ViewModel = new BiblioViewModel(App.DataProviderLivre);
         
         this.DataContext = ViewModel;
     }

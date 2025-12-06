@@ -18,7 +18,7 @@ namespace EEEEReader.Views
         {
             this.InitializeComponent();
             EEEEReaderDbContext dbContext = new EEEEReaderDbContext();
-            DataProvider dataProvider = new DataProvider(dbContext);
+            DataProviderUtilisateur dataProvider = new DataProviderUtilisateur(dbContext);
             ViewModel = new RegisterViewModel(dataProvider);
             this.DataContext = ViewModel;
         }

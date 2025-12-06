@@ -15,7 +15,7 @@ namespace EEEEReader.Views
         {
             this.InitializeComponent();
             var dbContext = new EEEEReaderDbContext();
-            var dataProvider = new DataProvider(dbContext);
+            var dataProvider = new DataProviderUtilisateur(dbContext);
             ViewModel = new LoginUtilisateursViewModel(dataProvider);
             this.DataContext = ViewModel;
         }

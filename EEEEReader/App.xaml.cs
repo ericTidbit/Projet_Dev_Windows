@@ -1,4 +1,5 @@
 ﻿using EEEEReader.Data;
+using EEEEReader.Data.data;
 using EEEEReader.Models;
 using EEEEReader.ViewModels;
 using EEEEReader.Views;
@@ -31,12 +32,14 @@ namespace EEEEReader
         public static Window? MainWindow { get; private set; }
         public static Appli AppReader { get; private set; }
         public static EEEEReaderDbContext DbContext { get; private set; }
-        public static DataProvider DataProvider { get; private set; }
+        public static DataProviderUtilisateur DataProviderUtilisateur { get; private set; }
+        public static DataProviderLivre DataProviderLivre { get; private set; }
         public App()
         {
 
             DbContext = new EEEEReaderDbContext();
-            DataProvider = new DataProvider(DbContext);
+            DataProviderUtilisateur = new DataProviderUtilisateur(DbContext);
+            DataProviderLivre = new DataProviderLivre(DbContext);
             InitializeComponent();
             AppReader = new Appli();
             LoadSavedTheme();

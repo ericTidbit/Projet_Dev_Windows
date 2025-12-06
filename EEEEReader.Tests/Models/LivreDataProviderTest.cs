@@ -14,12 +14,12 @@ namespace EEEEReader.Tests.Models
     public class LivreDataProviderTest
     {
         private EEEEReaderDbContext _context;
-        private DataProvider _dataProvider;
+        private DataProviderUtilisateur _utilisateurDataProvider;
+        private DataProviderLivre _livreDataProvider;
 
         [TestInitialize]
         public void Setup()
         {
-
             var options = new DbContextOptionsBuilder<EEEEReaderDbContext>()
                 .UseSqlite("DataSource=:memory:")
                 .Options;
@@ -28,9 +28,8 @@ namespace EEEEReader.Tests.Models
             _context.Database.OpenConnection();
             _context.Database.EnsureCreated();
 
-            _dataProvider = new DataProvider(_context);
-
-
+            _utilisateurDataProvider = new DataProviderUtilisateur(_context);
+            _livreDataProvider = new DataProviderLivre(_context);
         }
 
         [TestCleanup]
@@ -62,13 +61,13 @@ namespace EEEEReader.Tests.Models
         {
             // Arrange
             Utilisateur utilisateur = new("felix", "12345678");
-            _dataProvider.AjouterUtilisateur(utilisateur);
-            List<Utilisateur> utilisateurDansLaDb = _dataProvider.GetUtilisateursData();
+            _utilisateurDataProvider.AjouterUtilisateur(utilisateur);
+            List<Utilisateur> utilisateurDansLaDb = _utilisateurDataProvider.GetUtilisateursData();
             Livre livreTest = CreateLivre("Echoes of Silksong", "Eric", utilisateurDansLaDb[0].Id);
 
             // Act
-            _dataProvider.AjouterLivreToUtilisateur(livreTest);
-            List<Livre> livres = _dataProvider.GetUtilisateurLivreData(utilisateurDansLaDb[0].Id);
+            _livreDataProvider.AjouterLivreToUtilisateur(livreTest);
+            List<Livre> livres = _livreDataProvider.GetUtilisateurLivreData(utilisateurDansLaDb[0].Id);
 
             // Assert
             Assert.AreEqual(1, livres.Count);
@@ -82,11 +81,11 @@ namespace EEEEReader.Tests.Models
         {
             // Arrange
             Utilisateur utilisateur = new("user2", "pwd");
-            _dataProvider.AjouterUtilisateur(utilisateur);
-            List<Utilisateur> utilisateurDansLaDb = _dataProvider.GetUtilisateursData();
+            _utilisateurDataProvider.AjouterUtilisateur(utilisateur);
+            List<Utilisateur> utilisateurDansLaDb = _utilisateurDataProvider.GetUtilisateursData();
 
             // Act
-            List<Livre> livres = _dataProvider.GetUtilisateurLivreData(utilisateurDansLaDb[0].Id);
+            List<Livre> livres = _livreDataProvider.GetUtilisateurLivreData(utilisateurDansLaDb[0].Id);
 
             // Assert
             Assert.IsNotNull(livres);
@@ -98,17 +97,17 @@ namespace EEEEReader.Tests.Models
         {
             // Arrange
             Utilisateur utilisateur = new("user3", "pwd");
-            _dataProvider.AjouterUtilisateur(utilisateur);
-            List<Utilisateur> utilisateurDansLaDb = _dataProvider.GetUtilisateursData();
+            _utilisateurDataProvider.AjouterUtilisateur(utilisateur);
+            List<Utilisateur> utilisateurDansLaDb = _utilisateurDataProvider.GetUtilisateursData();
 
             Livre livreTest = CreateLivre("Echoes of Silksong", "Eric", utilisateurDansLaDb[0].Id);
-            _dataProvider.AjouterLivreToUtilisateur(livreTest);
+            _livreDataProvider.AjouterLivreToUtilisateur(livreTest);
 
-            Livre livreFromDb = _dataProvider.GetUtilisateurLivreData(utilisateurDansLaDb[0].Id).First();
+            Livre livreFromDb = _livreDataProvider.GetUtilisateurLivreData(utilisateurDansLaDb[0].Id).First();
 
             // Act
-            _dataProvider.ChangerPageDuLivre(livreFromDb.Id, 42);
-            Livre updated = _dataProvider.GetUtilisateurLivreData(utilisateurDansLaDb[0].Id).First();
+            _livreDataProvider.ChangerPageDuLivre(livreFromDb.Id, 42);
+            Livre updated = _livreDataProvider.GetUtilisateurLivreData(utilisateurDansLaDb[0].Id).First();
 
             // Assert
             Assert.AreEqual(42, updated.CurrentPage);
@@ -119,15 +118,15 @@ namespace EEEEReader.Tests.Models
         {
             // Arrange
             Utilisateur utilisateur = new("felix", "12345678");
-            _dataProvider.AjouterUtilisateur(utilisateur);
-            List<Utilisateur> utilisateurDansLaDb = _dataProvider.GetUtilisateursData();
+            _utilisateurDataProvider.AjouterUtilisateur(utilisateur);
+            List<Utilisateur> utilisateurDansLaDb = _utilisateurDataProvider.GetUtilisateursData();
             Livre livreTest = CreateLivre("Echoes of Silksong", "Eric", utilisateurDansLaDb[0].Id);
-            _dataProvider.AjouterLivreToUtilisateur(livreTest);
-            List<Livre> livres = _dataProvider.GetUtilisateurLivreData(utilisateurDansLaDb[0].Id);
+            _livreDataProvider.AjouterLivreToUtilisateur(livreTest);
+            List<Livre> livres = _livreDataProvider.GetUtilisateurLivreData(utilisateurDansLaDb[0].Id);
 
             // Act
-            _dataProvider.SupprimerLivre(livres[0].Id);
-            List<Livre> livresSupprime = _dataProvider.GetUtilisateurLivreData(utilisateurDansLaDb[0].Id);
+            _livreDataProvider.SupprimerLivre(livres[0].Id);
+            List<Livre> livresSupprime = _livreDataProvider.GetUtilisateurLivreData(utilisateurDansLaDb[0].Id);
 
             // Assert
             Assert.AreEqual(0, livresSupprime.Count);
@@ -137,18 +136,18 @@ namespace EEEEReader.Tests.Models
         public void GetUtilisateurLivreDataParAuteur_RetourneTriParAuteur()
         {
             Utilisateur utilisateur = new("trieur", "pwd");
-            _dataProvider.AjouterUtilisateur(utilisateur);
-            int userId = _dataProvider.GetUtilisateursData().First().Id;
+            _utilisateurDataProvider.AjouterUtilisateur(utilisateur);
+            int userId = _utilisateurDataProvider.GetUtilisateursData().First().Id;
 
             var livreA = CreateLivre("Titre A", "Zed", userId);
             var livreB = CreateLivre("Titre B", "Anna", userId);
             var livreC = CreateLivre("Titre C", "Bob", userId);
 
-            _dataProvider.AjouterLivreToUtilisateur(livreA);
-            _dataProvider.AjouterLivreToUtilisateur(livreB);
-            _dataProvider.AjouterLivreToUtilisateur(livreC);
+            _livreDataProvider.AjouterLivreToUtilisateur(livreA);
+            _livreDataProvider.AjouterLivreToUtilisateur(livreB);
+            _livreDataProvider.AjouterLivreToUtilisateur(livreC);
 
-            List<Livre> livresTries = _dataProvider.GetUtilisateurLivreDataParAuteur(userId);
+            List<Livre> livresTries = _livreDataProvider.GetUtilisateurLivreDataParAuteur(userId);
 
             Assert.AreEqual(3, livresTries.Count);
             Assert.AreEqual("Anna", livresTries[0].Auteur);
@@ -162,34 +161,34 @@ namespace EEEEReader.Tests.Models
         {
             Utilisateur u1 = new("u1", "pwd");
             Utilisateur u2 = new("u2", "pwd");
-            _dataProvider.AjouterUtilisateur(u1);
-            _dataProvider.AjouterUtilisateur(u2);
-            var users = _dataProvider.GetUtilisateursData();
+            _utilisateurDataProvider.AjouterUtilisateur(u1);
+            _utilisateurDataProvider.AjouterUtilisateur(u2);
+            var users = _utilisateurDataProvider.GetUtilisateursData();
 
             int id1 = users.First(u => u.Nom == "u1").Id;
             int id2 = users.First(u => u.Nom == "u2").Id;
 
-            _dataProvider.AjouterLivreToUtilisateur(new Livre { Titre = "L1", Auteur = "A", FichierEpub = new byte[0], CurrentPage = 0, Pourcentage = 0, UtilisateurId = id1 });
-            _dataProvider.AjouterLivreToUtilisateur(new Livre { Titre = "L2", Auteur = "B", FichierEpub = new byte[0], CurrentPage = 0, Pourcentage = 0, UtilisateurId = id1 });
-            _dataProvider.AjouterLivreToUtilisateur(new Livre { Titre = "L3", Auteur = "C", FichierEpub = new byte[0], CurrentPage = 0, Pourcentage = 0, UtilisateurId = id2 });
+            _livreDataProvider.AjouterLivreToUtilisateur(new Livre { Titre = "L1", Auteur = "A", FichierEpub = new byte[0], CurrentPage = 0, Pourcentage = 0, UtilisateurId = id1 });
+            _livreDataProvider.AjouterLivreToUtilisateur(new Livre { Titre = "L2", Auteur = "B", FichierEpub = new byte[0], CurrentPage = 0, Pourcentage = 0, UtilisateurId = id1 });
+            _livreDataProvider.AjouterLivreToUtilisateur(new Livre { Titre = "L3", Auteur = "C", FichierEpub = new byte[0], CurrentPage = 0, Pourcentage = 0, UtilisateurId = id2 });
 
-            Assert.AreEqual(2, _dataProvider.GetUtilisateurLivreData(id1).Count);
-            Assert.AreEqual(1, _dataProvider.GetUtilisateurLivreData(id2).Count);
+            Assert.AreEqual(2, _livreDataProvider.GetUtilisateurLivreData(id1).Count);
+            Assert.AreEqual(1, _livreDataProvider.GetUtilisateurLivreData(id2).Count);
         }
 
         [TestMethod]
         public void ChangerPageDuLivre_IdInexistant_LanceInvalidOperationException()
         {
             int inexistId = 99999;
-            Assert.Throws<InvalidOperationException>(() => _dataProvider.ChangerPageDuLivre(inexistId, 10));
+            Assert.ThrowsException<InvalidOperationException>(() => _livreDataProvider.ChangerPageDuLivre(inexistId, 10));
         }
 
         [TestMethod]
         public void AjouterLivre_AssigneIdNonNul()
         {
             Utilisateur utilisateur = new("idtester", "pwd");
-            _dataProvider.AjouterUtilisateur(utilisateur);
-            int userId = _dataProvider.GetUtilisateursData().First().Id;
+            _utilisateurDataProvider.AjouterUtilisateur(utilisateur);
+            int userId = _utilisateurDataProvider.GetUtilisateursData().First().Id;
 
             var livre = new Livre
             {
@@ -200,9 +199,9 @@ namespace EEEEReader.Tests.Models
                 Pourcentage = 0,
                 UtilisateurId = userId
             };
-            _dataProvider.AjouterLivreToUtilisateur(livre);
+            _livreDataProvider.AjouterLivreToUtilisateur(livre);
 
-            Livre livreFromDb = _dataProvider.GetUtilisateurLivreData(userId).First();
+            Livre livreFromDb = _livreDataProvider.GetUtilisateurLivreData(userId).First();
             Assert.IsTrue(livreFromDb.Id > 0);
         }
 
@@ -211,19 +210,19 @@ namespace EEEEReader.Tests.Models
         {
             Utilisateur u1 = new("iso1", "pwd");
             Utilisateur u2 = new("iso2", "pwd");
-            _dataProvider.AjouterUtilisateur(u1);
-            _dataProvider.AjouterUtilisateur(u2);
+            _utilisateurDataProvider.AjouterUtilisateur(u1);
+            _utilisateurDataProvider.AjouterUtilisateur(u2);
 
-            var users = _dataProvider.GetUtilisateursData();
+            var users = _utilisateurDataProvider.GetUtilisateursData();
             int id1 = users.First(u => u.Nom == "iso1").Id;
             int id2 = users.First(u => u.Nom == "iso2").Id;
 
-            _dataProvider.AjouterLivreToUtilisateur(new Livre { Titre = "U1-L1", Auteur = "A", FichierEpub = new byte[0], CurrentPage = 0, Pourcentage = 0, UtilisateurId = id1 });
-            _dataProvider.AjouterLivreToUtilisateur(new Livre { Titre = "U2-L1", Auteur = "B", FichierEpub = new byte[0], CurrentPage = 0, Pourcentage = 0, UtilisateurId = id2 });
-            _dataProvider.AjouterLivreToUtilisateur(new Livre { Titre = "U1-L2", Auteur = "C", FichierEpub = new byte[0], CurrentPage = 0, Pourcentage = 0, UtilisateurId = id1 });
+            _livreDataProvider.AjouterLivreToUtilisateur(new Livre { Titre = "U1-L1", Auteur = "A", FichierEpub = new byte[0], CurrentPage = 0, Pourcentage = 0, UtilisateurId = id1 });
+            _livreDataProvider.AjouterLivreToUtilisateur(new Livre { Titre = "U2-L1", Auteur = "B", FichierEpub = new byte[0], CurrentPage = 0, Pourcentage = 0, UtilisateurId = id2 });
+            _livreDataProvider.AjouterLivreToUtilisateur(new Livre { Titre = "U1-L2", Auteur = "C", FichierEpub = new byte[0], CurrentPage = 0, Pourcentage = 0, UtilisateurId = id1 });
 
-            var livresU1 = _dataProvider.GetUtilisateurLivreData(id1);
-            var livresU2 = _dataProvider.GetUtilisateurLivreData(id2);
+            var livresU1 = _livreDataProvider.GetUtilisateurLivreData(id1);
+            var livresU2 = _livreDataProvider.GetUtilisateurLivreData(id2);
 
             Assert.AreEqual(2, livresU1.Count);
             Assert.AreEqual(1, livresU2.Count);

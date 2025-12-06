@@ -18,9 +18,9 @@ namespace EEEEReader.ViewModels.Pages
         
         private UtilisateursViewModel? _currentUser;
 
-        private IDataProvider _utilisateurDataProvider;
+        private IDataProviderUtilisateur _utilisateurDataProvider;
 
-        public LoginUtilisateursViewModel(IDataProvider utilisateurDataProvider)
+        public LoginUtilisateursViewModel(IDataProviderUtilisateur utilisateurDataProvider)
         {
             _utilisateurDataProvider = utilisateurDataProvider
                                        ?? throw new ArgumentNullException(nameof(utilisateurDataProvider));

@@ -14,7 +14,7 @@ namespace EEEEReader.Tests.Models
     public class UtilisateursDataProviderTests
     {
         private EEEEReaderDbContext _context;
-        private DataProvider _dataProvider;
+        private DataProviderUtilisateur _dataProvider;
 
         // private clientDataProvider 
 
@@ -30,7 +30,7 @@ namespace EEEEReader.Tests.Models
             _context.Database.OpenConnection();
             _context.Database.EnsureCreated();
 
-            _dataProvider = new DataProvider(_context);
+            _dataProvider = new DataProviderUtilisateur(_context);
 
 
         }

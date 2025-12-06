@@ -1,4 +1,5 @@
 ﻿using EEEEReader.Data;
+using EEEEReader.Data.data;
 using EEEEReader.Data.Models;
 using System;
 using System.Collections.Generic;
@@ -10,14 +11,14 @@ namespace EEEEReader.ViewModels.Pages
 {
     public class RecentViewModel : BaseViewModel
     {
-        private readonly DataProvider _dataProvider;
+        private readonly IDataProviderLivre _dataProvider;
         public Livre PreviewedLivre { get; set; }
         public UtilisateursViewModel? CurrentUser { get; private set; }
 
         public RecentViewModel(UtilisateursViewModel user)
         {
             CurrentUser = user;
-            _dataProvider = App.DataProvider;
+            _dataProvider = App.DataProviderLivre;
         }
 
         public List<LivreViewModel> GenererLivresRecent()
