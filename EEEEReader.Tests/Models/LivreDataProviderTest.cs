@@ -180,7 +180,7 @@ namespace EEEEReader.Tests.Models
         public void ChangerPageDuLivre_IdInexistant_LanceInvalidOperationException()
         {
             int inexistId = 99999;
-            Assert.ThrowsException<InvalidOperationException>(() => _livreDataProvider.ChangerPageDuLivre(inexistId, 10));
+            Assert.ThrowsExactly<InvalidOperationException>(() => _livreDataProvider.ChangerPageDuLivre(inexistId, 10));
         }
 
         [TestMethod]
