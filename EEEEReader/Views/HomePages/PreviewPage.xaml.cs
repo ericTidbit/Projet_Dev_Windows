@@ -18,13 +18,15 @@ namespace EEEEReader.Views
     {
         private readonly IDataProviderLivre _livreDataProvider;
         public UtilisateursViewModel? CurrentUser { get; private set; }
-
+        public PreviewPageViewModel ViewModel { get; private set; }
         public LivreViewModel PreviewedLivre { get; private set; }
 
         public PreviewPage()
         {
             InitializeComponent();
             _livreDataProvider = App.DataProviderLivre;
+            
+
         }
 
 
@@ -36,7 +38,8 @@ namespace EEEEReader.Views
 
             PreviewedLivre = data.Livre;
             CurrentUser = data.User;
-
+            ViewModel = new PreviewPageViewModel(_livreDataProvider,PreviewedLivre);
+            
         }
 
         public void LireLivre_Click(object sender, RoutedEventArgs e)
@@ -51,7 +54,8 @@ namespace EEEEReader.Views
         {
             if (App.MainWindow?.Content is Frame mainFrame && PreviewedLivre is not null)
             {
-                _livreDataProvider.SupprimerLivre(PreviewedLivre.Livre.Id);
+                ViewModel.SuprimmerLivreClick();
+                //_livreDataProvider.SupprimerLivre(PreviewedLivre.Livre.Id);
                 this.Frame?.Navigate(typeof(Biblio), CurrentUser);
             }
         }

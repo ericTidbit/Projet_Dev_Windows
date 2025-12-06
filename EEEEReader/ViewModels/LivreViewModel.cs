@@ -42,24 +42,6 @@ namespace EEEEReader.ViewModels
             livremetadata = EpubReader.ReadBook(ms);
             _livre = livre;
         }
-        /*
-        public LivreViewModel(EpubContent content, string Titre, string Auteur = null, string Date = null, string ISBN = null, string Langue = null, string Resume = null, byte[] cover = null)
-        {
-            _livre.
-            _livre.RawContent = content;
-            _livre.Titre = Titre;
-            _livre.Auteur = Auteur;
-            _livre.Date = Date;
-            _livre.ISBN = ISBN;
-            _livre.Langue = Langue;
-            _livre.Resume = Resume;
-            _livre.CoverRaw = cover;
-            _livre.CoverImage = LoadImageFromByteArray(cover);
-            _livre.CurrentPage = 0;
-            _livre.Pourcentage = 0;
-            _livre.HtmlContentList = Librairie.LoadXamlContent(content);
-        }
-        */
         public Livre Livre 
         { 
             get => _livre; 
@@ -77,8 +59,18 @@ namespace EEEEReader.ViewModels
         public List<HtmlDocument> HtmlContentList => LoadXamlContent(livremetadata.Content);
         public EpubContent RawContent => livremetadata.Content;
 
-        public int CurrentPage => _livre.CurrentPage;
-        public int Pourcentage => _livre.Pourcentage;
+        public int CurrentPage
+        {
+            get => _livre.CurrentPage;
+            set
+            {
+                if (_livre.CurrentPage != value)
+                {
+                    _livre.CurrentPage = value;
+                    RaisePropertyChanged(nameof(CurrentPage));
+                }
+            }
+        } 
 
         
         // TODO: est une méthode pour compatibilité avec ancien code -- à corriger plus tard
@@ -101,16 +93,11 @@ namespace EEEEReader.ViewModels
 
             return chapterList;
         }
-
-        public void pourcentageLivre()
-        {
-            _livre.Pourcentage = ((_livre.CurrentPage) * 100) / (HtmlContentList.Count - 1);
-        }
         public int NextPage()
         {
             if (_livre.CurrentPage < HtmlContentList.Count - 1)
             {
-                _livre.CurrentPage++;
+                CurrentPage++;
             }
 
             return _livre.CurrentPage;
@@ -119,7 +106,7 @@ namespace EEEEReader.ViewModels
         {
             if (_livre.CurrentPage > 0)
             {
-                _livre.CurrentPage--;
+                CurrentPage--;
             }
             
 
