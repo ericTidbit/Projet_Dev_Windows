@@ -13,7 +13,7 @@
 
 * Affichage en vignettes ou en liste
 * Tri par titre, auteur ou récents
-* * Thèmes clair, sombre
+* Thèmes clair, sombre
 
 ### Lecteur (affichage continu)
 * Une page par chapitre
@@ -63,3 +63,27 @@ erDiagram
     	Utilisateur ||--o{ Livre : contient
 
 ```
+
+## distribution du code
+### pages
+#### Home
+Eric
+#### Login
+Julien
+#### Reading
+Eric
+#### Register
+Julien
+#### Biblio
+importation: Felix
+Affichage grid: Eric
+Affichage list: Julien
+#### Paramètres
+Julien
+#### Preview
+Eric
+#### Recents
+Felix
+
+
+
