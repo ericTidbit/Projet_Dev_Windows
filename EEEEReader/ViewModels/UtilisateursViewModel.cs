@@ -54,18 +54,7 @@ namespace EEEEReader.ViewModels
             }
         }
 
-        public Librairie Librairie
-        {
-            get => _user.Librairie;
-            set
-            {
-                if (_user.Librairie != value)
-                {
-                    _user.Librairie = value;
-                    RaisePropertyChanged();
-                }
-            }
-        }
+        
 
         public DateTime? Date
         {

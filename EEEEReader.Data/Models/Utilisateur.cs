@@ -12,7 +12,6 @@ namespace EEEEReader.Models
         public string Nom { get; set; }
         public List<Livre> LivresRecent { get; set; } = new List<Livre>();
         public string Pwd {  get; set; }
-        public Librairie Librairie { get; set; }
         public DateTime? Date { get; set; }
         public bool IsAdmin { get; set; }
 
@@ -20,7 +19,6 @@ namespace EEEEReader.Models
         {
             Nom = nom ?? throw new ArgumentNullException(nameof(nom));
             Pwd = pwd ?? throw new ArgumentNullException(nameof(pwd));
-            Librairie = new Librairie();
             Date = DateTime.Now;
             IsAdmin = false;
         }

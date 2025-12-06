@@ -38,7 +38,6 @@ namespace EEEEReader.Data
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             base.OnModelCreating(modelBuilder);
-            modelBuilder.Ignore<Librairie>();
             // la librairy sert a rien est fait bugger la release
         }
     }

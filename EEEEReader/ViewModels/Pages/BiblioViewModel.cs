@@ -61,7 +61,7 @@ namespace EEEEReader.ViewModels.Pages
             /* ajout ISBN a la place de 667*/
             if (dateee.Count != 0)
             {
-                Livre livre = CurrentUser.Librairie.AjouterLivre(CurrentUser.Id, epubEnByte, livremetadata.Content, livremetadata.Title, livremetadata.Author, dateee[0].Date, "667", langue[0].Language, livremetadata.Description, livremetadata.CoverImage);
+                Livre livre =  new Livre(epubEnByte, livremetadata.Title, livremetadata.Author, dateee[0].Date, "667", langue[0].Language, livremetadata.Description, livremetadata.CoverImage, CurrentUser.Id);
 
                 _utilisateurDataProvider.AjouterLivreToUtilisateur(livre);
                 
@@ -71,7 +71,7 @@ namespace EEEEReader.ViewModels.Pages
             }
             else
             {
-                Livre livre = CurrentUser.Librairie.AjouterLivre(CurrentUser.Id, epubEnByte, livremetadata.Content, livremetadata.Title, livremetadata.Author, null, "667", langue[0].Language, livremetadata.Description, livremetadata.CoverImage);
+                Livre livre = new Livre( epubEnByte, livremetadata.Title, livremetadata.Author, null, "667", langue[0].Language, livremetadata.Description, livremetadata.CoverImage, CurrentUser.Id);
                 _utilisateurDataProvider.AjouterLivreToUtilisateur(livre);
                 
                 LivreViewModels.Add(new LivreViewModel(livre, epubEnByte));
@@ -87,6 +87,7 @@ namespace EEEEReader.ViewModels.Pages
             
             var livresFromDb = _utilisateurDataProvider.GetUtilisateurLivreData(utilisateursViewModel.Id);
             
+            /*
             CurrentUser.Librairie.Livres.Clear();
             foreach (var livre in livresFromDb)
             {
@@ -94,9 +95,9 @@ namespace EEEEReader.ViewModels.Pages
             }
             
             _livres = CurrentUser.Librairie.Livres;
-
+            */
             _livreViewModel = new ObservableCollection<LivreViewModel>();
-            foreach (Livre livre in _livres)
+            foreach (Livre livre in livresFromDb)
             {
                 _livreViewModel.Add(new LivreViewModel(livre, livre.FichierEpub));
             }
