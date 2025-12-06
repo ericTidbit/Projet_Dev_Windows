@@ -1,52 +1,39 @@
-```
+```mermaid
+
 erDiagram
 	direction TB
-	UTILISATEUR {
-		int id  ""  
-		string name  ""  
-		string password  ""  
-		bool isadmin  ""  
-		DateTime date_creation  ""  
+	Utilisateur {
+		int Id  ""  
+		string Nom  ""  
+        	string Pwd "" 
+		bool IsAdmin  ""  
+		DateTime Date  ""  
 	}
 
-	SETTINGS {
-		int user_id  ""  
-		bool dark  ""  
-		bool grid  ""  
-	}
-
-	LIVRES {
-		int id  ""  
-		int user_id  ""  
-		string raw_content  ""  
+	Livre {
+		int Id  ""  
+		byte[] FichierEpub  ""  
 		string Titre  ""  
-		string auteur_id  ""  
+		string Auteur  ""  
 		string Date  ""  
 		string ISBN  ""  
-		string langue_id  ""  
+		string Langue  ""  
 		string Resume  ""  
-		byte CoverRaw  ""  
+		byte[] CoverRaw  ""  
+        	int CurrentPage ""
+        	EpubContent RawContent  "" 
+        	Image CoverImage ""
+        	List[HtmlDocument] HtmlContentList ""
 	}
 
-	AUTEURS {
-		int id  ""  
-		string name  ""  
-	}
+    	Appli {
+        	bool IsDarkMode ""
+        	bool IsGridLayout ""
+    	}
 
-	LANGUES {
-		int id  ""  
-		string language  ""  
-	}
+	Appli ||--o{ Utilisateur : contient
+    	Appli ||--|o Utilisateur : contient
+   	Appli ||--|o Livre : contient
+    	Utilisateur ||--o{ Livre : contient
 
-	BIBLIOTHEQUE {
-		int User_id  ""  
-		int Livre_id  ""  
-		int CurrentPage  ""  
-	}
-
-	UTILISATEUR||--o{SETTINGS:"possede"
-	LIVRES||--o{AUTEURS:"ref"
-	LIVRES||--o{LANGUES:"ref"
-	UTILISATEUR}|--|{BIBLIOTHEQUE:"  "
-	BIBLIOTHEQUE}|--|{LIVRES:"  "
 ```
