@@ -65,25 +65,27 @@ erDiagram
 ```
 
 ## distribution du code
-### pages
+### Pages
 #### Home
-Eric
+> Eric
 #### Login
-Julien
+> Julien
 #### Reading
-Eric
+> Eric
 #### Register
-Julien
+> Julien
 #### Biblio
-importation: Felix
-Affichage grid: Eric
-Affichage list: Julien
+> importation: Felix
+> 
+> Affichage grid: Eric
+> 
+> Affichage list: Julien
 #### Paramètres
-Julien
+> Julien
 #### Preview
-Eric
+> Eric
 #### Recents
-Felix
+> Felix
 
 
 
