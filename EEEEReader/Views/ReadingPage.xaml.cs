@@ -59,7 +59,6 @@ public sealed partial class ReadingPage : Page
     {
         scrollViewer.ChangeView(0, 0, null);
         ReadingViewModel.PrevPage();
-        ReadingViewModel.currentLivreViewModel.pourcentageLivre();
     }
 
     public async void ButtonNext_OnClick(object sender, RoutedEventArgs e)
@@ -68,11 +67,9 @@ public sealed partial class ReadingPage : Page
         {
             scrollViewer.ChangeView(0, 0, null);
             ReadingViewModel.NextPage();
-            ReadingViewModel.currentLivreViewModel.pourcentageLivre();
         }
         else
         {
-            ReadingViewModel.currentLivreViewModel.pourcentageLivre();
             /*quand tu arrive a la fin du livre :) */
             ContentDialog dialog = new ContentDialog()
             {
