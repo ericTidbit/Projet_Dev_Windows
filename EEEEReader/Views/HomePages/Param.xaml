@@ -8,21 +8,85 @@
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     mc:Ignorable="d">
 
-    <Grid>
-        <StackPanel Spacing="8">
+    <ScrollViewer>
+        <StackPanel 
+            Padding="60,40,60,60" 
+            Spacing="40"
+            Width="800"
+            HorizontalAlignment="Center">
+            
             <TextBlock 
-        Text="Apparence" 
-        Style="{ThemeResource SubtitleTextBlockStyle}"/>
+                Text="Paramètres" 
+                Style="{ThemeResource TitleTextBlockStyle}"
+                FontWeight="SemiBold"/>
+            
+            <StackPanel Spacing="20">
+                <TextBlock 
+                    Text="Apparence" 
+                    Style="{ThemeResource SubtitleTextBlockStyle}"
+                    FontWeight="SemiBold"/>
 
-            <ToggleSwitch 
-        x:Name="ThemeToggle"
-        Header="Thème sombre"
-        OnContent="Activé"
-        OffContent="Désactivé"
-        Toggled="ThemeToggle_Toggled"/>
+                <Border 
+                    Background="{ThemeResource CardBackgroundFillColorDefaultBrush}"
+                    BorderBrush="{ThemeResource CardStrokeColorDefaultBrush}"
+                    BorderThickness="1"
+                    CornerRadius="8"
+                    Padding="24">
+                    <Grid>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="*"/>
+                            <ColumnDefinition Width="Auto"/>
+                        </Grid.ColumnDefinitions>
+
+                        <StackPanel Grid.Column="0" Spacing="4" VerticalAlignment="Center">
+                            <TextBlock 
+                                Text="Mode sombre" 
+                                FontWeight="SemiBold"
+                                FontSize="16"/>
+                        </StackPanel>
+
+                        <ToggleSwitch 
+                            x:Name="ThemeToggle"
+                            Grid.Column="1"
+                            OnContent="Activé"
+                            OffContent="Désactivé"
+                            Toggled="ThemeToggle_Toggled"/>
+                    </Grid>
+                </Border>
+            </StackPanel>
+            
+            <StackPanel Spacing="20">
+                <TextBlock 
+                    Text="Compte" 
+                    Style="{ThemeResource SubtitleTextBlockStyle}"
+                    FontWeight="SemiBold"/>
+
+                <Border 
+                    Background="{ThemeResource CardBackgroundFillColorDefaultBrush}"
+                    BorderBrush="{ThemeResource CardStrokeColorDefaultBrush}"
+                    BorderThickness="1"
+                    CornerRadius="8"
+                    Padding="24">
+                    <StackPanel Spacing="24">
+                        <Button
+                            Click="Deconnection"
+                            Style="{ThemeResource AccentButtonStyle}"
+                            HorizontalAlignment="Stretch"
+                            Padding="18,14">
+                            <StackPanel Orientation="Horizontal" Spacing="12">
+                                <FontIcon 
+                                    Glyph="&#xE7E8;" 
+                                    FontSize="18"/>
+                                <TextBlock 
+                                    Text="Se déconnecter"
+                                    FontSize="15"
+                                    FontWeight="SemiBold"/>
+                            </StackPanel>
+                        </Button>
+                    </StackPanel>
+                </Border>
+            </StackPanel>
+            
         </StackPanel>
-        <Button
-            Content="Se déconnecter"
-            Click="Deconnection"/>
-    </Grid>
+    </ScrollViewer>
 </Page>
